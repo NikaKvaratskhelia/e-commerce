@@ -14,6 +14,10 @@ export default function Button({ text, mode, rounded }: ButtonProps) {
     rounded === "rounded" ? "rounded-[80px]" : "rounded-[8px]";
 
   return (
-    <div className={`${modeClass} ${roundedClass} text-[16px] font-medium px-10 py-1.5 max-w-fit w-full`}>{text}</div>
+    <div
+      className={`${modeClass} ${roundedClass} text-[16px] font-medium px-10 py-2.5 text-center w-full leading-7 select-none cursor-pointer`}
+    >
+      {text}
+    </div>
   );
 }
