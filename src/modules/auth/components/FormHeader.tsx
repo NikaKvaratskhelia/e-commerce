@@ -14,7 +14,7 @@ export default function FormHeader({
   href,
 }: FormHeaderProps) {
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 w-full">
       <h1 className="text-[40px] leading-11 text-(-neutral-black) font-medium">
         {header}
       </h1>

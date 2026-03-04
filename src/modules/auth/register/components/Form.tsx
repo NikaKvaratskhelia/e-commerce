@@ -6,14 +6,14 @@ import FormHeader from "../../components/FormHeader";
 
 export default function Form() {
   return (
-    <div className="flex flex-col gap-8 max-w-114 mx-auto">
+    <div className="flex flex-col gap-8 box-border max-w-114 w-full  px-5 mx-auto mt-20 py-10 lg:mt-0  lg:py-0 lg:box-content lg:pl-22 lg:pr-20">
       <FormHeader
         header={"Sign Up"}
         text={"Already have an account?"}
         linkText={"Sign In"}
         href={"/auth/login"}
       />
-      <form className="flex flex-col gap-8">
+      <form className="flex flex-col gap-8 max-w-114 w-full">
         <Input type={"text"} id={"name"} placeholder={"Your Name"} />
         <Input type={"text"} id={"userName"} placeholder={"Username"} />
         <Input type={"email"} id={"email"} placeholder={"Email address"} />
@@ -21,7 +21,7 @@ export default function Form() {
         <Checkbox
           id={"agree"}
           textHtmlFormat={
-            <p className="text-(--neutral-light-grey)">
+            <p className="text-(--neutral-light-grey) text-[12px] sm:text-[16px]">
               I agree with{" "}
               <span className="text-black font-semibold">Privacy Policy</span>{" "}
               and <span className="text-black font-semibold">Terms of Use</span>

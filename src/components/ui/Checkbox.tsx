@@ -27,7 +27,7 @@ export default function Checkbox({
         hidden
       />
 
-      <div className="flex gap-3">
+      <div className="flex gap-3 items-center">
         <div
           onClick={() => setValue(!value)}
           className={`w-6 h-6 flex items-center justify-center rounded-sm border border-(--neutral-light-grey)

@@ -13,9 +13,9 @@ export default function PasswordInput() {
       placeholder={"Password"}
       icon={
         showPass ? (
-          <Eye onClick={() => setShowPass(false)} />
+          <Eye onClick={() => setShowPass(false)} width={24} height={24}/>
         ) : (
-          <EyeOff onClick={() => setShowPass(true)} />
+          <EyeOff onClick={() => setShowPass(true)} width={24} height={24}/>
         )
       }
     />
