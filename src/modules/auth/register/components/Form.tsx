@@ -1,10 +1,10 @@
 "use client";
 
-import Checkbox from "@/src/components/ui/Checkbox";
-import Button from "@/src/components/ui/Button";
-import PasswordInput from "../../components/PasswordInput";
+import { Checkbox } from "@/src/components/ui/Checkbox";
+import { Button } from "@/src/components/ui/Button";
+import { PasswordInput } from "../../components/PasswordInput";
 import { Input } from "../../components/Input";
-import FormHeader from "../../components/FormHeader";
+import { FormHeader } from "../../components/FormHeader";
 import { registerAction } from "../services/actions";
 import {
   postUserSchema,
@@ -16,7 +16,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export default function RegisterForm() {
+export function RegisterForm() {
   const router = useRouter();
   const [checked, setChecked] = useState(false);
 

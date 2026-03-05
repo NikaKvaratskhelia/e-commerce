@@ -10,7 +10,7 @@ type Props = {
   error?: string;
 };
 
-export default function PasswordInput({ register, error }: Props) {
+export function PasswordInput({ register, error }: Props) {
   const [showPass, setShowPass] = useState(false);
 
   return (

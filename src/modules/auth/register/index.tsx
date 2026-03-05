@@ -1,5 +1,5 @@
-import FormAside from "../components/FormAside";
-import RegisterForm from "./components/Form";
+import { FormAside } from "../components/FormAside";
+import { RegisterForm } from "./components/Form";
 
 export default function RegisterPage() {
   return (
