@@ -22,9 +22,10 @@ export default function Button({ text, mode, rounded }: ButtonProps) {
 
   return (
     <button
+      disabled={pending}
       className={`${modeClass} ${roundedClass} text-[16px] font-medium px-10 py-2.5 text-center w-full leading-7 select-none cursor-pointer flex items-center justify-center`}
     >
-      {pending ? <Loader className="animation-spin" /> : text}
+      {pending ? <Loader className="animate-spin" /> : text}
     </button>
   );
 }
