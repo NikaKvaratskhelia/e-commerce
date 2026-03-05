@@ -6,6 +6,7 @@ import {
   type PostUserSchema,
 } from "./validations/post.validation";
 import bcrypt from "bcrypt";
+import { getUserSelect } from "./selectors/userSelector";
 
 export type RegisterResult =
   | { success: true; message: string }
@@ -34,6 +35,7 @@ export async function registerAction(
 
   await prisma.user.create({
     data: { name, username, email: email.toLowerCase(), password: hashedPass },
+    select: getUserSelect,
   });
 
   return { success: true, message: "რეგისტრაცია წარმატებით შესრულდა!" };
