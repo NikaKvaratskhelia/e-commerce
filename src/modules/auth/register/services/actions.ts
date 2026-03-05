@@ -1,28 +1,40 @@
 "use server";
 
 import { prisma } from "@/src/library/db";
-import { PostUserSchema, postUserSchema } from "./validations/post.validation";
+import {
+  postUserSchema,
+  type PostUserSchema,
+} from "./validations/post.validation";
 import bcrypt from "bcrypt";
 
-export async function registerAction(formData: PostUserSchema) {
-  const result = postUserSchema.safeParse(formData);
+export type RegisterResult =
+  | { success: true; message: string }
+  | { success: false; message: string };
 
-  if (!result.success) {
-    return { success: false, message: "არასწორი ველები!" };
+export async function registerAction(
+  payload: PostUserSchema,
+): Promise<RegisterResult> {
+  const result = postUserSchema.safeParse(payload);
+  if (!result.success) return { success: false, message: "არასწორი ველები!" };
+
+  const { name, username, email, password } = result.data;
+
+  const existing = await prisma.user.findFirst({
+    where: { OR: [{ email }, { username }] },
+  });
+
+  if (existing) {
+    return {
+      success: false,
+      message: "მომხმარებელი ამ იმეილით ან მომხმარებლის სახელით უკვე არსებობს!",
+    };
   }
-
-  const { email, password, name, username } = result.data;
 
   const hashedPass = await bcrypt.hash(password, 10);
 
   await prisma.user.create({
-    data: {
-      name,
-      username,
-      email,
-      password: hashedPass,
-    },
+    data: { name, username, email: email.toLowerCase(), password: hashedPass },
   });
 
-  return { success: true, message: "წარმატებით დარეგისტრირდა!" };
+  return { success: true, message: "რეგისტრაცია წარმატებით შესრულდა!" };
 }
