@@ -1,27 +1,28 @@
 "use server";
 
 import { prisma } from "@/src/library/db";
-import { postUserSchema } from "./validations/post.validation";
+import { PostUserSchema, postUserSchema } from "./validations/post.validation";
 import bcrypt from "bcrypt";
 
-export async function registerAction(formData: FormData) {
-  const email = formData.get("email");
-  const password = formData.get("password");
-
-  const result = postUserSchema.safeParse({ email, password });
+export async function registerAction(formData: PostUserSchema) {
+  const result = postUserSchema.safeParse(formData);
 
   if (!result.success) {
-    throw new Error("Invalid form data!");
+    return { success: false, message: "არასწორი ველები!" };
   }
 
-  const { email: emailParsed, password: passwordParsed } = result.data;
+  const { email, password, name, username } = result.data;
 
-  const hashedPass = await bcrypt.hash(passwordParsed, 10);
+  const hashedPass = await bcrypt.hash(password, 10);
 
   await prisma.user.create({
     data: {
-      email: emailParsed,
+      name,
+      username,
+      email,
       password: hashedPass,
     },
   });
+
+  return { success: true, message: "წარმატებით დარეგისტრირდა!" };
 }
