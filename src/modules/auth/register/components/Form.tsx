@@ -27,8 +27,6 @@ export default function RegisterForm() {
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const result = postUserSchema.safeParse(values);
-    console.log(values);
-    console.log(checked);
 
     if (!result.success || !values) {
       toast.error("არასწორი ველები!");
