@@ -1,11 +1,11 @@
 import FormAside from "../components/FormAside";
-import Form from "./components/Form";
+import RegisterForm from "./components/Form";
 
 export default function RegisterPage() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 items-center ">
       <FormAside />
-      <Form />
+      <RegisterForm />
     </div>
   );
 }

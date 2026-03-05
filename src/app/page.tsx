@@ -1,3 +1,9 @@
+import RegisterPage from "../modules/auth/register";
+
 export default function Home() {
-  return <div>Page</div>;
+  return (
+    <div>
+      <RegisterPage />
+    </div>
+  );
 }

@@ -3,8 +3,9 @@ import Button from "@/src/components/ui/Button";
 import PasswordInput from "../../components/PasswordInput";
 import Input from "../../components/Input";
 import FormHeader from "../../components/FormHeader";
+import { registerAction } from "../services/actions";
 
-export default function Form() {
+export default function RegisterForm() {
   return (
     <div className="flex flex-col gap-8 box-border max-w-114 w-full  px-5 mx-auto mt-20 py-10 lg:mt-0  lg:py-0 lg:box-content lg:pl-22 lg:pr-20">
       <FormHeader
@@ -13,7 +14,10 @@ export default function Form() {
         linkText={"Sign In"}
         href={"/auth/login"}
       />
-      <form className="flex flex-col gap-8 max-w-114 w-full">
+      <form
+        className="flex flex-col gap-8 max-w-114 w-full"
+        action={registerAction}
+      >
         <Input type={"text"} id={"name"} placeholder={"Your Name"} />
         <Input type={"text"} id={"userName"} placeholder={"Username"} />
         <Input type={"email"} id={"email"} placeholder={"Email address"} />
