@@ -6,7 +6,7 @@ import {
   type PostUserSchema,
 } from "./validations/post.validation";
 import bcrypt from "bcrypt";
-import { getUserSelect } from "./selectors/userSelector";
+import { getUserSelect } from "../../selectors/userSelector";
 
 export type RegisterResult =
   | { success: true; message: string }
