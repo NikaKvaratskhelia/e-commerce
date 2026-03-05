@@ -1,37 +1,42 @@
-import { ReactNode } from "react";
+"use client";
 
-type InputProps = {
-  type: string;
+import { forwardRef, type InputHTMLAttributes, type ReactNode } from "react";
+
+type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   id: string;
-  placeholder: string;
   icon?: ReactNode;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  error?: string;
 };
 
-export default function Input({
-  type,
-  id,
-  placeholder,
-  icon,
-  onChange,
-}: InputProps) {
-  return (
-    <label
-      htmlFor={id}
-      className="border-b border-(--neutral-dark-white) pb-2 cursor-pointer flex justify-between items-center w-full"
-    >
-      <input
-        type={type}
-        id={id}
-        name={id}
-        autoComplete="off"
-        placeholder={placeholder}
-        onChange={onChange}
-        className="outline-none text-[16px] leading-6.5 w-full bg-transparent text-(--neutral-light-grey)"
-      />
-      {icon && (
-        <div className="text-(--neutral-light-grey) w-5 h-3.5">{icon}</div>
-      )}
-    </label>
-  );
-}
+export const Input = forwardRef<HTMLInputElement, InputProps>(
+  ({ id, icon, error, ...props }, ref) => {
+    return (
+      <div className="w-full">
+        <label
+          htmlFor={id}
+          className="border-b border-(--neutral-dark-white) pb-2 cursor-pointer flex justify-between items-center w-full"
+        >
+          <input
+            ref={ref}
+            id={id}
+            name={props.name ?? id}
+            className={
+              "outline-none text-[16px] leading-6.5 w-full bg-transparent text-(--neutral-light-grey)"
+            }
+            {...props}
+          />
+
+          {icon && (
+            <div className="text-(--neutral-light-grey) w-5 h-3.5 flex items-center justify-center">
+              {icon}
+            </div>
+          )}
+        </label>
+
+        {error && <p className="mt-2 text-[12px] text-red-600 font-semibold select-none">{error}</p>}
+      </div>
+    );
+  },
+);
+
+Input.displayName = "Input";

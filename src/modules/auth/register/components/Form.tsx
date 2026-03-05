@@ -3,45 +3,47 @@
 import Checkbox from "@/src/components/ui/Checkbox";
 import Button from "@/src/components/ui/Button";
 import PasswordInput from "../../components/PasswordInput";
-import Input from "../../components/Input";
+import { Input } from "../../components/Input";
 import FormHeader from "../../components/FormHeader";
 import { registerAction } from "../services/actions";
-import { useState } from "react";
 import {
   postUserSchema,
   type PostUserSchema,
 } from "../services/validations/post.validation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function RegisterForm() {
   const router = useRouter();
-
-  const [values, setValues] = useState<PostUserSchema>({
-    name: "",
-    username: "",
-    email: "",
-    password: "",
-  });
-
   const [checked, setChecked] = useState(false);
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<PostUserSchema>({
+    resolver: zodResolver(postUserSchema),
+    defaultValues: {
+      name: "",
+      username: "",
+      email: "",
+      password: "",
+    },
+    mode: "onSubmit",
+  });
 
+  const onSubmit = async (data: PostUserSchema) => {
     if (!checked) {
       toast.error("გთხოვ, დაეთანხმე პირობებს.");
       return;
     }
 
-    const parsed = postUserSchema.safeParse(values);
-    if (!parsed.success) {
-      toast.error("არასწორი ველები!");
-      return;
-    }
-
     try {
-      const res = await registerAction(parsed.data);
+      const res = await registerAction(data);
 
       if (!res.success) {
         toast.error(res.message);
@@ -49,52 +51,54 @@ export default function RegisterForm() {
       }
 
       toast.success(res.message);
-
-      setTimeout(() => {
-        router.push("/auth/login");
-      }, 500);
+      reset();
+      router.push("/auth/login");
     } catch {
       toast.error("სერვერის შეცდომა. სცადე თავიდან.");
     }
-  }
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-    setValues((prev) => ({ ...prev, [id]: value }));
   };
 
   return (
     <div className="flex flex-col gap-8 box-border max-w-114 w-full px-5 mx-auto mt-20 py-10 lg:mt-0 lg:py-0 lg:box-content lg:pl-22 lg:pr-20">
       <FormHeader
-        header={"Sign Up"}
-        text={"Already have an account?"}
-        linkText={"Sign In"}
-        href={"/auth/login"}
+        header="Sign Up"
+        text="Already have an account?"
+        linkText="Sign In"
+        href="/auth/login"
       />
 
       <form
         className="flex flex-col gap-8 max-w-114 w-full"
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmit(onSubmit)}
       >
         <Input
           type="text"
           id="name"
           placeholder="Your Name"
-          onChange={handleChange}
+          error={errors.name?.message}
+          {...register("name")}
         />
+
         <Input
           type="text"
           id="username"
           placeholder="Username"
-          onChange={handleChange}
+          error={errors.username?.message}
+          {...register("username")}
         />
+
         <Input
           type="email"
           id="email"
           placeholder="Email address"
-          onChange={handleChange}
+          error={errors.email?.message}
+          {...register("email")}
         />
-        <PasswordInput onChange={handleChange} />
+
+        <PasswordInput
+          register={register("password")}
+          error={errors.password?.message}
+        />
 
         <Checkbox
           id="agree"
@@ -109,7 +113,12 @@ export default function RegisterForm() {
           onChange={() => setChecked((v) => !v)}
         />
 
-        <Button text={"Sign Up"} mode="solid" rounded="square" />
+        <Button
+          text={isSubmitting ? "Signing Up..." : "Sign Up"}
+          mode="solid"
+          rounded="square"
+          disabled={isSubmitting}
+        />
       </form>
     </div>
   );
