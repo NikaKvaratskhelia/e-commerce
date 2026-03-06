@@ -41,6 +41,5 @@ export async function loginAction(data: LoginFormSchema) {
     maxAge: rememberMe ? 60 * 60 * 24 * 30 : undefined,
   });
 
-  // FIX: es link unda chanacvldes namdvili userdashboard linkit an homepageit
-  redirect("/asmcaks");
+  redirect("/");
 }
