@@ -11,19 +11,18 @@ import {
   type PostUserSchema,
 } from "../services/validations/post.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 
 export function RegisterForm() {
   const router = useRouter();
-  const [checked, setChecked] = useState(false);
 
   const {
     register,
     reset,
     handleSubmit,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<PostUserSchema>({
     resolver: zodResolver(postUserSchema),
@@ -32,16 +31,21 @@ export function RegisterForm() {
       username: "",
       email: "",
       password: "",
+      agree: false,
     },
     mode: "onSubmit",
   });
 
+  const agree = useWatch({
+    control,
+    name: "agree",
+  });
+
   const onSubmit = async (data: PostUserSchema) => {
-    if (!checked) {
-      toast.error("გთხოვ, დაეთანხმე პირობებს.");
+    if (!agree) {
+      toast.error("გთხოვთ დაეთანხმოთ.");
       return;
     }
-
     try {
       const res = await registerAction(data);
 
@@ -59,7 +63,7 @@ export function RegisterForm() {
   };
 
   return (
-    <div className="flex flex-col gap-8 box-border max-w-114 w-full px-5 mx-auto mt-20 py-10 lg:mt-0 lg:py-0 lg:box-content lg:pl-22 lg:pr-20">
+    <div className="flex flex-col gap-8 box-border max-w-114 w-full px-5 mx-auto mt-20 py-10 lg:mt-0 lg:py-0 lg:box-content lg:pl-22 lg:pr-20 overflow-hidden">
       <FormHeader
         header="Sign Up"
         text="Already have an account?"
@@ -100,17 +104,28 @@ export function RegisterForm() {
           error={errors.password?.message}
         />
 
-        <Checkbox
-          id="agree"
-          textHtmlFormat={
-            <p className="text-(--neutral-light-grey) text-[12px] sm:text-[16px]">
-              I agree with{" "}
-              <span className="text-black font-semibold">Privacy Policy</span>{" "}
-              and <span className="text-black font-semibold">Terms of Use</span>
-            </p>
-          }
-          defaultChecked={checked}
-          onChange={() => setChecked((v) => !v)}
+        <Controller
+          name="agree"
+          control={control}
+          render={({ field }) => (
+            <Checkbox
+              id="agree"
+              name={field.name}
+              checked={!!field.value}
+              onChange={(e) => field.onChange(e.target.checked)}
+              ref={field.ref}
+              textHtmlFormat={
+                <p className="text-(--neutral-light-grey) text-[12px] sm:text-[16px]">
+                  I agree with{" "}
+                  <span className="text-black font-semibold">
+                    Privacy Policy
+                  </span>{" "}
+                  and{" "}
+                  <span className="text-black font-semibold">Terms of Use</span>
+                </p>
+              }
+            />
+          )}
         />
 
         <Button

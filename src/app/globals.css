@@ -16,3 +16,8 @@
   --neutral-semi-white: #f3f5f7;
   --neutral-white: #fefefe;
 }
+
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
