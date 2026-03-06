@@ -1,26 +1,41 @@
 "use client";
 
 import { useState } from "react";
-import Input from "./Input";
+import { Input } from "./Input";
 import { Eye, EyeOff } from "lucide-react";
+import type { UseFormRegisterReturn } from "react-hook-form";
 
-export default function PasswordInput({
-  onChange,
-}: {
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}) {
+type Props = {
+  register: UseFormRegisterReturn;
+  error?: string;
+};
+
+export function PasswordInput({ register, error }: Props) {
   const [showPass, setShowPass] = useState(false);
+
   return (
     <Input
       type={showPass ? "text" : "password"}
-      id={"password"}
-      placeholder={"Password"}
-      onChange={onChange}
+      id="password"
+      placeholder="Password"
+      autoComplete="new-password"
+      error={error}
+      {...register}
       icon={
         showPass ? (
-          <Eye onClick={() => setShowPass(false)} width={24} height={24} />
+          <Eye
+            width={20}
+            height={20}
+            className="cursor-pointer"
+            onClick={() => setShowPass(false)}
+          />
         ) : (
-          <EyeOff onClick={() => setShowPass(true)} width={24} height={24} />
+          <EyeOff
+            width={20}
+            height={20}
+            className="cursor-pointer"
+            onClick={() => setShowPass(true)}
+          />
         )
       }
     />

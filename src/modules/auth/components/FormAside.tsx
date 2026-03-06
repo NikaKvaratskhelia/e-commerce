@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export default function FormAside() {
+export function FormAside() {
   return (
     <div className="relative max-h-screen h-fit bg-(--neutral-semi-white) flex items-center justify-center">
       <Image

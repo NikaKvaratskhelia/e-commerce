@@ -1,85 +1,107 @@
 "use client";
 
-import Checkbox from "@/src/components/ui/Checkbox";
-import Button from "@/src/components/ui/Button";
-import PasswordInput from "../../components/PasswordInput";
-import Input from "../../components/Input";
-import FormHeader from "../../components/FormHeader";
+import { Checkbox } from "@/src/components/ui/Checkbox";
+import { Button } from "@/src/components/ui/Button";
+import { PasswordInput } from "../../components/PasswordInput";
+import { Input } from "../../components/Input";
+import { FormHeader } from "../../components/FormHeader";
 import { registerAction } from "../services/actions";
-import { useState } from "react";
 import {
   postUserSchema,
-  PostUserSchema,
+  type PostUserSchema,
 } from "../services/validations/post.validation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-export default function RegisterForm() {
-  const [values, setValues] = useState<PostUserSchema>({
-    name: "",
-    username: "",
-    email: "",
-    password: "",
-  });
-
+export function RegisterForm() {
+  const router = useRouter();
   const [checked, setChecked] = useState(false);
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const result = postUserSchema.safeParse(values);
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<PostUserSchema>({
+    resolver: zodResolver(postUserSchema),
+    defaultValues: {
+      name: "",
+      username: "",
+      email: "",
+      password: "",
+    },
+    mode: "onSubmit",
+  });
 
-    if (!result.success || !values) {
-      toast.error("არასწორი ველები!");
+  const onSubmit = async (data: PostUserSchema) => {
+    if (!checked) {
+      toast.error("გთხოვ, დაეთანხმე პირობებს.");
       return;
     }
 
-    registerAction(values);
-    toast.success("რეგისტრაცია წარმატებით შესრულდა!");
-    redirect("/auth/login");
-  }
+    try {
+      const res = await registerAction(data);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
+      if (!res.success) {
+        toast.error(res.message);
+        return;
+      }
 
-    setValues((prev) => ({
-      ...prev,
-      [id]: value,
-    }));
+      toast.success(res.message);
+      reset();
+      router.push("/auth/login");
+    } catch {
+      toast.error("სერვერის შეცდომა. სცადე თავიდან.");
+    }
   };
 
   return (
-    <div className="flex flex-col gap-8 box-border max-w-114 w-full  px-5 mx-auto mt-20 py-10 lg:mt-0  lg:py-0 lg:box-content lg:pl-22 lg:pr-20">
+    <div className="flex flex-col gap-8 box-border max-w-114 w-full px-5 mx-auto mt-20 py-10 lg:mt-0 lg:py-0 lg:box-content lg:pl-22 lg:pr-20">
       <FormHeader
-        header={"Sign Up"}
-        text={"Already have an account?"}
-        linkText={"Sign In"}
-        href={"/auth/login"}
+        header="Sign Up"
+        text="Already have an account?"
+        linkText="Sign In"
+        href="/auth/login"
       />
+
       <form
         className="flex flex-col gap-8 max-w-114 w-full"
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmit(onSubmit)}
       >
         <Input
-          type={"text"}
-          id={"name"}
-          placeholder={"Your Name"}
-          onChange={handleChange}
+          type="text"
+          id="name"
+          placeholder="Your Name"
+          error={errors.name?.message}
+          {...register("name")}
         />
+
         <Input
-          type={"text"}
-          id={"username"}
-          placeholder={"Username"}
-          onChange={handleChange}
+          type="text"
+          id="username"
+          placeholder="Username"
+          error={errors.username?.message}
+          {...register("username")}
         />
+
         <Input
-          type={"email"}
-          id={"email"}
-          placeholder={"Email address"}
-          onChange={handleChange}
+          type="email"
+          id="email"
+          placeholder="Email address"
+          error={errors.email?.message}
+          {...register("email")}
         />
-        <PasswordInput onChange={handleChange} />
+
+        <PasswordInput
+          register={register("password")}
+          error={errors.password?.message}
+        />
+
         <Checkbox
-          id={"agree"}
+          id="agree"
           textHtmlFormat={
             <p className="text-(--neutral-light-grey) text-[12px] sm:text-[16px]">
               I agree with{" "}
@@ -88,9 +110,15 @@ export default function RegisterForm() {
             </p>
           }
           defaultChecked={checked}
-          onChange={() => setChecked(!checked)}
+          onChange={() => setChecked((v) => !v)}
         />
-        <Button text={"Sign Up"} mode={"solid"} rounded={"square"} />
+
+        <Button
+          text={isSubmitting ? "Signing Up..." : "Sign Up"}
+          mode="solid"
+          rounded="square"
+          disabled={isSubmitting}
+        />
       </form>
     </div>
   );

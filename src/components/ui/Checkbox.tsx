@@ -8,7 +8,7 @@ type Props = {
   onChange: () => void;
 };
 
-export default function Checkbox({
+export function Checkbox({
   id,
   defaultChecked,
   textHtmlFormat,

@@ -7,7 +7,7 @@ type FormHeaderProps = {
   href: string;
 };
 
-export default function FormHeader({
+export function FormHeader({
   header,
   text,
   linkText,
