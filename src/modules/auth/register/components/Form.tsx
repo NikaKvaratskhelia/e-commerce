@@ -11,19 +11,18 @@ import {
   type PostUserSchema,
 } from "../services/validations/post.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 
 export function RegisterForm() {
   const router = useRouter();
-  const [checked, setChecked] = useState(false);
 
   const {
     register,
     reset,
     handleSubmit,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<PostUserSchema>({
     resolver: zodResolver(postUserSchema),
@@ -36,12 +35,16 @@ export function RegisterForm() {
     mode: "onSubmit",
   });
 
+  const agree = useWatch({
+    control,
+    name: "agree",
+  });
+
   const onSubmit = async (data: PostUserSchema) => {
-    if (!checked) {
-      toast.error("გთხოვ, დაეთანხმე პირობებს.");
+    if (!agree) {
+      toast.error("გთხოვთ დაეთანხმოთ.");
       return;
     }
-
     try {
       const res = await registerAction(data);
 
@@ -59,7 +62,7 @@ export function RegisterForm() {
   };
 
   return (
-    <div className="flex flex-col gap-8 box-border max-w-114 w-full px-5 mx-auto mt-20 py-10 lg:mt-0 lg:py-0 lg:box-content lg:pl-22 lg:pr-20">
+    <div className="flex flex-col gap-8 box-border max-w-114 w-full px-5 mx-auto mt-20 py-10 lg:mt-0 lg:py-0 lg:box-content lg:pl-22 lg:pr-20 overflow-hidden">
       <FormHeader
         header="Sign Up"
         text="Already have an account?"
@@ -109,8 +112,7 @@ export function RegisterForm() {
               and <span className="text-black font-semibold">Terms of Use</span>
             </p>
           }
-          defaultChecked={checked}
-          onChange={() => setChecked((v) => !v)}
+          {...register("agree")}
         />
 
         <Button
