@@ -13,10 +13,23 @@ datasource db {
   provider = "postgresql"
 }
 
+// enums ===========================================
+
 enum user_role {
   admin
   user
 }
+
+enum product_category {
+  livingRoom
+  bedroom
+  kitchen
+  bathroom
+  dinningRoom
+  outdoor
+}
+
+// models ===========================================
 
 model User {
   id       String    @id @unique @default(uuid())
@@ -27,7 +40,7 @@ model User {
   role     user_role @default(user)
 
   // auth sessions
-  sessions     Session[]
+  sessions Session[]
 }
 
 model Session {
@@ -35,4 +48,58 @@ model Session {
   userId    String
   expiresAt DateTime
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Product {
+  id          Int              @id @default(autoincrement())
+  title       String
+  description String
+  price       Float
+  thumbnail   String
+  stock       Int              @default(0)
+  category    product_category
+
+  createdAt DateTime @default(now())
+
+  // relations
+  colors    ProductColor[]
+  discounts Discount[]
+}
+
+model ProductColor {
+  id    Int     @id @default(autoincrement())
+  color String
+  has3D Boolean @default(false)
+
+  productId Int
+  product   Product @relation(fields: [productId], references: [id])
+
+  photos  ProductPhoto[]
+  model3d Product3D?
+}
+
+model ProductPhoto {
+  id  Int    @id @default(autoincrement())
+  url String
+
+  colorId Int
+  color   ProductColor @relation(fields: [colorId], references: [id])
+}
+
+model Product3D {
+  id  Int    @id @default(autoincrement())
+  url String
+
+  colorId Int          @unique
+  color   ProductColor @relation(fields: [colorId], references: [id])
+}
+
+model Discount {
+  id                 Int      @id @default(autoincrement())
+  discountPercentage Float
+  discountEndDate    DateTime
+
+  // relations
+  productId Int
+  product   Product @relation(fields: [productId], references: [id])
 }
