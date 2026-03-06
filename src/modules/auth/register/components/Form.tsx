@@ -11,7 +11,7 @@ import {
   type PostUserSchema,
 } from "../services/validations/post.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, useWatch } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
@@ -31,6 +31,7 @@ export function RegisterForm() {
       username: "",
       email: "",
       password: "",
+      agree: false,
     },
     mode: "onSubmit",
   });
@@ -103,16 +104,28 @@ export function RegisterForm() {
           error={errors.password?.message}
         />
 
-        <Checkbox
-          id="agree"
-          textHtmlFormat={
-            <p className="text-(--neutral-light-grey) text-[12px] sm:text-[16px]">
-              I agree with{" "}
-              <span className="text-black font-semibold">Privacy Policy</span>{" "}
-              and <span className="text-black font-semibold">Terms of Use</span>
-            </p>
-          }
-          {...register("agree")}
+        <Controller
+          name="agree"
+          control={control}
+          render={({ field }) => (
+            <Checkbox
+              id="agree"
+              name={field.name}
+              checked={!!field.value}
+              onChange={(e) => field.onChange(e.target.checked)}
+              ref={field.ref}
+              textHtmlFormat={
+                <p className="text-(--neutral-light-grey) text-[12px] sm:text-[16px]">
+                  I agree with{" "}
+                  <span className="text-black font-semibold">
+                    Privacy Policy
+                  </span>{" "}
+                  and{" "}
+                  <span className="text-black font-semibold">Terms of Use</span>
+                </p>
+              }
+            />
+          )}
         />
 
         <Button
