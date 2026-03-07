@@ -4,7 +4,7 @@ export function FormAside() {
   return (
     <div className="relative max-h-screen h-fit bg-(--neutral-semi-white)">
       <Image
-        src="/logo.png"
+        src="/logo.svg"
         alt="Company logo"
         width={105}
         height={24}
