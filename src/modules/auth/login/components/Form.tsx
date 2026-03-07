@@ -50,6 +50,15 @@ export function LoginForm() {
       await loginAction(data);
       reset();
     } catch (e) {
+      if (
+        typeof e === "object" &&
+        e !== null &&
+        "digest" in e &&
+        typeof e.digest === "string" &&
+        e.digest.includes("NEXT_REDIRECT")
+      ) {
+        return;
+      }
       if (e instanceof Error) {
         toast.error(e.message);
         return;

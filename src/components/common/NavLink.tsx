@@ -11,7 +11,6 @@ type NavLinkProps = {
 export default function NavLink({ href, text }: NavLinkProps) {
   const pathname = usePathname();
   const isActive = pathname === href;
-  console.log(isActive);
   
   return (
     <Link

@@ -1,26 +1,23 @@
 import Image from "next/image";
 import Link from "next/link";
 import NavLink from "../components/common/NavLink";
-export default function Header() {
+import BurgerMenu from "./burgerMenu";
+import { validateRequest } from "../auth/validate";
+
+export default async function Header() {
+  const isAuthenticated = (await validateRequest()).session !== null;
   return (
     <header className="max-w-280 w-full mx-auto px-8 py-4">
-      <nav className="flex justify-between">
+      <nav className="flex justify-between items-center">
         <div className="flex gap-2 items-center justify-center">
-          <div className="w-6 h-6 flex items-center justify-center sm:hidden">
-            <Image
-              src="/burgerMenu.svg"
-              alt="Menu"
-              width={20}
-              height={16}
-              className="cursor-pointer"
-            />
-          </div>
+          <BurgerMenu isAuthenticated={isAuthenticated} />
           <Link href={"/shop/home"}>
             <Image
               src={"/logo.svg"}
               alt={"Company logo"}
               width={105}
               height={24}
+              loading="eager"
               className="w-17.5 sm:w-26.25 h-6"
             />
           </Link>
@@ -31,10 +28,7 @@ export default function Header() {
             <NavLink href={"/shop"} text="Home" />
           </li>
           <li>
-            <NavLink href={"/shop/shop"} text="Shop" />
-          </li>
-          <li>
-            <NavLink href={"/shop/product"} text="Product" />
+            <NavLink href={"/shop/products"} text="Shop" />
           </li>
           <li>
             <NavLink href={"/shop/contact"} text="Contact Us" />
