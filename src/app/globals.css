@@ -36,7 +36,7 @@ input[type="password"]::-ms-clear {
 }
 
 .swiper-pagination-bullet-active {
-  background: #ffffff m !important;
+  background: #ffffff !important;
   width: 30px !important;
   transition: all 0.3s linear;
 }
