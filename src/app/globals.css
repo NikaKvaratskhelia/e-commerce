@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+@theme {
+  --breakpoint-8h: 55.625rem;
+}
+
 :root {
   --primary: #000000;
   --blue: #377dff;
