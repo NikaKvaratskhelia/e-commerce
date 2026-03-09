@@ -1,6 +1,6 @@
-import CategoryCard from "../common/CategoryCard";
+import { CategoryCard } from "../common/CategoryCard";
 
-export default function CategoryCardsLayout() {
+export function CategoryCardsLayout() {
   return (
     <div className="mx-auto flex flex-col items-center md:flex-row w-full max-w-280 gap-6 px-8 md:p-0">
       {/* es dinamiuri unda gaxdes roca davfetchav mere */}
