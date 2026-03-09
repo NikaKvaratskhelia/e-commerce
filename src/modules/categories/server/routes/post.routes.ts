@@ -3,15 +3,17 @@ import { requireRoleMiddleware } from "@/src/auth/middleware";
 import { prisma } from "@/src/library/db";
 import { ApiResponse } from "@/src/types/ApiReturnType";
 import { Hono } from "hono";
-import { PostCategoryModel } from "../models";
+import { zValidator } from "@hono/zod-validator";
+import { postCategorySchema } from "../validators";
 
 export const PostRoutes = new Hono().post(
   "/",
   requireRoleMiddleware(["admin"]),
+  zValidator("json", postCategorySchema),
   async (c) => {
     let response: ApiResponse<ProductCategory>;
 
-    const body = (await c.req.json()) as PostCategoryModel;
+    const body = c.req.valid("json");
 
     if (!body.title || !body.categoryPhoto) {
       response = {

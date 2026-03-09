@@ -3,30 +3,23 @@ import { requireRoleMiddleware } from "@/src/auth/middleware";
 import { prisma } from "@/src/library/db";
 import { ApiResponse } from "@/src/types/ApiReturnType";
 import { Hono } from "hono";
-import { PutCategoryModel } from "../models";
+import { zValidator } from "@hono/zod-validator";
+
+import { putCategorySchema } from "../validators";
 
 export const PutRoutes = new Hono().put(
   "/:id",
   requireRoleMiddleware(["admin"]),
+  zValidator("json", putCategorySchema),
   async (c) => {
     let response: ApiResponse<ProductCategory>;
 
     const id = Number(c.req.param("id"));
-    const body = (await c.req.json()) as PutCategoryModel;
+    const body = c.req.valid("json");
 
     if (Number.isNaN(id)) {
       response = {
         message: "არასწორი id.",
-        status: 400,
-        success: false,
-      };
-
-      return c.json(response, response.status);
-    }
-
-    if (!body.title && !body.categoryPhoto) {
-      response = {
-        message: "საჭირო ველები აკლია!",
         status: 400,
         success: false,
       };
@@ -48,7 +41,7 @@ export const PutRoutes = new Hono().put(
       return c.json(response, response.status);
     }
 
-    const data: PutCategoryModel = {};
+    const data: Record<string, unknown> = {};
 
     if (body.title && body.title !== category.title) {
       const existingCategory = await prisma.productCategory.findUnique({
