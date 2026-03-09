@@ -1,4 +1,5 @@
-import CategoryCardsLayout from "../categories/components/sections/CategoryCardsLayout";
+import { CategoryCardsLayout } from "../categories/components/sections/CategoryCardsLayout";
+import { Newsletter } from "./components/sections/Newsletter";
 import { Slider } from "./components/sections/Slider";
 
 export default function HomePage() {
@@ -6,6 +7,7 @@ export default function HomePage() {
     <>
       <Slider />
       <CategoryCardsLayout />
+      <Newsletter />
     </>
   );
 }
