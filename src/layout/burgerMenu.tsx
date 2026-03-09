@@ -33,7 +33,7 @@ export default function BurgerMenu({ isAuthenticated }: Props) {
       >
         <div className="flex flex-col gap-4">
           <div className="flex items-center justify-between">
-            <Link href={"/shop"}>
+            <Link href={"/"}>
               <Image
                 src={"/logo.svg"}
                 alt="Logo"
@@ -53,21 +53,21 @@ export default function BurgerMenu({ isAuthenticated }: Props) {
           </div>
 
           <Link
-            href={"/shop"}
+            href={"/"}
             className="border-b border-(--neutral-dark-white) pb-2"
             onClick={() => setBurgerOpen(false)}
           >
             Home
           </Link>
           <Link
-            href={"/shop/products"}
+            href={"/shop"}
             className="border-b border-(--neutral-dark-white) pb-2"
             onClick={() => setBurgerOpen(false)}
           >
             Shop
           </Link>
           <Link
-            href={"/shop/contact"}
+            href={"/contact"}
             className="border-b border-(--neutral-dark-white) pb-2"
             onClick={() => setBurgerOpen(false)}
           >
@@ -76,7 +76,7 @@ export default function BurgerMenu({ isAuthenticated }: Props) {
         </div>
         <div className="flex flex-col gap-4">
           <Link
-            href={"/shop/cart"}
+            href={"/cart"}
             className="flex items-center justify-between text-[18px] leading-8 pb-2 border-b  border-(--neutral-dark-white)"
           >
             Cart{" "}

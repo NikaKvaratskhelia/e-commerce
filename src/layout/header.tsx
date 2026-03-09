@@ -11,7 +11,7 @@ export default async function Header() {
       <nav className="flex justify-between items-center">
         <div className="flex gap-2 items-center justify-center">
           <BurgerMenu isAuthenticated={isAuthenticated} />
-          <Link href={"/shop/home"}>
+          <Link href={"/home"}>
             <Image
               src={"/logo.svg"}
               alt={"Company logo"}
@@ -25,13 +25,13 @@ export default async function Header() {
 
         <ul className="hidden gap-10 sm:flex">
           <li>
-            <NavLink href={"/shop"} text="Home" />
+            <NavLink href={"/"} text="Home" />
           </li>
           <li>
-            <NavLink href={"/shop/products"} text="Shop" />
+            <NavLink href={"/products"} text="Shop" />
           </li>
           <li>
-            <NavLink href={"/shop/contact"} text="Contact Us" />
+            <NavLink href={"/contact"} text="Contact Us" />
           </li>
         </ul>
 
@@ -44,7 +44,7 @@ export default async function Header() {
               height={24}
             />
           </Link>
-          <Link href={"/shop/dashboard"} className="hidden sm:block">
+          <Link href={"/dashboard"} className="hidden sm:block">
             <Image
               src={"/user-circle.svg"}
               alt="user icon"
@@ -52,7 +52,7 @@ export default async function Header() {
               height={24}
             />
           </Link>
-          <Link href={"/shop/cart"} className="flex gap-1 items-center">
+          <Link href={"/cart"} className="flex gap-1 items-center">
             <Image
               src={"/shoppingBagIcon.svg"}
               alt="Cart icon"
