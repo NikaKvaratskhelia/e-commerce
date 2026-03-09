@@ -15,7 +15,7 @@ export function Slider() {
   const swiperRef = useRef<SwiperType | null>(null);
 
   return (
-    <div className="max-w-280 w-full mx-auto px-8 pb-10 box-content">
+    <div className="max-w-280 mx-auto px-8 pb-10 box-content">
       <div className="relative w-full h-fit">
         <Swiper
           modules={[Pagination]}
