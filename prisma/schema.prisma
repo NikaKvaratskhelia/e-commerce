@@ -20,15 +20,6 @@ enum user_role {
   user
 }
 
-enum product_category {
-  livingRoom
-  bedroom
-  kitchen
-  bathroom
-  dinningRoom
-  outdoor
-}
-
 // models ===========================================
 
 model User {
@@ -67,8 +58,8 @@ model Product {
 }
 
 model ProductCategory {
-  id            Int              @id @default(autoincrement())
-  title         product_category @unique
+  id            Int       @id @default(autoincrement())
+  title         String    @unique
   categoryPhoto String
   products      Product[]
 }

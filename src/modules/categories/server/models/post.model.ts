@@ -1,6 +1,4 @@
-import { product_category } from "@/generated/prisma/browser";
-
 export type PostCategoryModel = {
-  title: product_category;
+  title: string;
   categoryPhoto: string;
 };
