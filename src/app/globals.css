@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+@theme {
+  --breakpoint-8h: 55.625rem;
+}
+
 :root {
   --primary: #000000;
   --blue: #377dff;
@@ -20,4 +24,23 @@
 input[type="password"]::-ms-reveal,
 input[type="password"]::-ms-clear {
   display: none;
+}
+
+.swiper-pagination {
+  bottom: 20px !important;
+}
+
+.swiper-pagination-bullet {
+  width: 8px !important;
+  height: 8px !important;
+  background: #fefefe !important;
+  opacity: 1 !important;
+  border-radius: 10px !important;
+  margin: 0 6px !important;
+}
+
+.swiper-pagination-bullet-active {
+  background: #ffffff !important;
+  width: 30px !important;
+  transition: all 0.3s linear;
 }
