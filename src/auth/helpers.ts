@@ -7,7 +7,7 @@ export const requireAuth = async () => {
 
   if (!user || !session) {
     throw new HTTPException(401, {
-      message: "ნგარიშში შესვლის გარეშე ამ ფუნქციას ვერ გამოიყენებ!",
+      message: "ანგრიშში შესვლის გარეშე ამ ფუნქციას ვერ გამოიყენებ!",
     });
   }
 
