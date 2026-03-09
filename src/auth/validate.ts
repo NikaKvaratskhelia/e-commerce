@@ -21,12 +21,7 @@ export async function validateRequest() {
   }
 
   if (!result.session) {
-    const blankCookie = auth.createBlankSessionCookie();
-    cookieStore.set(
-      blankCookie.name,
-      blankCookie.value,
-      blankCookie.attributes,
-    );
+    return { user: null, session: null };
   }
 
   return result;
