@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function BigSaleSection() {
   return (
-    <div className="flex flex-col lg:flex-row w-full mt-12">
+    <div className="flex flex-col lg:flex-row w-full">
       <Image
         src={"/placeholder.png"}
         alt="Random Photo"
