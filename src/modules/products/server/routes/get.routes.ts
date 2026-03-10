@@ -25,7 +25,7 @@ export const GetRoutes = new Hono()
     const sortBy = c.req.query("sortBy");
     const sort = c.req.query("sort")?.toLowerCase();
     const categoryId = Number(c.req.query("categoryId"));
-    const onlyNew = c.req.query("newProductsOnly")?.toLowerCase() === "true";
+    const onlyNew = c.req.query("newOnly")?.toLowerCase() === "true";
 
     let response: ApiResponse<GetManyDataType>;
 
@@ -44,18 +44,6 @@ export const GetRoutes = new Hono()
       return c.json(response, response.status);
     }
 
-    if (
-      c.req.query("categoryId") !== undefined &&
-      !Number.isInteger(categoryId)
-    ) {
-      response = {
-        success: false,
-        message: "კატეგორიის id არასწორია.",
-        status: 400,
-      };
-
-      return c.json(response, response.status);
-    }
 
     const sortableFields = ["createdAt", "price", "title"] as const;
 
@@ -122,7 +110,7 @@ export const GetRoutes = new Hono()
     if (!id || isNaN(id)) {
       response = {
         status: 400,
-        message: "Id აუცილებელი ველია.",
+        message: "ID აუცილებელი ველია.",
         success: false,
       };
       return c.json(response, response.status);
@@ -137,7 +125,7 @@ export const GetRoutes = new Hono()
       response = {
         success: false,
         status: 404,
-        message: "პროდუქი ამ ID-ით არ მოიძებნა",
+        message: "პროდუქტი ამ ID-ით არ მოიძებნა",
       };
 
       return c.json(response, response.status);

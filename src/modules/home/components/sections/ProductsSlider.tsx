@@ -7,8 +7,30 @@ import "swiper/css";
 import "swiper/css/scrollbar";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { useProducts } from "@/src/modules/products/hooks/queries/use-products";
+import { ProductCard } from "@/src/modules/products/components/common/ProductCard";
+import { useSearchParams } from "next/navigation";
 
 export default function ProductSlider() {
+  const params = useSearchParams();
+
+  const onlyNewParam = params.get("newProductsOnly");
+
+  const queries = {
+    page: params.get("page") ?? "",
+    limit: params.get("limit") ?? "",
+    sortBy: params.get("sortBy") ?? "",
+    sort: params.get("sort") ?? "",
+    newOnly: onlyNewParam !== null ? onlyNewParam : "true",
+    categoryId: params.get("categoryId") ?? "",
+  };
+
+  const { data } = useProducts(queries);
+
+  if (!data) return null;
+
+  if (!data.data) return null;
+  
   return (
     <div className="flex flex-col max-w-280 mx-auto px-8 lg:px-0 overflow-visible items-start">
       <div className="py-12 flex justify-between w-full">
@@ -31,11 +53,9 @@ export default function ProductSlider() {
         scrollbar={{ draggable: true }}
         className="max-w-7xl! w-[105%] pb-14!"
       >
-        {[1, 2, 3, 4, 5, 6].map((item) => (
-          <SwiperSlide key={item}>
-            <div className="h-40 bg-gray-200 flex items-center justify-center">
-              {item}
-            </div>
+        {data?.data?.products?.map((item) => (
+          <SwiperSlide key={item.id}>
+            <ProductCard product={item} />
           </SwiperSlide>
         ))}
       </Swiper>
