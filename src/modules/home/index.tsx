@@ -2,6 +2,7 @@ import { CategoryCardsLayout } from "../categories/components/sections/CategoryC
 import BigSaleSection from "./components/sections/BigSaleSection";
 import InfoCardsLayout from "./components/sections/InfoCardsLayout";
 import { Newsletter } from "./components/sections/Newsletter";
+import ProductsSlider from "./components/sections/ProductsSlider";
 import { Slider } from "./components/sections/Slider";
 
 export default function HomePage() {
@@ -9,7 +10,7 @@ export default function HomePage() {
     <>
       <Slider />
       <CategoryCardsLayout />
-      {/* aq new productebis sekcia */}
+      <ProductsSlider/>
       <InfoCardsLayout/>
       <BigSaleSection />
       {/* aq artiklebis sekcia */}

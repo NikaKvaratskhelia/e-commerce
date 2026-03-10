@@ -44,3 +44,7 @@ input[type="password"]::-ms-clear {
   width: 30px !important;
   transition: all 0.3s linear;
 }
+
+.product-swiper .swiper-scrollbar {
+  bottom: 0;
+}
