@@ -4,12 +4,11 @@ import { ArrowRight } from "lucide-react";
 import { ProductCategory } from "@/generated/prisma/browser";
 
 type Props = {
-  category: ProductCategory
-  href: string;
+  category: ProductCategory;
   variant: "col" | "row";
 };
 
-export default function CategoryCard({ category, href = "#", variant }: Props) {
+export default function CategoryCard({ category, variant }: Props) {
   const isCol = variant === "col";
 
   return (
@@ -57,7 +56,7 @@ export default function CategoryCard({ category, href = "#", variant }: Props) {
         </h2>
 
         <Link
-          href={href}
+          href={`/shop?categoryId=${category.id}`}
           className="inline-flex items-center gap-1 border-b border-(--primary) leading-7 text-(--primary)"
           aria-label={`Shop ${category.title}`}
         >
