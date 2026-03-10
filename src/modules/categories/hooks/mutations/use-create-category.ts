@@ -9,7 +9,7 @@ import { postCategorySchema } from "../../server/validators";
 async function createCategory(payload: PostCategoryModel) {
   const isValid = postCategorySchema.safeParse(payload);
 
-  if (!isValid) {
+  if (!isValid.success) {
     throw new Error("არასწორი ველები.");
   }
 

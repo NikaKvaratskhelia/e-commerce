@@ -4,6 +4,7 @@ import { client } from "@/src/library/hono-client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import type { PutCategoryModel } from "../../server/models";
+import { putCategorySchema } from "../../server/validators";
 
 type UpdateCategoryVariables = {
   id: number;
@@ -11,6 +12,12 @@ type UpdateCategoryVariables = {
 };
 
 async function updateCategory({ id, payload }: UpdateCategoryVariables) {
+  const isValid = putCategorySchema.safeParse(payload);
+
+  if (!isValid.success) {
+    throw new Error("არასწორი ველები.");
+  }
+
   const res = await client.api.categories[":id"].$put({
     param: { id: String(id) },
     json: payload,
