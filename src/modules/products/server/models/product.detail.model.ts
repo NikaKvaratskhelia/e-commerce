@@ -1,6 +1,6 @@
 import { Prisma } from "@/generated/prisma/browser";
 
-export type ProductModel = Prisma.ProductGetPayload<{
+export type ProductDetailModel = Prisma.ProductGetPayload<{
   include: {
     discounts: true;
     productCategory: true;
