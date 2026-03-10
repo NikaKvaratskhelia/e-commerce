@@ -1,8 +1,10 @@
 import { Hono } from "hono";
-import { GetRoutes, PostRoutes } from "./routes";
+import { DeleteRoutes, GetRoutes, PostRoutes, PutRoutes } from "./routes";
 
-const app = new Hono();
-app.route("/", GetRoutes);
-app.route("/", PostRoutes);
+const app = new Hono()
+  .route("/", GetRoutes)
+  .route("/", PostRoutes)
+  .route("/", PutRoutes)
+  .route("/", DeleteRoutes);
 
 export default app;
