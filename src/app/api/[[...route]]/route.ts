@@ -5,8 +5,9 @@ import productsRoute from "@/src/modules/products/server";
 
 const app = new Hono().basePath("/api");
 
-app.route("/categories", categoryRoute);
-app.route("/products", productsRoute);
+const _routes = app
+  .route("/categories", categoryRoute)
+  .route("/products", productsRoute);
 
 export const GET = handle(app);
 export const POST = handle(app);

@@ -8,7 +8,7 @@ type Props = {
   variant: "col" | "row";
 };
 
-export function CategoryCard({ category, href = "#", variant }: Props) {
+export function CategoryCard({ category, variant }: Props) {
   const isCol = variant === "col";
 
   return (
