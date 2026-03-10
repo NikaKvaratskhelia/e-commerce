@@ -41,8 +41,6 @@ async function getData(queryParams: Queries) {
       })),
     },
   };
-
-  return data;
 }
 
 export function useProducts(queryParams: Queries) {

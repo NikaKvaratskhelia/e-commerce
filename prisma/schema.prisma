@@ -53,7 +53,7 @@ model Product {
   // relations
   colors            ProductColor[]
   discounts         Discount[]
-  productCategory   ProductCategory @relation(fields: [productCategoryId], references: [id])
+  productCategory   ProductCategory @relation(fields: [productCategoryId], references: [id], onDelete: Cascade)
   productCategoryId Int
 }
 
@@ -70,7 +70,7 @@ model ProductColor {
   has3D Boolean @default(false)
 
   productId Int
-  product   Product @relation(fields: [productId], references: [id])
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   photos  ProductPhoto[]
   model3d Product3D?
@@ -81,7 +81,7 @@ model ProductPhoto {
   url String
 
   colorId Int
-  color   ProductColor @relation(fields: [colorId], references: [id])
+  color   ProductColor @relation(fields: [colorId], references: [id], onDelete: Cascade)
 }
 
 model Product3D {
@@ -89,7 +89,7 @@ model Product3D {
   url String
 
   colorId Int          @unique
-  color   ProductColor @relation(fields: [colorId], references: [id])
+  color   ProductColor @relation(fields: [colorId], references: [id], onDelete: Cascade)
 }
 
 model Discount {
@@ -99,5 +99,5 @@ model Discount {
 
   // relations
   productId Int
-  product   Product @relation(fields: [productId], references: [id])
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
