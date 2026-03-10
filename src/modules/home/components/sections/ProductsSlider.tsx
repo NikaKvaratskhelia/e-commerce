@@ -51,7 +51,7 @@ export default function ProductSlider() {
         spaceBetween={24}
         freeMode={true}
         scrollbar={{ draggable: true }}
-        className="max-w-7xl! w-[105%] pb-14!"
+        className="max-w-7xl! w-full pb-14!"
       >
         {data?.data?.products?.map((item) => (
           <SwiperSlide key={item.id}>
