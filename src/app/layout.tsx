@@ -1,3 +1,4 @@
+import { Toaster } from "sonner";
 import { QueryProvider } from "../providers/query-provider";
 import "./globals.css";
 import type { Metadata } from "next";
@@ -14,6 +15,7 @@ export default function RootLayout({
     <html lang="en">
       <QueryProvider>
         <body>{children}</body>
+        <Toaster />
       </QueryProvider>
     </html>
   );
