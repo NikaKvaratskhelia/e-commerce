@@ -58,7 +58,7 @@ export async function registerAction(
   });
 
   await resend.emails.send({
-    from: "no-reply@yourdomain.com",
+    from: "auth@kvara.uk",
     to: email,
     subject: "Your verification code",
     html: `

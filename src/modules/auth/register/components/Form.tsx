@@ -56,7 +56,7 @@ export function RegisterForm() {
 
       toast.success(res.message);
       reset();
-      router.push("/auth/verify");
+      router.push("/verify");
     } catch {
       toast.error("სერვერის შეცდომა. სცადე თავიდან.");
     }
