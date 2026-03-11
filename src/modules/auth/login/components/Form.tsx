@@ -39,8 +39,6 @@ export function LoginForm() {
 
   const onSubmit = async (data: LoginFormSchema) => {
     const result = loginFormSchema.safeParse(data);
-    console.log(data);
-
     if (!result.success) {
       toast.error("არასწორი ველები!");
       return;
@@ -73,7 +71,7 @@ export function LoginForm() {
         header={"Sign In"}
         text={"Don't have an accout yet?"}
         linkText={"Sign Up"}
-        href={"/auth/signup"}
+        href={"/register"}
       />
 
       <form

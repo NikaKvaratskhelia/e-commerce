@@ -68,7 +68,7 @@ export function RegisterForm() {
         header="Sign Up"
         text="Already have an account?"
         linkText="Sign In"
-        href="/auth/login"
+        href="/login"
       />
 
       <form

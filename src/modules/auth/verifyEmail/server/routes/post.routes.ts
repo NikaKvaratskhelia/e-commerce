@@ -22,7 +22,7 @@ export const PostRoutes = new Hono().post("/", async (c) => {
     }
 
     const [verifyReq, user] = await Promise.all([
-      prisma.VerifyEmail.findUnique({ where: { userEmail } }),
+      prisma.verifyEmail.findUnique({ where: { userEmail } }),
       prisma.user.findUnique({ where: { email: userEmail } }),
     ]);
 
@@ -36,10 +36,10 @@ export const PostRoutes = new Hono().post("/", async (c) => {
     }
 
     const EXPIRY_MS = 15 * 60 * 1000;
-    const isExpired = Date.now() - verifyReq.createdAt.getTime() > EXPIRY_MS;
+    const isExpired = Date.now() - verifyReq.expiresAt.getTime() > EXPIRY_MS;
 
     if (isExpired) {
-      await prisma.VerifyEmail.delete({ where: { userEmail } });
+      await prisma.verifyEmail.delete({ where: { userEmail } });
       response = {
         success: false,
         status: 400,
@@ -62,7 +62,7 @@ export const PostRoutes = new Hono().post("/", async (c) => {
         where: { email: userEmail },
         data: { emailVerified: true },
       }),
-      prisma.VerifyEmail.delete({ where: { userEmail } }),
+      prisma.verifyEmail.delete({ where: { userEmail } }),
     ]);
 
     cookieStore.delete("pending_verification_email");
