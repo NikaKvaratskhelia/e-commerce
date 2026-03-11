@@ -31,6 +31,10 @@ export async function loginAction(data: LoginFormSchema) {
   const ok = await verifyPassword(password, user.password);
   if (!ok) throw new Error("იმეილი ან პაროლი არასწორია.");
 
+  if (!user.emailVerified) {
+    throw new Error("იმეილი არ არის ვერიფიცირებული.");
+  }
+
   const session = await auth.createSession(user.id, {});
 
   const sessionCookie = auth.createSessionCookie(session.id);
