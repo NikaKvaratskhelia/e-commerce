@@ -44,7 +44,7 @@ model Session {
 
 model VerifyEmail {
   id        String   @id @default(uuid())
-  userEmail String
+  userEmail String   @unique
   code      Int
   expiresAt DateTime
 }
