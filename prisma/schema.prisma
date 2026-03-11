@@ -23,12 +23,13 @@ enum user_role {
 // models ===========================================
 
 model User {
-  id       String    @id @unique @default(uuid())
-  name     String
-  username String    @unique
-  email    String    @unique
-  password String
-  role     user_role @default(user)
+  id            String    @id @unique @default(uuid())
+  name          String
+  username      String    @unique
+  email         String    @unique
+  password      String
+  role          user_role @default(user)
+  emailVerified Boolean   @default(false)
 
   // auth sessions
   sessions Session[]
@@ -39,6 +40,13 @@ model Session {
   userId    String
   expiresAt DateTime
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerifyEmail {
+  id        String   @id @default(uuid())
+  userEmail String
+  code      Int
+  expiresAt DateTime
 }
 
 model Product {
@@ -100,4 +108,12 @@ model Discount {
   // relations
   productId Int
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model Blog {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String
+  thumbnail String
+  createdAt DateTime @default(now())
 }
