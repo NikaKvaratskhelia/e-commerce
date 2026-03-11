@@ -14,8 +14,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <QueryProvider>
-        <body>{children}</body>
-        <Toaster />
+        <body>
+          {children}
+          <Toaster />
+        </body>
       </QueryProvider>
     </html>
   );
