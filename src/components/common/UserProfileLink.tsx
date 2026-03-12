@@ -5,7 +5,7 @@ type Props = {
   isAuthenticated: boolean;
 };
 
-export default function UserProfileLink({ isAuthenticated }: Props) {
+export function UserProfileLink({ isAuthenticated }: Props) {
   if (!isAuthenticated) {
     return (
       <Link

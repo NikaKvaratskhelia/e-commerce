@@ -8,7 +8,7 @@ type NavLinkProps = {
   text: string;
 };
 
-export default function NavLink({ href, text }: NavLinkProps) {
+export function NavLink({ href, text }: NavLinkProps) {
   const pathname = usePathname();
   const isActive = pathname === href;
   

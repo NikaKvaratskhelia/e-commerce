@@ -10,7 +10,7 @@ type FormValues = {
   code: string;
 };
 
-export default function EmailVerificationForm() {
+export function EmailVerificationForm() {
   const router = useRouter();
 
   const {

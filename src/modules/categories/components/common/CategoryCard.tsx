@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { ProductCategory } from "@/generated/prisma/browser";
-import CustomLink from "@/src/components/ui/CustomLink";
+import { CustomLink } from "@/src/components/ui/CustomLink";
 
 type Props = {
   category: ProductCategory;

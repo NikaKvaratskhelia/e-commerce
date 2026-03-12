@@ -1,4 +1,4 @@
-import CustomLink from "@/src/components/ui/CustomLink";
+import { CustomLink } from "@/src/components/ui/CustomLink";
 import Image from "next/image";
 import { BlogDTO } from "../../server/models";
 import Link from "next/link";
@@ -16,7 +16,7 @@ function formatDate(date: string) {
   }).format(new Date(date));
 }
 
-export default function BlogCard({ blog, variant }: Props) {
+export function BlogCard({ blog, variant }: Props) {
   return (
     <div className="flex flex-col gap-6 min-w-0 max-w-89.25 w-full">
       <Link

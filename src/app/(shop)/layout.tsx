@@ -1,5 +1,5 @@
-import Footer from "@/src/layout/Footer";
-import Header from "@/src/layout/header";
+import { Footer } from "@/src/layout/Footer";
+import { Header } from "@/src/layout/header";
 
 export default function ShopLayout({
   children,

@@ -1,10 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import NavLink from "../components/common/NavLink";
-import BurgerMenu from "./burgerMenu";
+import { NavLink } from "../components/common/NavLink";
+import { BurgerMenu } from "./burgerMenu";
 import { validateRequest } from "../auth/validate";
 
-export default async function Header() {
+export async function Header() {
   const isAuthenticated = (await validateRequest()).session !== null;
   return (
     <header className="max-w-280 w-full mx-auto px-8 py-4">
