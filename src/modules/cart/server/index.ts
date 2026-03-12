@@ -1,6 +1,6 @@
 import { Hono } from "hono";
-import { GetRoutes } from "./routes";
+import { GetRoutes, PostRoutes } from "./routes";
 
-const app = new Hono().route("/", GetRoutes);
+const app = new Hono().route("/", GetRoutes).route("/", PostRoutes);
 
 export default app;
