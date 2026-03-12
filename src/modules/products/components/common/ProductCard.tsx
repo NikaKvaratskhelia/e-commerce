@@ -1,19 +1,23 @@
 import { Button } from "@/src/components/ui/Button";
 import Image from "next/image";
-import { Discount } from "@/generated/prisma/browser";
 import Link from "next/link";
 import { Heart } from "lucide-react";
+import { ProductDTO } from "../../server/models";
+
+type Props = {
+  product: ProductDTO;
+};
 
 const SEVEN_DAYS_IN_MS = 7 * 24 * 60 * 60 * 1000;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function ProductCard({ product }: any) {
+export function ProductCard({ product }: Props) {
   const now = new Date();
 
-  const isNew = now.getTime() - product.createdAt.getTime() <= SEVEN_DAYS_IN_MS;
+  const isNew =
+    now.getTime() - new Date(product.createdAt).getTime() <= SEVEN_DAYS_IN_MS;
 
   const discount = product.discounts.find(
-    (d: Discount) => d.discountEndDate.getTime() > now.getTime(),
+    (d) => new Date(d.discountEndDate).getTime() > now.getTime(),
   );
 
   const newPrice = discount
