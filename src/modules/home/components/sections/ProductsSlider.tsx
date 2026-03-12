@@ -29,8 +29,8 @@ export default function ProductSlider() {
 
   if (!data) return null;
 
-  if (!data.data) return null;
-  
+  if (!data.data || data.data.products?.length === 0) return null;
+
   return (
     <div className="flex flex-col max-w-280 mx-auto px-8 lg:px-0 overflow-visible items-start">
       <div className="py-12 flex justify-between w-full">
@@ -47,7 +47,7 @@ export default function ProductSlider() {
       </div>
       <Swiper
         modules={[Scrollbar, FreeMode]}
-        slidesPerView={3.2}
+        slidesPerView={4.2}
         spaceBetween={24}
         freeMode={true}
         scrollbar={{ draggable: true }}
