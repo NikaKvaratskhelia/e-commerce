@@ -48,7 +48,7 @@ export function ProductSlider() {
       <Swiper
         modules={[Scrollbar, FreeMode]}
         slidesPerView={1}
-        spaceBetween={12}
+        spaceBetween={24}
         breakpoints={{
           200: {
             slidesPerView: 1,
@@ -67,7 +67,7 @@ export function ProductSlider() {
             spaceBetween: 24,
           },
           1100: {
-            slidesPerView: 4.2,
+            slidesPerView: 4,
             spaceBetween: 24,
           },
         }}
