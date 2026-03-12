@@ -1,0 +1,102 @@
+import { Blog } from "@/generated/prisma/browser";
+import { prisma } from "@/src/library/db";
+import { ApiResponse } from "@/src/types/ApiReturnType";
+import { Hono } from "hono";
+
+type PaginatedResp = {
+  blogs: Blog[];
+  pagination: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  };
+};
+
+export const GetRoutes = new Hono()
+  .get("/", async (c) => {
+    let response: ApiResponse<PaginatedResp>;
+
+    const page = Number(c.req.query("page") ?? "1");
+    const limit = Number(c.req.query("limit") ?? "10");
+
+    if (
+      !Number.isInteger(page) ||
+      !Number.isInteger(limit) ||
+      page < 1 ||
+      limit < 1
+    ) {
+      response = {
+        success: false,
+        status: 400,
+        message: "პაგინაციის პარამეტრები არასწორია.",
+      };
+
+      return c.json(response, response.status);
+    }
+
+    const skip = (page - 1) * limit;
+
+    const [blogs, count] = await Promise.all([
+      prisma.blog.findMany({
+        skip,
+        take: limit,
+        orderBy: {
+          createdAt: "desc",
+        },
+      }),
+      prisma.blog.count(),
+    ]);
+
+    response = {
+      success: true,
+      status: 200,
+      message: "ბლოგები დაიფეჩა.",
+      data: {
+        blogs,
+        pagination: {
+          total: count,
+          page,
+          limit,
+          totalPages: Math.ceil(count / limit),
+        },
+      },
+    };
+
+    return c.json(response, response.status);
+  })
+  .get("/:id", async (c) => {
+    let response: ApiResponse<Blog>;
+    const id = Number(c.req.param("id"));
+
+    if (!id || isNaN(id)) {
+      response = {
+        success: false,
+        status: 400,
+        message: "ID აუცილებელია.",
+      };
+
+      return c.json(response, response.status);
+    }
+
+    const blog = await prisma.blog.findUnique({ where: { id } });
+
+    if (!blog) {
+      response = {
+        success: false,
+        status: 404,
+        message: "ბლოგი ვერ მოიძებნა.",
+      };
+
+      return c.json(response, response.status);
+    }
+
+    response = {
+      data: blog,
+      success: true,
+      status: 200,
+      message: "ბლოგი მოიძებნა.",
+    };
+
+    return c.json(response, response.status);
+  });

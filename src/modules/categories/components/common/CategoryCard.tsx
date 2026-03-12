@@ -1,7 +1,6 @@
-import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
 import { ProductCategory } from "@/generated/prisma/browser";
+import CustomLink from "@/src/components/ui/CustomLink";
 
 type Props = {
   category: ProductCategory;
@@ -55,14 +54,7 @@ export function CategoryCard({ category, variant }: Props) {
           {category.title}
         </h2>
 
-        <Link
-          href={`/shop?categoryId=${category.id}`}
-          className="inline-flex items-center gap-1 border-b border-(--primary) leading-7 text-(--primary)"
-          aria-label={`Shop ${category.title}`}
-        >
-          Shop Now
-          <ArrowRight className="size-5" />
-        </Link>
+        <CustomLink href={`/shop?categoryId=${category.id}`} text="Shop Now" />
       </div>
     </article>
   );
