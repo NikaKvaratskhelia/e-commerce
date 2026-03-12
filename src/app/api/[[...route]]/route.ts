@@ -1,14 +1,14 @@
 import { Hono } from "hono";
 import { handle } from "hono/vercel";
 import categoryRoute from "@/src/modules/categories/server";
+import productsRoute from "@/src/modules/products/server";
 import blogRoute from "@/src/modules/blogs/server";
 
 const app = new Hono().basePath("/api");
 
-// aq albat merge conflict ikneba imitom rom products route ar aris am branchze da magis adgilas weria blogs route
-
 const _routes = app
   .route("/categories", categoryRoute)
+  .route("/products", productsRoute)
   .route("/blogs", blogRoute);
 
 export const GET = handle(app);

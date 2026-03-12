@@ -1,6 +1,7 @@
+import HomePage from "@/src/modules/home";
 
 export default function page() {
   return (
-    <div>page</div>
+    <HomePage/>
   )
 }

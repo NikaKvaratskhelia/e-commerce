@@ -23,12 +23,13 @@ enum user_role {
 // models ===========================================
 
 model User {
-  id       String    @id @unique @default(uuid())
-  name     String
-  username String    @unique
-  email    String    @unique
-  password String
-  role     user_role @default(user)
+  id            String    @id @unique @default(uuid())
+  name          String
+  username      String    @unique
+  email         String    @unique
+  password      String
+  role          user_role @default(user)
+  emailVerified Boolean   @default(false)
 
   // auth sessions
   sessions Session[]
@@ -39,6 +40,13 @@ model Session {
   userId    String
   expiresAt DateTime
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerifyEmail {
+  id        String   @id @default(uuid())
+  userEmail String   @unique
+  code      Int
+  expiresAt DateTime
 }
 
 model Product {
@@ -53,7 +61,7 @@ model Product {
   // relations
   colors            ProductColor[]
   discounts         Discount[]
-  productCategory   ProductCategory @relation(fields: [productCategoryId], references: [id])
+  productCategory   ProductCategory @relation(fields: [productCategoryId], references: [id], onDelete: Cascade)
   productCategoryId Int
 }
 
@@ -70,7 +78,7 @@ model ProductColor {
   has3D Boolean @default(false)
 
   productId Int
-  product   Product @relation(fields: [productId], references: [id])
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   photos  ProductPhoto[]
   model3d Product3D?
@@ -81,7 +89,7 @@ model ProductPhoto {
   url String
 
   colorId Int
-  color   ProductColor @relation(fields: [colorId], references: [id])
+  color   ProductColor @relation(fields: [colorId], references: [id], onDelete: Cascade)
 }
 
 model Product3D {
@@ -89,7 +97,7 @@ model Product3D {
   url String
 
   colorId Int          @unique
-  color   ProductColor @relation(fields: [colorId], references: [id])
+  color   ProductColor @relation(fields: [colorId], references: [id], onDelete: Cascade)
 }
 
 model Discount {
@@ -99,5 +107,13 @@ model Discount {
 
   // relations
   productId Int
-  product   Product @relation(fields: [productId], references: [id])
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model Blog {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String
+  thumbnail String
+  createdAt DateTime @default(now())
 }
