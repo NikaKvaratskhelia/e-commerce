@@ -79,12 +79,40 @@ export const PutRoutes = new Hono().put(
       return c.json(response, response.status);
     }
 
-    const productInCart = cart.cartItems.find((x) => x.productId === productId);
+    const productInCart = await prisma.cartItem.findUnique({
+      where: {
+        productId_cartId: {
+          productId: productId,
+          cartId: cart.id,
+        },
+      },
+      include: {
+        product: true,
+      },
+    });
 
     if (!productInCart) {
       response = {
         status: 404,
         message: "პროდუქტი კალათაში ვერ მოიძებნა.",
+        success: false,
+      };
+      return c.json(response, response.status);
+    }
+
+    if (productInCart.product.stock === 0) {
+      response = {
+        status: 400,
+        message: "პროდუქტის მარაგი ამოიწურა.",
+        success: false,
+      };
+      return c.json(response, response.status);
+    }
+
+    if (quantity > productInCart.product.stock) {
+      response = {
+        status: 400,
+        message: `მარაგში მხოლოდ ${productInCart.product.stock} ერთეულია.`,
         success: false,
       };
       return c.json(response, response.status);
@@ -117,26 +145,27 @@ export const PutRoutes = new Hono().put(
       return c.json(response, response.status);
     }
 
-    await prisma.cartItem.update({
-      where: {
-        productId_cartId: {
-          productId,
-          cartId: cart.id,
-        },
-      },
-      data: { quantity },
-    });
-
     const updatedTotal = cart.cartItems.reduce((sum, item) => {
       const itemQuantity =
         item.productId === productId ? quantity : item.quantity;
       return sum + item.product.price * itemQuantity;
     }, 0);
 
-    await prisma.cart.update({
-      where: { id: cart.id },
-      data: { total: updatedTotal },
-    });
+    await prisma.$transaction([
+      prisma.cartItem.update({
+        where: {
+          productId_cartId: {
+            productId,
+            cartId: cart.id,
+          },
+        },
+        data: { quantity },
+      }),
+      prisma.cart.update({
+        where: { id: cart.id },
+        data: { total: updatedTotal },
+      }),
+    ]);
 
     response = {
       status: 200,

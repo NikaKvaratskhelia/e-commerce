@@ -1,8 +1,10 @@
 import { client } from "@/src/library/hono-client";
+import { ApiResponse } from "@/src/types/ApiReturnType";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { GetCartModel } from "../../server/selectors";
 
-async function DeleteFromCart(id: number) {
+async function deleteFromCart(id: number) {
   const res = await client.api.cart.cartItems.$delete({
     json: { productId: id },
   });
@@ -16,19 +18,62 @@ async function DeleteFromCart(id: number) {
   return data;
 }
 
-export function useDeleteCartMutation(id: number) {
+export function useDeleteCartMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () => DeleteFromCart(id),
-    onSuccess: (data) => toast.success(data.message),
-    onError: (error) => {
+    mutationFn: ({ id }: { id: number }) => deleteFromCart(id),
+
+    onMutate: async ({ id }) => {
+      await queryClient.cancelQueries({ queryKey: ["cart"] });
+
+      const previousCart = queryClient.getQueryData<ApiResponse<GetCartModel>>([
+        "cart",
+      ]);
+
+      queryClient.setQueryData<ApiResponse<GetCartModel>>(["cart"], (old) => {
+        if (!old?.data) return old;
+
+        const updatedCartItems = old.data.cartItems.filter(
+          (item) => item.productId !== id,
+        );
+
+        const updatedTotal = updatedCartItems.reduce((sum, item) => {
+          return sum + item.product.price * item.quantity;
+        }, 0);
+
+        return {
+          ...old,
+          data: {
+            ...old.data,
+            cartItems: updatedCartItems,
+            total: updatedTotal,
+          },
+        };
+      });
+
+      return { previousCart };
+    },
+
+    onSuccess: (data) => {
+      toast.success(data.message);
+    },
+
+    onError: (error, _variables, context) => {
+      if (context?.previousCart) {
+        queryClient.setQueryData(["cart"], context.previousCart);
+      }
+
       const message =
         error instanceof Error
           ? error.message
           : "სერვერის ხარვეზი. თავიდან სცადეთ.";
+
       toast.error(message);
     },
-    onSettled: () => queryClient.invalidateQueries({ queryKey: ["cart"] }),
+
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
+    },
   });
 }

@@ -67,8 +67,18 @@ export const DeleteRoutes = new Hono().delete(
       return c.json(response, response.status);
     }
 
-    const productInCart = cart.cartItems.find((x) => x.productId === productId);
-
+    const productInCart = await prisma.cartItem.findUnique({
+      where: {
+        productId_cartId: {
+          productId: productId,
+          cartId: cart.id,
+        },
+      },
+      include: {
+        product: true,
+      },
+    });
+    
     if (!productInCart) {
       response = {
         status: 404,

@@ -1,8 +1,8 @@
-import { Button } from "@/src/components/ui/Button";
 import Image from "next/image";
 import Link from "next/link";
 import { Heart } from "lucide-react";
 import { ProductDTO } from "../../server/models";
+import { AddToCartBtn } from "@/src/modules/cart/components/AddToCartBtn";
 
 type Props = {
   product: ProductDTO;
@@ -66,14 +66,7 @@ export function ProductCard({ product }: Props) {
           />
         </Link>
 
-        <div className="relative z-10 w-full opacity-100 transition-all duration-500 lg:opacity-0 group-hover:opacity-100">
-          <Button
-            text="Add To Cart"
-            mode="solid"
-            rounded="square"
-            disabled={false}
-          />
-        </div>
+        <AddToCartBtn id={product.id} />
       </div>
 
       <div className="flex flex-col gap-1 mt-4">

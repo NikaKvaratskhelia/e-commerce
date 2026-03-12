@@ -3,7 +3,7 @@ import Link from "next/link";
 import { NavLink } from "../components/common/NavLink";
 import { BurgerMenu } from "./burgerMenu";
 import { validateRequest } from "../auth/validate";
-import { CartItemQty } from "./CartItemQty";
+import { CartPopUp } from "../modules/cart/components/section/CartPopUp";
 
 export async function Header() {
   const isAuthenticated = (await validateRequest()).session !== null;
@@ -54,15 +54,8 @@ export async function Header() {
               height={24}
             />
           </Link>
-          <Link href={"/cart"} className="flex gap-1 items-center">
-            <Image
-              src={"/shoppingBagIcon.svg"}
-              alt="Cart icon"
-              width={24}
-              height={24}
-            />
-            <CartItemQty />
-          </Link>
+
+          <CartPopUp />
         </div>
       </nav>
     </header>

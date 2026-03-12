@@ -19,14 +19,11 @@ export const PostRoutes = new Hono().post(
         status: 400,
         success: false,
       };
-
       return c.json(response, response.status);
     }
 
     const existingUser = await prisma.user.findUnique({
-      where: {
-        id: user.id,
-      },
+      where: { id: user.id },
     });
 
     if (!existingUser) {
@@ -35,7 +32,6 @@ export const PostRoutes = new Hono().post(
         status: 404,
         success: false,
       };
-
       return c.json(response, response.status);
     }
 
@@ -50,7 +46,6 @@ export const PostRoutes = new Hono().post(
         status: 404,
         success: false,
       };
-
       return c.json(response, response.status);
     }
 
@@ -63,7 +58,6 @@ export const PostRoutes = new Hono().post(
         message: "პროდუქტის ID სავალდებულოა.",
         success: false,
       };
-
       return c.json(response, response.status);
     }
 
@@ -77,7 +71,15 @@ export const PostRoutes = new Hono().post(
         message: "პროდუქტის ვერ მოიძებნა.",
         success: false,
       };
+      return c.json(response, response.status);
+    }
 
+    if (existingProduct.stock === 0) {
+      response = {
+        status: 400,
+        message: "პროდუქტის მარაგი ამოიწურა.",
+        success: false,
+      };
       return c.json(response, response.status);
     }
 
@@ -86,40 +88,38 @@ export const PostRoutes = new Hono().post(
     );
 
     if (!productInCart) {
-      await prisma.cartItem.create({
-        data: { cartId: cart.id, productId: existingProduct.id, quantity: 1 },
-      });
-
       const updatedTotal =
         cart.cartItems.reduce(
           (sum, item) => sum + item.product.price * item.quantity,
           0,
-        ) +
-        existingProduct.price * 1;
+        ) + existingProduct.price;
 
-      await prisma.cart.update({
-        where: { id: cart.id },
-        data: { total: updatedTotal },
-      });
+      await prisma.$transaction([
+        prisma.cartItem.create({
+          data: { cartId: cart.id, productId: existingProduct.id, quantity: 1 },
+        }),
+        prisma.cart.update({
+          where: { id: cart.id },
+          data: { total: updatedTotal },
+        }),
+      ]);
 
       response = {
         status: 200,
         message: "პროდუქტი დაემატა კალათაში.",
         success: true,
       };
-
       return c.json(response, response.status);
     }
 
-    await prisma.cartItem.update({
-      where: {
-        productId_cartId: {
-          productId: productInCart.productId,
-          cartId: cart.id,
-        },
-      },
-      data: { quantity: productInCart.quantity + 1 },
-    });
+    if (productInCart.quantity + 1 > existingProduct.stock) {
+      response = {
+        status: 400,
+        message: `მარაგში მხოლოდ ${existingProduct.stock} ერთეულია.`,
+        success: false,
+      };
+      return c.json(response, response.status);
+    }
 
     const updatedTotal = cart.cartItems.reduce((sum, item) => {
       const quantity =
@@ -129,10 +129,21 @@ export const PostRoutes = new Hono().post(
       return sum + item.product.price * quantity;
     }, 0);
 
-    await prisma.cart.update({
-      where: { id: cart.id },
-      data: { total: updatedTotal },
-    });
+    await prisma.$transaction([
+      prisma.cartItem.update({
+        where: {
+          productId_cartId: {
+            productId: productInCart.productId,
+            cartId: cart.id,
+          },
+        },
+        data: { quantity: productInCart.quantity + 1 },
+      }),
+      prisma.cart.update({
+        where: { id: cart.id },
+        data: { total: updatedTotal },
+      }),
+    ]);
 
     response = {
       status: 200,
