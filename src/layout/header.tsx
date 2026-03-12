@@ -3,9 +3,11 @@ import Link from "next/link";
 import { NavLink } from "../components/common/NavLink";
 import { BurgerMenu } from "./burgerMenu";
 import { validateRequest } from "../auth/validate";
+import { CartItemQty } from "./CartItemQty";
 
 export async function Header() {
   const isAuthenticated = (await validateRequest()).session !== null;
+
   return (
     <header className="max-w-280 w-full mx-auto px-8 py-4">
       <nav className="flex justify-between items-center">
@@ -59,12 +61,7 @@ export async function Header() {
               width={24}
               height={24}
             />
-            <div className="h-5 w-5 p-1 box-border rounded-full bg-black">
-              {/* aq unda daematos cart itemebis raodenoba */}
-              <p className="text-white text-[12px] text-center leading-2.5 font-bold">
-                0
-              </p>
-            </div>
+            <CartItemQty />
           </Link>
         </div>
       </nav>
