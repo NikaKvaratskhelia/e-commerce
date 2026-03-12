@@ -56,7 +56,7 @@ export function RegisterForm() {
 
       toast.success(res.message);
       reset();
-      router.push("/auth/login");
+      router.push("/verify");
     } catch {
       toast.error("სერვერის შეცდომა. სცადე თავიდან.");
     }
@@ -68,7 +68,7 @@ export function RegisterForm() {
         header="Sign Up"
         text="Already have an account?"
         linkText="Sign In"
-        href="/auth/login"
+        href="/login"
       />
 
       <form

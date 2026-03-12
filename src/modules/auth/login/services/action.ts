@@ -23,13 +23,23 @@ export async function loginAction(data: LoginFormSchema) {
     where: {
       OR: [{ email: userSearchValue }, { username: userSearchValue }],
     },
-    select: { id: true, email: true, username: true, password: true },
+    select: {
+      id: true,
+      email: true,
+      username: true,
+      password: true,
+      emailVerified: true,
+    },
   });
 
   if (!user) throw new Error("იმეილი ან პაროლი არასწორია.");
 
   const ok = await verifyPassword(password, user.password);
   if (!ok) throw new Error("იმეილი ან პაროლი არასწორია.");
+
+  if (!user.emailVerified) {
+    throw new Error("იმეილი არ არის ვერიფიცირებული.");
+  }
 
   const session = await auth.createSession(user.id, {});
 

@@ -3,12 +3,14 @@ import { handle } from "hono/vercel";
 import categoryRoute from "@/src/modules/categories/server";
 import productsRoute from "@/src/modules/products/server";
 import blogRoute from "@/src/modules/blogs/server";
+import verifyRoutes from "@/src/modules/auth/verifyEmail/server";
 
 const app = new Hono().basePath("/api");
 
 const _routes = app
   .route("/categories", categoryRoute)
   .route("/products", productsRoute)
+  .route("/verify", verifyRoutes)
   .route("/blogs", blogRoute);
 
 export const GET = handle(app);

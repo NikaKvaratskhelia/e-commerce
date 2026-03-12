@@ -7,6 +7,8 @@ import {
 } from "./validations/post.validation";
 import bcrypt from "bcrypt";
 import { getUserSelect } from "../../selectors/userSelector";
+import { resend } from "@/src/library/resend";
+import { cookies } from "next/headers";
 
 export type RegisterResult =
   | { success: true; message: string }
@@ -33,9 +35,37 @@ export async function registerAction(
 
   const hashedPass = await bcrypt.hash(password, 10);
 
-  await prisma.user.create({
+  const user = await prisma.user.create({
     data: { name, username, email: email.toLowerCase(), password: hashedPass },
     select: getUserSelect,
+  });
+
+  const cookieStore = await cookies();
+  cookieStore.set("pending_verification_email", user.email, {
+    httpOnly: true,
+    maxAge: 60 * 15,
+    path: "/",
+  });
+
+  const code = Math.floor(100000 + Math.random() * 900000);
+
+  await prisma.verifyEmail.create({
+    data: {
+      userEmail: user.email,
+      code,
+      expiresAt: new Date(Date.now() + 1000 * 60 * 15),
+    },
+  });
+
+  await resend.emails.send({
+    from: "auth@kvara.uk",
+    to: email,
+    subject: "Your verification code",
+    html: `
+      <p>Your verification code is:</p>
+      <h2 style="letter-spacing: 8px;">${code}</h2>
+      <p>This code expires in 15 minutes.</p>
+    `,
   });
 
   return { success: true, message: "რეგისტრაცია წარმატებით შესრულდა!" };
