@@ -32,7 +32,7 @@ export function ProductSlider() {
   if (!data.data || data.data.products?.length === 0) return null;
 
   return (
-    <div className="flex flex-col max-w-280 mx-auto px-8 lg:px-0 overflow-visible items-start">
+    <div className="flex flex-col max-w-280 mx-auto px-8 --breakpoint-1120:px-0 overflow-visible items-start">
       <div className="py-12 flex justify-between w-full">
         <h2 className="leading-9.5 sm:leading-11 font-medium text-[34px] sm:text-[40px] max-w-37.5">
           New Arrivals
@@ -47,8 +47,30 @@ export function ProductSlider() {
       </div>
       <Swiper
         modules={[Scrollbar, FreeMode]}
-        slidesPerView={4.2}
+        slidesPerView={1}
         spaceBetween={24}
+        breakpoints={{
+          200: {
+            slidesPerView: 1,
+            spaceBetween: 24,
+          },
+          600:{
+            slidesPerView: 1.4,
+            spaceBetween: 24,
+          },
+          700: {
+            slidesPerView: 2.2,
+            spaceBetween: 24,
+          },
+          900: {
+            slidesPerView: 3.2,
+            spaceBetween: 24,
+          },
+          1100: {
+            slidesPerView: 4,
+            spaceBetween: 24,
+          },
+        }}
         freeMode={true}
         scrollbar={{ draggable: true }}
         className="max-w-7xl! w-full pb-14!"
