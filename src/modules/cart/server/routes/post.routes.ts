@@ -53,8 +53,8 @@ export const PostRoutes = new Hono().post(
 
       return c.json(response, response.status);
     }
-    const body = await c.req.json();
 
+    const body = await c.req.json();
     const { productId } = body;
 
     if (!productId) {
@@ -90,6 +90,18 @@ export const PostRoutes = new Hono().post(
         data: { cartId: cart.id, productId: existingProduct.id, quantity: 1 },
       });
 
+      const updatedTotal =
+        cart.cartItems.reduce(
+          (sum, item) => sum + item.product.price * item.quantity,
+          0,
+        ) +
+        existingProduct.price * 1;
+
+      await prisma.cart.update({
+        where: { id: cart.id },
+        data: { total: updatedTotal },
+      });
+
       response = {
         status: 200,
         message: "პროდუქტი დაემატა კალათაში.",
@@ -107,6 +119,19 @@ export const PostRoutes = new Hono().post(
         },
       },
       data: { quantity: productInCart.quantity + 1 },
+    });
+
+    const updatedTotal = cart.cartItems.reduce((sum, item) => {
+      const quantity =
+        item.productId === productInCart.productId
+          ? item.quantity + 1
+          : item.quantity;
+      return sum + item.product.price * quantity;
+    }, 0);
+
+    await prisma.cart.update({
+      where: { id: cart.id },
+      data: { total: updatedTotal },
     });
 
     response = {

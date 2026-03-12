@@ -88,6 +88,14 @@ export const DeleteRoutes = new Hono().delete(
       },
     });
 
+    const updatedTotal = cart.cartItems
+      .filter((item) => item.productId !== productId)
+      .reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+
+    await prisma.cart.update({
+      where: { id: cart.id },
+      data: { total: updatedTotal },
+    });
     response = {
       status: 200,
       message: "პროდუქტი წაიშალა კალათიდან.",

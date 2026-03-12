@@ -100,6 +100,15 @@ export const PutRoutes = new Hono().put(
         },
       });
 
+      const updatedTotal = cart.cartItems
+        .filter((item) => item.productId !== productId)
+        .reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+
+      await prisma.cart.update({
+        where: { id: cart.id },
+        data: { total: updatedTotal },
+      });
+
       response = {
         status: 200,
         message: "პროდუქტი წაიშალა კალათიდან.",
@@ -118,12 +127,23 @@ export const PutRoutes = new Hono().put(
       data: { quantity },
     });
 
+    const updatedTotal = cart.cartItems.reduce((sum, item) => {
+      const itemQuantity =
+        item.productId === productId ? quantity : item.quantity;
+      return sum + item.product.price * itemQuantity;
+    }, 0);
+
+    await prisma.cart.update({
+      where: { id: cart.id },
+      data: { total: updatedTotal },
+    });
+
     response = {
       status: 200,
       message: "კალათა განახლდა.",
       success: true,
     };
-    
+
     return c.json(response, response.status);
   },
 );
