@@ -1,10 +1,10 @@
 "use client";
 
 import { useCategories } from "../../hooks/queries/use-categories";
-import CategoryCard from "../common/CategoryCard";
+import { CategoryCard } from "../common/CategoryCard";
 import CustomLoader from "@/src/components/ui/Loader";
 
-export default function CategoryCardsLayout() {
+export function CategoryCardsLayout() {
   const { data, isLoading } = useCategories();
   if (isLoading) return <CustomLoader />;
 

@@ -1,10 +1,13 @@
 import { Hono } from "hono";
 import { handle } from "hono/vercel";
 import categoryRoute from "@/src/modules/categories/server";
+import productsRoute from "@/src/modules/products/server";
 
 const app = new Hono().basePath("/api");
 
-const _routes = app.route("/categories", categoryRoute);
+const _routes = app
+  .route("/categories", categoryRoute)
+  .route("/products", productsRoute);
 
 export const GET = handle(app);
 export const POST = handle(app);
