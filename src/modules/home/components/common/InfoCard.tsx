@@ -6,7 +6,7 @@ type Props = {
   text: string;
 };
 
-export default function InfoCard({ icon, heading, text }: Props) {
+export function InfoCard({ icon, heading, text }: Props) {
   return (
     <div className="max-w-65.5 w-full min-h-49 sm:min-h-55 px-4 sm:px-8 py-8 sm:py-12 flex flex-col gap-4 bg-(--neutral-semi-white)">
       {icon}

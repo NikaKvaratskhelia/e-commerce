@@ -11,7 +11,7 @@ import { useProducts } from "@/src/modules/products/hooks/queries/use-products";
 import { ProductCard } from "@/src/modules/products/components/common/ProductCard";
 import { useSearchParams } from "next/navigation";
 
-export default function ProductSlider() {
+export function ProductSlider() {
   const params = useSearchParams();
 
   const onlyNewParam = params.get("newProductsOnly");

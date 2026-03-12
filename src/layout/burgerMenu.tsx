@@ -2,13 +2,13 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import UserProfileLink from "../components/common/UserProfileLink";
+import { UserProfileLink } from "../components/common/UserProfileLink";
 
 type Props = {
   isAuthenticated: boolean;
 };
 
-export default function BurgerMenu({ isAuthenticated }: Props) {
+export function BurgerMenu({ isAuthenticated }: Props) {
   const [burgerOpen, setBurgerOpen] = useState(false);
   return (
     <>

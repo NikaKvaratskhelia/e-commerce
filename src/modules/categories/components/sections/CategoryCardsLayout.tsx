@@ -2,13 +2,11 @@
 
 import { useCategories } from "../../hooks/queries/use-categories";
 import { CategoryCard } from "../common/CategoryCard";
-import CustomLoader from "@/src/components/ui/Loader";
 
 export function CategoryCardsLayout() {
   const { data, isLoading } = useCategories();
-  if (isLoading) return <CustomLoader />;
+  if (isLoading || !data || data.length === 0) return null;
 
-  if (!data) return null;
   return (
     <div className="mx-auto flex flex-col items-center md:flex-row w-full max-w-280 gap-6 px-8 md:p-0">
       <CategoryCard category={data[0]} variant="col" />

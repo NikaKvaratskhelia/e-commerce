@@ -1,7 +1,7 @@
 import Image from "next/image";
-import InfoCard from "../common/InfoCard";
+import { InfoCard } from "../common/InfoCard";
 
-export default function InfoCardsLayout() {
+export function InfoCardsLayout() {
   return (
     <div className="max-w-280 mx-auto w-full flex items-center justify-center flex-wrap gap-6 p-8 sm:py-12 sm:px-0 ">
       <div className="flex gap-2 sm:gap-6 w-full justify-center max-w-137">

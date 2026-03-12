@@ -6,7 +6,7 @@ type Props = {
   text: string;
 };
 
-export default function CustomLink({ href, text }: Props) {
+export function CustomLink({ href, text }: Props) {
   return (
     <Link
       href={`/shop?categoryId=${href}`}

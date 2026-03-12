@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-export default function Footer() {
+
+export function Footer() {
   return (
     <footer className="bg-(--neutral-dark-grey) px-8 py-12">
       <div className="max-w-280 w-full mx-auto flex flex-col gap-12.25">

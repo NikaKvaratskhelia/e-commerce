@@ -1,10 +1,10 @@
 "use client";
 
-import CustomLink from "@/src/components/ui/CustomLink";
-import BlogCard from "@/src/modules/blogs/components/common/BlogCard";
+import { CustomLink } from "@/src/components/ui/CustomLink";
+import { BlogCard } from "@/src/modules/blogs/components/common/BlogCard";
 import { useBlogs } from "@/src/modules/blogs/hooks/queries/use-blogs";
 
-export default function BlogsLayout() {
+export function BlogsLayout() {
   const { data, isLoading } = useBlogs();
 
   if (!data || isLoading || data.blogs.length == 0) return null;
