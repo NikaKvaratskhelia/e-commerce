@@ -11,7 +11,7 @@ export default async function Header() {
       <nav className="flex justify-between items-center">
         <div className="flex gap-2 items-center justify-center">
           <BurgerMenu isAuthenticated={isAuthenticated} />
-          <Link href={"/home"}>
+          <Link href={"/"}>
             <Image
               src={"/logo.svg"}
               alt={"Company logo"}

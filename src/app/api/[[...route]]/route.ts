@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { handle } from "hono/vercel";
 import categoryRoute from "@/src/modules/categories/server";
+import productsRoute from "@/src/modules/products/server";
 
 import verifyRoutes from "@/src/modules/auth/verifyEmail/server";
 
@@ -9,6 +10,7 @@ const app = new Hono().basePath("/api");
 const _routes = app
   .route("/categories", categoryRoute)
   .route("/verify", verifyRoutes);
+  .route("/products", productsRoute);
 
 export const GET = handle(app);
 export const POST = handle(app);
