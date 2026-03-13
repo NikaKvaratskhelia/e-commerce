@@ -35,7 +35,7 @@ export function useDeleteCartMutation() {
         if (!old?.data) return old;
 
         const updatedCartItems = old.data.cartItems.filter(
-          (item) => item.productId !== id,
+          (item) => item.productColorId !== id,
         );
 
         const updatedTotal = updatedCartItems.reduce((sum, item) => {

@@ -36,12 +36,7 @@ export function useUpdateCartMutation() {
         if (!old?.data) return old;
 
         const updatedItems = old.data.cartItems.map((item) =>
-          item.productId === id
-            ? {
-                ...item,
-                quantity: qty,
-              }
-            : item,
+          item.productColorId === id ? { ...item, quantity: qty } : item,
         );
 
         const newTotal = updatedItems.reduce(
