@@ -22,7 +22,7 @@ export function CartItem({ cartItem }: Props) {
             {cartItem.productColor.product.title}
           </p>
           <p className="text-xs leading-5 text-(--neutral-light-grey)">
-            {cartItem.productColor.color}
+            Color: {cartItem.productColor.color}
           </p>
           <EditQtyBtn id={cartItem.productColor.id} qty={cartItem.quantity} />
         </div>
