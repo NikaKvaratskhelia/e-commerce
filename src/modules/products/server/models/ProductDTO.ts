@@ -7,6 +7,13 @@ export type ProductDTO = {
   stock: number;
   createdAt: string;
   productCategoryId: number;
+  colors: {
+    id: number,
+    color: string,
+    productId:number,
+    has3D: boolean,
+    photos: { id: number; url: string }[];
+  }[];
   discounts: {
     id: number;
     discountPercentage: number;
