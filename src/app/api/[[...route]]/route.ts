@@ -5,8 +5,33 @@ import productsRoute from "@/src/modules/products/server";
 import blogRoute from "@/src/modules/blogs/server";
 import verifyRoutes from "@/src/modules/auth/verifyEmail/server";
 import cartRoutes from "@/src/modules/cart/server";
+import { HTTPException } from "hono/http-exception";
 
 const app = new Hono().basePath("/api");
+
+app.onError((err, c) => {
+  if (err instanceof HTTPException) {
+    return c.json(
+      {
+        success: false,
+        status: err.status,
+        message: err.message,
+      },
+      err.status,
+    );
+  }
+
+  console.error(err);
+
+  return c.json(
+    {
+      success: false,
+      status: 500,
+      message: "სერვერის ხარვეზი.",
+    },
+    500,
+  );
+});
 
 const _routes = app
   .route("/categories", categoryRoute)

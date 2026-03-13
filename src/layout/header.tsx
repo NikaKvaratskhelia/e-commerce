@@ -54,8 +54,7 @@ export async function Header() {
               height={24}
             />
           </Link>
-
-          <CartPopUp />
+          {isAuthenticated && <CartPopUp />}
         </div>
       </nav>
     </header>

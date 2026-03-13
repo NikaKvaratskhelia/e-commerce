@@ -2,7 +2,6 @@ import { Hono } from "hono";
 import { prisma } from "@/src/library/db";
 import { GetCartModel, getCartSelect } from "../selectors";
 import { ApiResponse } from "@/src/types/ApiReturnType";
-import { requireAuth } from "@/src/auth/helpers";
 import { requireRoleMiddleware } from "@/src/auth/middleware";
 
 export const PutRoutes = new Hono().put(
@@ -11,8 +10,8 @@ export const PutRoutes = new Hono().put(
   async (c) => {
     let response: ApiResponse<GetCartModel>;
 
-    const { user, session } = await requireAuth();
-
+    const user = c.get("user");
+    const session = c.get("session");
     if (!user || !session) {
       response = {
         message: "მომხარებელი არ არის სისტემაში.",

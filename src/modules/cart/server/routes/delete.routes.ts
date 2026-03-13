@@ -1,4 +1,3 @@
-import { requireAuth } from "@/src/auth/helpers";
 import { requireRoleMiddleware } from "@/src/auth/middleware";
 import { prisma } from "@/src/library/db";
 import { ApiResponse } from "@/src/types/ApiReturnType";
@@ -11,7 +10,8 @@ export const DeleteRoutes = new Hono().delete(
   async (c) => {
     let response: ApiResponse<GetCartModel>;
 
-    const { user, session } = await requireAuth();
+    const user = c.get("user");
+    const session = c.get("session");
 
     if (!user || !session) {
       response = {
@@ -78,7 +78,7 @@ export const DeleteRoutes = new Hono().delete(
         product: true,
       },
     });
-    
+
     if (!productInCart) {
       response = {
         status: 404,
