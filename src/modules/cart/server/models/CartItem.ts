@@ -1,6 +1,7 @@
 type ProductColorDto = {
   id: number;
-  has3D:boolean,
+  productId: number;
+  has3D: boolean;
   color: string;
   photos: { id: number; url: string }[];
   product: CartItemProductDTO;
@@ -20,7 +21,7 @@ type CartItemProductDTO = {
 export type CartItemDTO = {
   id: number;
   quantity: number;
-  productId: number;
+  productColorId: number;
   cartId: string;
   productColor: ProductColorDto;
 };

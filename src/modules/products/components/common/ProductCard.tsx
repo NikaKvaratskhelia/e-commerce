@@ -12,8 +12,6 @@ const SEVEN_DAYS_IN_MS = 7 * 24 * 60 * 60 * 1000;
 
 export function ProductCard({ product }: Props) {
   const now = new Date();
-
-  console.log(product);
   
   const isNew =
     now.getTime() - new Date(product.createdAt).getTime() <= SEVEN_DAYS_IN_MS;

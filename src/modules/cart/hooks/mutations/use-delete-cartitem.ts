@@ -6,7 +6,7 @@ import { GetCartModel } from "../../server/selectors";
 
 async function deleteFromCart(id: number) {
   const res = await client.api.cart.cartItems.$delete({
-    json: { productId: id },
+    json: { productColorId: id },
   });
 
   const data = await res.json();
@@ -39,7 +39,7 @@ export function useDeleteCartMutation() {
         );
 
         const updatedTotal = updatedCartItems.reduce((sum, item) => {
-          return sum + item.product.price * item.quantity;
+          return sum + item.productColor.product.price * item.quantity;
         }, 0);
 
         return {

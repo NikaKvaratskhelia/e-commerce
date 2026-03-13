@@ -24,13 +24,13 @@ export function CartItem({ cartItem }: Props) {
           <p className="text-xs leading-5 text-(--neutral-light-grey)">
             {cartItem.productColor.color}
           </p>
-          <EditQtyBtn id={cartItem.productId} qty={cartItem.quantity} />
+          <EditQtyBtn id={cartItem.productColor.id} qty={cartItem.quantity} />
         </div>
         <div className="flex flex-col gap-2 items-end justify-start">
           <p className="font-semibold text-sm leading-5.5">
             ${cartItem.productColor.product.price}
           </p>
-          <DeleteBtn id={cartItem.productId} />
+          <DeleteBtn id={cartItem.productColorId} />
         </div>
       </div>
     </div>
