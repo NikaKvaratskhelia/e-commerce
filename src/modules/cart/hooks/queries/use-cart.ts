@@ -1,6 +1,5 @@
 import { client } from "@/src/library/hono-client";
 import { useQuery } from "@tanstack/react-query";
-import { toast } from "sonner";
 
 async function GetCart() {
   const res = await client.api.cart.$get();
@@ -16,16 +15,6 @@ async function GetCart() {
 export function useCart() {
   return useQuery({
     queryKey: ["cart"],
-    queryFn: async () => {
-      try {
-        return await GetCart();
-      } catch (error) {
-        const message =
-          error instanceof Error
-            ? error.message
-            : "სერვერის ხარვეზი. თავიდან სცადეთ.";
-        toast.error(message);
-      }
-    },
+    queryFn: () => GetCart(),
   });
 }
