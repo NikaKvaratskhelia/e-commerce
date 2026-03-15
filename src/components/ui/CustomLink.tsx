@@ -9,7 +9,7 @@ type Props = {
 export function CustomLink({ href, text }: Props) {
   return (
     <Link
-      href={`/shop?categoryId=${href}`}
+      href={href}
       className="inline-flex items-center gap-1 border-b border-(--primary) leading-7 text-(--primary)"
     >
       {text}
