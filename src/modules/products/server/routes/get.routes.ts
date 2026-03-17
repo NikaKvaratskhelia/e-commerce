@@ -3,6 +3,7 @@ import { Hono } from "hono";
 import {
   get_product_details_selector,
   get_products_selector,
+  ProductDetailModel,
 } from "../selectors";
 import { ApiResponse } from "@/src/types/ApiReturnType";
 import { Prisma } from "@/generated/prisma/browser";
@@ -105,7 +106,7 @@ export const GetRoutes = new Hono()
   })
   .get("/:id", async (c) => {
     const id = Number(c.req.param("id"));
-    let response: ApiResponse<ProductModel>;
+    let response: ApiResponse<ProductDetailModel>;
 
     if (!id || isNaN(id)) {
       response = {

@@ -24,6 +24,10 @@ export const get_product_details_selector = {
   productCategory: true,
 } satisfies Prisma.ProductSelect;
 
+export type ProductDetailModel = Prisma.ProductGetPayload<{
+  select: typeof get_product_details_selector;
+}>;
+
 export const get_products_selector = {
   id: true,
   title: true,
