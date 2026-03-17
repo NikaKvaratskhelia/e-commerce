@@ -23,6 +23,8 @@ export function ProductGallery() {
   const query = useProductDetails(id);
   const { data } = query;
 
+  
+  //   es unda shevcvalo archeuli ferit
   const photos = data?.data?.colors[0].photos;
 
   const swiperRef = useRef<SwiperType | null>(null);
