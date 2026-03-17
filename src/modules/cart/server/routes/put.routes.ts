@@ -88,7 +88,11 @@ export const PutRoutes = new Hono().put(
       include: {
         productColor: {
           include: {
-            product: true,
+            product: {
+              include: {
+                discounts: true,
+              },
+            },
           },
         },
       },
@@ -133,7 +137,10 @@ export const PutRoutes = new Hono().put(
 
       const updatedTotal = cart.cartItems
         .filter((item) => item.productId !== productColorId)
-        .reduce((sum, item) => sum + item.productColor.product.price * item.quantity, 0);
+        .reduce(
+          (sum, item) => sum + item.productColor.product.price * item.quantity,
+          0,
+        );
 
       await prisma.cart.update({
         where: { id: cart.id },
@@ -148,10 +155,21 @@ export const PutRoutes = new Hono().put(
       return c.json(response, response.status);
     }
 
+    const now = new Date();
+
+    const discount = productInCart.productColor.product.discounts.find(
+      (d) => new Date(d.discountEndDate).getTime() > now.getTime(),
+    );
+
+    const price = discount
+      ? productInCart.productColor.product.price *
+        (1 - discount.discountPercentage / 100)
+      : productInCart.productColor.product.price;
+
     const updatedTotal = cart.cartItems.reduce((sum, item) => {
       const itemQuantity =
         item.productColorId === productColorId ? quantity : item.quantity;
-      return sum + item.productColor.product.price * itemQuantity;
+      return sum + price * itemQuantity;
     }, 0);
 
     await prisma.$transaction([
@@ -166,7 +184,7 @@ export const PutRoutes = new Hono().put(
       }),
       prisma.cart.update({
         where: { id: cart.id },
-        data: { total: updatedTotal },
+        data: { total: Number(updatedTotal.toFixed(2)) },
       }),
     ]);
 

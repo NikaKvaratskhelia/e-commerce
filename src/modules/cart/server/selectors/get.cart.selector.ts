@@ -9,7 +9,11 @@ export const getCartSelect = {
       productColor: {
         include: {
           photos: true,
-          product: true,
+          product: {
+            include: {
+              discounts: true,
+            },
+          },
         },
       },
     },

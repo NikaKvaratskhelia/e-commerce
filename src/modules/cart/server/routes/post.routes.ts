@@ -63,7 +63,14 @@ export const PostRoutes = new Hono().post(
 
     const existingProductColor = await prisma.productColor.findUnique({
       where: { id: productColorId },
-      include: { product: true, photos: true },
+      include: {
+        product: {
+          include: {
+            discounts: true,
+          },
+        },
+        photos: true,
+      },
     });
 
     if (!existingProductColor) {
@@ -88,12 +95,23 @@ export const PostRoutes = new Hono().post(
       (x) => x.productColorId === existingProductColor.id,
     );
 
+    const now = new Date();
+
+    const discount = existingProductColor.product.discounts.find(
+      (d) => new Date(d.discountEndDate).getTime() > now.getTime(),
+    );
+
+    const price = discount
+      ? existingProductColor.product.price *
+        (1 - discount.discountPercentage / 100)
+      : existingProductColor.product.price;
+
     if (!productInCart) {
       const updatedTotal =
         cart.cartItems.reduce(
           (sum, item) => sum + item.productColor.product.price * item.quantity,
           0,
-        ) + existingProductColor.product.price;
+        ) + price;
 
       await prisma.$transaction([
         prisma.cartItem.create({
@@ -105,7 +123,7 @@ export const PostRoutes = new Hono().post(
         }),
         prisma.cart.update({
           where: { id: cart.id },
-          data: { total: updatedTotal },
+          data: { total: Number(updatedTotal.toFixed(2)) },
         }),
       ]);
 
@@ -146,7 +164,7 @@ export const PostRoutes = new Hono().post(
       }),
       prisma.cart.update({
         where: { id: cart.id },
-        data: { total: updatedTotal },
+        data: { total: Number(updatedTotal.toFixed(2)) },
       }),
     ]);
 
