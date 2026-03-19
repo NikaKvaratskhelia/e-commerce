@@ -9,8 +9,8 @@ import { redirect } from "next/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { useRef } from "react";
-import { CustomLoader } from "@/src/components/ui/Loader";
 import Image from "next/image";
+import { ProductGallerySkeleton } from "../skeletons/ProductGallerySkeleton";
 
 const SEVEN_DAYS_IN_MS = 7 * 24 * 60 * 60 * 1000;
 
@@ -21,23 +21,21 @@ export function ProductGallery() {
   if (!id) redirect("/");
 
   const query = useProductDetails(id);
-  const { data } = query;
+  const { data } = query;  
 
-  
   //   es unda shevcvalo archeuli ferit
   const photos = data?.data?.colors[0].photos;
 
   const swiperRef = useRef<SwiperType | null>(null);
 
-  if (query.isLoading) return <CustomLoader />;
+  if (query.isLoading) return <ProductGallerySkeleton />;
 
   if (!data || !data.data) redirect("/");
 
   const now = new Date();
 
   const isNew =
-    now.getTime() - new Date(data.data.createdAt).getTime() <=
-    SEVEN_DAYS_IN_MS;
+    now.getTime() - new Date(data.data.createdAt).getTime() <= SEVEN_DAYS_IN_MS;
 
   const discount = data?.data?.discounts.find(
     (d) => new Date(d.discountEndDate).getTime() > now.getTime(),
@@ -74,7 +72,7 @@ export function ProductGallery() {
                 src={i.url}
                 alt="product photo"
                 fill
-                className="object-contain"
+                className="object-contain aspect-1"
               />
             </SwiperSlide>
           ))}

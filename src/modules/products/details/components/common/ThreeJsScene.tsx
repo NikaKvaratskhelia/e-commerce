@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Center, Environment, useGLTF } from "@react-three/drei";
 import { useProductDetails } from "../../../hooks/queries/use-product-details";
+import { ProductGallery } from "./ProductGallery";
 
 type ModelProps = {
   url: string;
@@ -32,9 +33,7 @@ export function ThreeJsScene() {
     if (!id) router.replace("/");
   }, [id, router]);
 
-  const { data, isLoading, isError, error } = useProductDetails(id ?? "");
-
-  if (!id || isLoading) return <p>Loading product...</p>;
+  const { data, isError, error } = useProductDetails(id ?? "");
 
   if (isError) {
     return (
@@ -43,10 +42,10 @@ export function ThreeJsScene() {
   }
 
   //   es unda shevcvalo archeuli ferit
-  const firstColor = data?.data?.colors?.[0];
+  const firstColor = data?.data?.colors?.[1] ?? null;
 
   if (!firstColor?.has3D || !firstColor.model3d) {
-    return <p>This product color doesn&apos;t have a 3D model.</p>;
+    return <ProductGallery />;
   }
 
   const modelUrl = firstColor.model3d.url;
@@ -54,7 +53,7 @@ export function ThreeJsScene() {
   useGLTF.preload(modelUrl);
 
   return (
-    <div className="max-h-182 max-w-136.75 w-full aspect-auto rounded-xl overflow-hidden border bg-(--neutral-semi-white)">
+    <div className="h-103.5 sm:h-182 max-w-136.75 w-full rounded-xl overflow-hidden cursor-pointer bg-(--neutral-semi-white)">
       <Canvas camera={{ position: [90, 90, 4], fov: 45 }}>
         <ambientLight intensity={0.8} />
         <directionalLight position={[5, 5, 5]} intensity={1.2} />
