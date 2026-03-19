@@ -1,11 +1,11 @@
 "use client";
 
-import { Suspense, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { Suspense } from "react";
+import { redirect, useParams } from "next/navigation";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Center, Environment, useGLTF } from "@react-three/drei";
 import { useProductDetails } from "../../../hooks/queries/use-product-details";
-import { ProductGallery } from "./ProductGallery";
+import { useColorStore } from "../../store/useColorStore";
 
 type ModelProps = {
   url: string;
@@ -26,29 +26,23 @@ function CanvasLoader() {
 }
 
 export function ThreeJsScene() {
-  const { id } = useParams<{ id: string }>();
-  const router = useRouter();
+  const params = useParams();
+  const id = params.id as string;
 
-  useEffect(() => {
-    if (!id) router.replace("/");
-  }, [id, router]);
+  if (!id) redirect("/");
 
-  const { data, isError, error } = useProductDetails(id ?? "");
+  const query = useProductDetails(id);
+  const { data } = query;
 
-  if (isError) {
-    return (
-      <p>{error instanceof Error ? error.message : "Something went wrong."}</p>
-    );
+  const { selectedColorIndex } = useColorStore();
+
+  const chosenColor = data?.data?.colors?.[selectedColorIndex];
+
+  if (!chosenColor?.has3D || !chosenColor.model3d) {
+    return <p>ამ ფერს არ აქვს 3D მდოელი</p>;
   }
 
-  //   es unda shevcvalo archeuli ferit
-  const firstColor = data?.data?.colors?.[1] ?? null;
-
-  if (!firstColor?.has3D || !firstColor.model3d) {
-    return <ProductGallery />;
-  }
-
-  const modelUrl = firstColor.model3d.url;
+  const modelUrl = chosenColor.model3d.url;
 
   useGLTF.preload(modelUrl);
 

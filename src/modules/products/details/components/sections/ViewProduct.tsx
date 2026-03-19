@@ -5,6 +5,7 @@ import { useProductDetails } from "../../../hooks/queries/use-product-details";
 import { useState } from "react";
 import { ThreeJsScene } from "../common/ThreeJsScene";
 import { ProductGallery } from "../common/ProductGallery";
+import { useColorStore } from "../../store/useColorStore";
 
 export function ViewProduct() {
   const params = useParams();
@@ -17,15 +18,18 @@ export function ViewProduct() {
 
   const [viewMode, setViewMode] = useState<"gallery" | "3d">("gallery");
 
+  const { selectedColorIndex } = useColorStore();
+  const index = selectedColorIndex ? selectedColorIndex : 0;
+
   return (
     <div className="flex flex-col gap-6 flex-1">
-      {data?.data?.colors[1]?.has3D ? (
+      {data?.data?.colors[index]?.has3D ? (
         <div className="flex gap-2 items-center">
           <h2
             className={`${viewMode === "gallery" ? "text-(--primary) font-semibold" : "text-(--neutral-light-grey)"} text-[20px] cursor-pointer transition-colors duration-500`}
             onClick={() => setViewMode("gallery")}
           >
-            Product Galery
+            Product Gallery
           </h2>
           <span className="text-[30px]">|</span>
           <h2

@@ -11,6 +11,7 @@ import { Navigation } from "swiper/modules";
 import { useRef } from "react";
 import Image from "next/image";
 import { ProductGallerySkeleton } from "../skeletons/ProductGallerySkeleton";
+import { useColorStore } from "../../store/useColorStore";
 
 const SEVEN_DAYS_IN_MS = 7 * 24 * 60 * 60 * 1000;
 
@@ -21,10 +22,10 @@ export function ProductGallery() {
   if (!id) redirect("/");
 
   const query = useProductDetails(id);
-  const { data } = query;  
+  const { data } = query;
+  const { selectedColorIndex } = useColorStore();
 
-  //   es unda shevcvalo archeuli ferit
-  const photos = data?.data?.colors[0].photos;
+  const photos = data?.data?.colors?.[selectedColorIndex].photos;
 
   const swiperRef = useRef<SwiperType | null>(null);
 
@@ -32,6 +33,8 @@ export function ProductGallery() {
 
   if (!data || !data.data) redirect("/");
 
+  if (!photos) return <p>ამ ფერზე არ გვაქვს ფოტოები.</p>;
+  
   const now = new Date();
 
   const isNew =
