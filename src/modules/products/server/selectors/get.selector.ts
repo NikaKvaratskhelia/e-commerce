@@ -15,7 +15,11 @@ export const get_product_details_selector = {
       id: true,
       color: true,
       has3D: true,
-      photos: true,
+      photos: {
+        orderBy: {
+          id: "asc",
+        },
+      },
       model3d: true,
     },
   },
