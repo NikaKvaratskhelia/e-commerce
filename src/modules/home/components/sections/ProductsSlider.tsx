@@ -32,7 +32,7 @@ export function ProductSlider() {
   if (!data.data || data.data.products?.length === 0) return null;
 
   return (
-    <div className="flex flex-col max-w-280 mx-auto px-8 --breakpoint-1120:px-0 overflow-visible items-start">
+    <div className="flex flex-col max-w-280 mx-auto px-8 w1120:px-0 overflow-visible items-start">
       <div className="py-12 flex justify-between w-full">
         <h2 className="leading-9.5 sm:leading-11 font-medium text-[34px] sm:text-[40px] max-w-37.5">
           New Arrivals

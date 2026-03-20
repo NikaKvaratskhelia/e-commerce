@@ -2,7 +2,7 @@
 
 @theme {
   --breakpoint-8h: 55.625rem;
-  --breakpoint-1120: 70rem;
+  --breakpoint-w1120: 70rem;
 }
 
 :root {

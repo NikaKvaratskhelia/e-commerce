@@ -27,20 +27,7 @@ async function getData(queryParams: Queries) {
     throw new Error(data.message);
   }
 
-  return {
-    ...data,
-    data: {
-      ...data.data,
-      products: data.data?.products.map((product) => ({
-        ...product,
-        createdAt: new Date(product.createdAt),
-        discounts: product.discounts.map((discount) => ({
-          ...discount,
-          discountEndDate: new Date(discount.discountEndDate),
-        })),
-      })),
-    },
-  };
+  return data;
 }
 
 export function useProducts(queryParams: Queries) {
