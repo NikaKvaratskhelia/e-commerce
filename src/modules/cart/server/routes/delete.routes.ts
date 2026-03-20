@@ -99,7 +99,7 @@ export const DeleteRoutes = new Hono().delete(
     });
 
     const updatedTotal = cart.cartItems
-      .filter((item) => item.productId !== productColorId)
+      .filter((item) => item.productColorId !== productColorId)
       .reduce(
         (sum, item) => sum + item.productColor.product.price * item.quantity,
         0,

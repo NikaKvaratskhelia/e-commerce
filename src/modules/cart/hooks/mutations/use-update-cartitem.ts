@@ -39,31 +39,40 @@ export function useUpdateCartMutation() {
           item.productColorId === id ? { ...item, quantity: qty } : item,
         );
 
-        const newTotal = updatedItems.reduce(
-          (sum, item) => sum + item.quantity * item.productColor.product.price,
-          0,
-        );
+        const now = new Date();
+
+        const newTotal = updatedItems.reduce((sum, item) => {
+          const activeDiscount = item.productColor.product.discounts?.find(
+            (d) => new Date(d.discountEndDate).getTime() > now.getTime(),
+          );
+
+          const itemPrice = activeDiscount
+            ? item.productColor.product.price *
+              (1 - activeDiscount.discountPercentage / 100)
+            : item.productColor.product.price;
+
+          return sum + item.quantity * itemPrice;
+        }, 0);
 
         return {
           ...old,
           data: {
             ...old.data,
             cartItems: updatedItems,
-            total: newTotal,
+            total: Number(newTotal.toFixed(2)),
           },
         };
       });
 
       return { previousCart };
     },
+
     onSuccess: (data) => {
       toast.success(data.message);
     },
 
-    onError: (error, _variables, context) => {
-      if (context?.previousCart) {
-        queryClient.setQueryData(["cart"], context.previousCart);
-      }
+    onError: (error) => {
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
 
       const message =
         error instanceof Error
@@ -71,10 +80,6 @@ export function useUpdateCartMutation() {
           : "სერვერის ხარვეზი. თავიდან სცადეთ.";
 
       toast.error(message);
-    },
-
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["cart"] });
     },
   });
 }
