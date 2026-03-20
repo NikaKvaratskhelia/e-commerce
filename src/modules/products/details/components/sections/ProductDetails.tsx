@@ -1,3 +1,4 @@
+import { AddButtons } from "../common/AddButtons";
 import { DiscountExpires } from "../common/DiscountExpires";
 import { ProductDetailHeader } from "../common/ProductDetailHeader";
 import { ProductColors } from "./ProductColors";
@@ -8,6 +9,7 @@ export function ProductDetails() {
       <ProductDetailHeader />
       <DiscountExpires />
       <ProductColors />
+      <AddButtons />
     </div>
   );
 }
