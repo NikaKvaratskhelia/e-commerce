@@ -33,8 +33,8 @@ export function useAddReply() {
       toast.error(err.message);
     },
 
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["comments"] });
+    onSettled: (_data, _err, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["replies", variables.commentId] });
     },
   });
 }

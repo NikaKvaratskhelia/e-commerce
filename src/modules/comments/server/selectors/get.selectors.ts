@@ -2,44 +2,49 @@ import { Prisma } from "@/generated/prisma/browser";
 
 export const get_comments_selector = {
   id: true,
+  content: true,
   rating: true,
-  userId: true,
+  createdAt: true,
+  updatedAt: true,
+
   author: {
     select: {
       id: true,
       name: true,
       username: true,
-      email: true,
-      password: true,
-      role: true,
-      emailVerified: true,
     },
   },
 
-  prodcutId: true,
-
-  content: true,
-
-  createdAt: true,
-  updatedAt: true,
-
-  replies: {
+  _count: {
     select: {
-      id: true,
-      author: true,
-      content: true,
-      createdAt: true,
+      likes: true,
+      replies: true,
     },
   },
+
   likes: {
     select: {
-      id: true,
       userId: true,
-      commentId: true,
     },
   },
 } satisfies Prisma.CommentSelect;
 
-export type ProductComments = Prisma.CommentGetPayload<{
+export type RawProductComment = Prisma.CommentGetPayload<{
   select: typeof get_comments_selector;
 }>;
+
+export type ProductCommentDto = {
+  id: number;
+  content: string;
+  rating: number;
+  createdAt: Date;
+  updatedAt: Date;
+  author: {
+    id: string;
+    name: string | null;
+    username: string | null;
+  };
+  likesCount: number;
+  repliesCount: number;
+  isLikedByMe: boolean;
+};
