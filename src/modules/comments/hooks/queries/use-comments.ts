@@ -15,7 +15,7 @@ async function getData(id: string) {
   return data;
 }
 
-export function useCategories(id: string) {
+export function useComments(id: string) {
   return useQuery({
     queryKey: ["comments"],
     queryFn: async () => {

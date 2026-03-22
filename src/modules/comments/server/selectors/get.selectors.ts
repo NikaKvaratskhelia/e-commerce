@@ -2,7 +2,7 @@ import { Prisma } from "@/generated/prisma/browser";
 
 export const get_comments_selector = {
   id: true,
-
+  rating: true,
   userId: true,
   author: {
     select: {
