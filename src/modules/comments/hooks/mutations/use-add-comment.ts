@@ -17,7 +17,7 @@ async function postComment(
     throw new Error(response.message);
   }
 
-  return response.data;
+  return response;
 }
 
 export function useAddComment(productId: string) {
@@ -26,6 +26,10 @@ export function useAddComment(productId: string) {
   return useMutation({
     mutationFn: (data: { content: string; rating: number }) =>
       postComment(productId, data),
+
+    onSuccess: (data) => {
+      toast.success(data.message);
+    },
 
     onError: (err) => {
       toast.error(err.message);

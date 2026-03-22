@@ -26,6 +26,7 @@ export const get_comments_selector = {
   replies: {
     select: {
       id: true,
+      author: true,
       content: true,
       createdAt: true,
     },
