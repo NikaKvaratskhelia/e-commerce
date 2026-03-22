@@ -58,7 +58,7 @@ export function CommentsForm() {
           )}
         />
 
-        <div className="flex gap-3 items-center justify-between">
+        <div className="flex gap-3 items-center justify-between flex-col sm:flex-row">
           <div className="flex flex-col flex-1 gap-1 w-full">
             <input
               type="text"
