@@ -3,6 +3,7 @@
 import { redirect, useParams } from "next/navigation";
 import { useProductDetails } from "../../../hooks/queries/use-product-details";
 import { ProductDetailHeaderSkeleton } from "../skeletons/ProductDetailHeaderSkeleton";
+import ReviewsHeader from "./ReviewsHeader";
 
 export function ProductDetailHeader() {
   const params = useParams();
@@ -12,12 +13,12 @@ export function ProductDetailHeader() {
 
   const query = useProductDetails(id);
 
-  if (query.isLoading) return <ProductDetailHeaderSkeleton/>;
+  if (query.isLoading) return <ProductDetailHeaderSkeleton />;
   if (!query.data || !query.data.data) redirect("/");
 
   const product = query.data.data;
 
-  const now = new Date();   
+  const now = new Date();
 
   const discount = product.discounts.find(
     (d) => new Date(d.discountEndDate).getTime() > now.getTime(),
@@ -29,8 +30,8 @@ export function ProductDetailHeader() {
 
   return (
     <div className="flex flex-col gap-4 justify-center max-w-127 py-6">
-      {/* TODO: aq reitingi unda iyos roca */}
-      <p>Rating: asfnmaoo</p>
+      <ReviewsHeader />
+      
       <h2 className="text-[40px] leading-11 text-(--primary)">
         {product.title}
       </h2>
