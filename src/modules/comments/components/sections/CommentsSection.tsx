@@ -18,6 +18,7 @@ export function CommentsSection() {
         {query.data?.map((c) => (
           <Comment
             key={c.id}
+            id={c.id}
             content={c.content}
             author={c.author}
             replies={c.replies}

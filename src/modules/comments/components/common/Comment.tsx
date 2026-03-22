@@ -1,18 +1,21 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { CommentDTO } from "../../server/DTOs/commet.dto";
+import { useAddReply } from "../../hooks/mutations/use-add-reply";
 
 type ReplyFormValues = {
   reply: string;
 };
 
 export function Comment({
+  id,
   content,
   author,
   likes,
   replies,
 }: Partial<CommentDTO>) {
   const [showReply, setShowReply] = useState(false);
+  const { mutate } = useAddReply();
 
   const {
     register,
@@ -23,8 +26,12 @@ export function Comment({
     defaultValues: { reply: "" },
   });
 
+  
+  if (!id) return null;
+
+
   const onSubmit = (data: ReplyFormValues) => {
-    // TODO: api call unda gavaketo romlis route ar mak jer
+    mutate({ commentId: id, content: data.reply });
     reset();
     setShowReply(false);
   };
