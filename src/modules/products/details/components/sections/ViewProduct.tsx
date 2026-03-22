@@ -22,7 +22,7 @@ export function ViewProduct() {
   const index = selectedColorIndex ? selectedColorIndex : 0;
 
   return (
-    <div className="flex flex-col gap-6 flex-1">
+    <div className="flex flex-col gap-6 flex-1 max-w-136.75 w-full">
       {data?.data?.colors[index]?.has3D ? (
         <div className="flex gap-2 items-center">
           <h2

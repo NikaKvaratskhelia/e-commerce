@@ -67,7 +67,7 @@ export function ProductGallery() {
           slidesPerView={1}
           modules={[Navigation]}
           allowTouchMove={false}
-          className="w-137 h-182.25"
+          className="w-full h-103.5 w1120:h-182.25" style={{ width: '100%' }}
         >
           {photos?.map((i, indx) => (
             <SwiperSlide key={indx}>
@@ -104,7 +104,7 @@ export function ProductGallery() {
         </button>
       </div>
 
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid-cols-3 gap-6 hidden w1120:grid">
         {photos?.slice(1, 4).map((i) => (
           <Image
             src={i.url}
