@@ -7,9 +7,7 @@ type PaginatedResp = {
   blogs: Blog[];
   pagination: {
     total: number;
-    page: number;
     limit: number;
-    totalPages: number;
   };
 };
 
@@ -17,15 +15,9 @@ export const GetRoutes = new Hono()
   .get("/", async (c) => {
     let response: ApiResponse<PaginatedResp>;
 
-    const page = Number(c.req.query("page") ?? "1");
     const limit = Number(c.req.query("limit") ?? "10");
 
-    if (
-      !Number.isInteger(page) ||
-      !Number.isInteger(limit) ||
-      page < 1 ||
-      limit < 1
-    ) {
+    if (!Number.isInteger(limit) || limit < 1) {
       response = {
         success: false,
         status: 400,
@@ -35,11 +27,8 @@ export const GetRoutes = new Hono()
       return c.json(response, response.status);
     }
 
-    const skip = (page - 1) * limit;
-
     const [blogs, count] = await Promise.all([
       prisma.blog.findMany({
-        skip,
         take: limit,
         orderBy: {
           createdAt: "desc",
@@ -56,9 +45,7 @@ export const GetRoutes = new Hono()
         blogs,
         pagination: {
           total: count,
-          page,
           limit,
-          totalPages: Math.ceil(count / limit),
         },
       },
     };
