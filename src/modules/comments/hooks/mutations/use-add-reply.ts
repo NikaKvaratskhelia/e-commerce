@@ -34,7 +34,7 @@ export function useAddReply() {
     },
 
     onSettled: (_data, _err, variables) => {
-      queryClient.invalidateQueries({ queryKey: ["replies", variables.commentId] });
+      queryClient.invalidateQueries({ queryKey: ["replies", variables.commentId,] });
     },
   });
 }

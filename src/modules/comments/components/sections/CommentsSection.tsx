@@ -10,7 +10,7 @@ export function CommentsSection() {
   const id = params.id as string;
 
   const query = useComments(id);
-
+  
   return (
     <div className="flex flex-col gap-5">
       <CommentsForm />
@@ -23,6 +23,7 @@ export function CommentsSection() {
             content={c.content}
             author={c.author}
             likesCount={c.likesCount}
+            repliesCount={c.repliesCount}
             isLikedByMe={c.isLikedByMe}
           />
         ))}

@@ -20,6 +20,7 @@ type CommentProps = {
     username: string | null;
   };
   likesCount: number;
+  repliesCount: number;
   isLikedByMe: boolean;
 };
 
@@ -28,10 +29,12 @@ export function Comment({
   content,
   author,
   likesCount,
+  repliesCount,
   isLikedByMe,
 }: CommentProps) {
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [showReplies, setShowReplies] = useState(false);
+  const [replyCount, setReplyCount] = useState(repliesCount);
 
   const { mutate: addReply, isPending: isReplyPending } = useAddReply();
   const { mutate: likeComment, isPending: isLikePending } = useLikeComment();
@@ -40,8 +43,6 @@ export function Comment({
   const productId = params.id;
 
   const repliesQuery = useReplies(id, showReplies);
-  console.log(repliesQuery);
-  
 
   const {
     register,
@@ -56,6 +57,7 @@ export function Comment({
   if (typeof productId !== "string") return null;
 
   const onSubmit = (data: ReplyFormValues) => {
+    setReplyCount(replyCount + 1);
     addReply(
       { commentId: id, content: data.reply },
       {
@@ -103,7 +105,7 @@ export function Comment({
           >
             {showReplies
               ? "Hide replies"
-              : `${repliesQuery?.data?.length ?? 0} ${repliesQuery?.data?.length === 1 ? "Reply" : "Replies"}`}
+              : `${replyCount ?? 0} ${repliesQuery?.data?.length === 1 ? "Reply" : "Replies"}`}
           </button>
         </div>
 
