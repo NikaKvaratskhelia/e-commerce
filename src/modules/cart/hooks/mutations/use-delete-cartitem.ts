@@ -59,10 +59,8 @@ export function useDeleteCartMutation() {
       toast.success(data.message);
     },
 
-    onError: (error, _variables, context) => {
-      if (context?.previousCart) {
-        queryClient.setQueryData(["cart"], context.previousCart);
-      }
+    onError: (error) => {
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
 
       const message =
         error instanceof Error
@@ -70,10 +68,6 @@ export function useDeleteCartMutation() {
           : "სერვერის ხარვეზი. თავიდან სცადეთ.";
 
       toast.error(message);
-    },
-
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["cart"] });
     },
   });
 }

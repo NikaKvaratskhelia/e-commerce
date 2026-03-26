@@ -9,7 +9,7 @@ export async function Header() {
   const isAuthenticated = (await validateRequest()).session !== null;
 
   return (
-    <header className="max-w-280 w-full mx-auto px-8 py-4">
+    <header className="max-w-280 w-full mx-auto px-8 w1120:px-0 py-4">
       <nav className="flex justify-between items-center">
         <div className="flex gap-2 items-center justify-center">
           <BurgerMenu isAuthenticated={isAuthenticated} />
@@ -33,7 +33,7 @@ export async function Header() {
             <NavLink href={"/products"} text="Shop" />
           </li>
           <li>
-            <NavLink href={"/contact"} text="Contact Us" />
+            <NavLink href={"/contact-us"} text="Contact Us" />
           </li>
         </ul>
 

@@ -11,16 +11,16 @@ interface IContext {
   };
 }
 
-export const requireAuthMiddleware = createMiddleware<IContext>(
-  async (c, next) => {
+export const requireAuthMiddleware = () => {
+  return createMiddleware<IContext>(async (c, next) => {
     const { user, session } = await requireAuth();
 
     c.set("user", user);
     c.set("session", session);
 
     await next();
-  },
-);
+  });
+};
 
 export const requireRoleMiddleware = (roles: user_role[]) => {
   return createMiddleware<IContext>(async (c, next) => {
