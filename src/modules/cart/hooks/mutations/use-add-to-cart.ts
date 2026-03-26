@@ -4,7 +4,7 @@ import { toast } from "sonner";
 
 async function AddToCart(id: number) {
   const res = await client.api.cart.cartItems.$post({
-    json: { productId: id },
+    json: { productColorId: id },
   });
 
   const data = await res.json();

@@ -47,7 +47,7 @@ export function CartPopUp() {
             className="cursor-pointer"
           />
         </div>
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6 max-h-150 overflow-y-auto">
           {query.isLoading &&
             Array.from({ length: 3 }, (_, i) => <CartItemSkeleton key={i} />)}
           {query.data?.data?.cartItems.map((i) => (

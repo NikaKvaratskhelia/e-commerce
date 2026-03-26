@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Heart } from "lucide-react";
 import { ProductDTO } from "../../server/models";
-import { AddToCartBtn } from "@/src/modules/cart/components/AddToCartBtn";
+import { AddToCartBtn } from "@/src/modules/cart/components/common/AddToCartBtn";
 
 type Props = {
   product: ProductDTO;
@@ -12,7 +12,7 @@ const SEVEN_DAYS_IN_MS = 7 * 24 * 60 * 60 * 1000;
 
 export function ProductCard({ product }: Props) {
   const now = new Date();
-
+  
   const isNew =
     now.getTime() - new Date(product.createdAt).getTime() <= SEVEN_DAYS_IN_MS;
 
@@ -66,7 +66,7 @@ export function ProductCard({ product }: Props) {
           />
         </Link>
 
-        <AddToCartBtn id={product.id} />
+        <AddToCartBtn id={product.colors[0]?.id} />
       </div>
 
       <div className="flex flex-col gap-1 mt-4">

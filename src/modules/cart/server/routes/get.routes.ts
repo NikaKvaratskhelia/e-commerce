@@ -1,4 +1,3 @@
-import { requireAuth } from "@/src/auth/helpers";
 import { requireRoleMiddleware } from "@/src/auth/middleware";
 import { ApiResponse } from "@/src/types/ApiReturnType";
 import { Hono } from "hono";
@@ -11,7 +10,8 @@ export const GetRoutes = new Hono().get(
   async (c) => {
     let response: ApiResponse<GetCartModel>;
 
-    const { user, session } = await requireAuth();
+    const user = c.get("user");
+    const session = c.get("session");
 
     if (!user || !session) {
       response = {

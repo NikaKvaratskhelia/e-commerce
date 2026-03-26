@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/src/components/ui/Button";
-import { useAddToCartMutation } from "../hooks/mutations/use-add-to-cart";
+import { useAddToCartMutation } from "../../hooks/mutations/use-add-to-cart";
 
 export function AddToCartBtn({ id }: { id: number }) {
   const { mutate } = useAddToCartMutation(id);

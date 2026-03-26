@@ -6,11 +6,19 @@ export const getCartSelect = {
   userId: true,
   cartItems: {
     include: {
-      product: true,
+      productColor: {
+        include: {
+          photos: true,
+          product: {
+            include: {
+              discounts: true,
+            },
+          },
+        },
+      },
     },
   },
 } satisfies Prisma.CartSelect;
-
 
 export type GetCartModel = Prisma.CartGetPayload<{
   select: typeof getCartSelect;

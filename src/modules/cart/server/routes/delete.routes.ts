@@ -1,4 +1,3 @@
-import { requireAuth } from "@/src/auth/helpers";
 import { requireRoleMiddleware } from "@/src/auth/middleware";
 import { prisma } from "@/src/library/db";
 import { ApiResponse } from "@/src/types/ApiReturnType";
@@ -11,7 +10,8 @@ export const DeleteRoutes = new Hono().delete(
   async (c) => {
     let response: ApiResponse<GetCartModel>;
 
-    const { user, session } = await requireAuth();
+    const user = c.get("user");
+    const session = c.get("session");
 
     if (!user || !session) {
       response = {
@@ -55,9 +55,9 @@ export const DeleteRoutes = new Hono().delete(
     }
     const body = await c.req.json();
 
-    const { productId } = body;
+    const { productColorId } = body;
 
-    if (!productId) {
+    if (!productColorId) {
       response = {
         status: 400,
         message: "პროდუქტის ID სავალდებულოა.",
@@ -69,8 +69,8 @@ export const DeleteRoutes = new Hono().delete(
 
     const productInCart = await prisma.cartItem.findUnique({
       where: {
-        productId_cartId: {
-          productId: productId,
+        productColorId_cartId: {
+          productColorId: productColorId,
           cartId: cart.id,
         },
       },
@@ -78,7 +78,7 @@ export const DeleteRoutes = new Hono().delete(
         product: true,
       },
     });
-    
+
     if (!productInCart) {
       response = {
         status: 404,
@@ -91,16 +91,19 @@ export const DeleteRoutes = new Hono().delete(
 
     await prisma.cartItem.delete({
       where: {
-        productId_cartId: {
-          productId: productInCart.productId,
+        productColorId_cartId: {
+          productColorId: productColorId,
           cartId: cart.id,
         },
       },
     });
 
     const updatedTotal = cart.cartItems
-      .filter((item) => item.productId !== productId)
-      .reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+      .filter((item) => item.productId !== productColorId)
+      .reduce(
+        (sum, item) => sum + item.productColor.product.price * item.quantity,
+        0,
+      );
 
     await prisma.cart.update({
       where: { id: cart.id },

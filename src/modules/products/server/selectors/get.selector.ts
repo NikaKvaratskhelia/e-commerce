@@ -17,6 +17,7 @@ export const get_product_details_selector = {
       has3D: true,
       photos: true,
       model3d: true,
+      productId: true,
     },
   },
 
@@ -35,4 +36,14 @@ export const get_products_selector = {
   productCategoryId: true,
   discounts: true,
   productCategory: true,
+  colors: {
+    select: {
+      id: true,
+      color: true,
+      productId: true,
+      has3D: true,
+      photos: true,
+      model3d: true,
+    },
+  },
 } satisfies Prisma.ProductSelect;

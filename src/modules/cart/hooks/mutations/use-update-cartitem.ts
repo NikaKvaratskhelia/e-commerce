@@ -6,7 +6,7 @@ import { GetCartModel } from "../../server/selectors";
 
 async function updateProductInCart(id: number, qty: number) {
   const res = await client.api.cart.cartItems.$put({
-    json: { productId: id, quantity: qty },
+    json: { productColorId: id, quantity: qty },
   });
 
   const data = await res.json();
@@ -36,16 +36,11 @@ export function useUpdateCartMutation() {
         if (!old?.data) return old;
 
         const updatedItems = old.data.cartItems.map((item) =>
-          item.productId === id
-            ? {
-                ...item,
-                quantity: qty,
-              }
-            : item,
+          item.productColorId === id ? { ...item, quantity: qty } : item,
         );
 
         const newTotal = updatedItems.reduce(
-          (sum, item) => sum + item.quantity * item.product.price,
+          (sum, item) => sum + item.quantity * item.productColor.product.price,
           0,
         );
 

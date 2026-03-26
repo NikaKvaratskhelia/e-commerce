@@ -2,7 +2,6 @@ import { Hono } from "hono";
 import { prisma } from "@/src/library/db";
 import { GetCartModel, getCartSelect } from "../selectors";
 import { ApiResponse } from "@/src/types/ApiReturnType";
-import { requireAuth } from "@/src/auth/helpers";
 import { requireRoleMiddleware } from "@/src/auth/middleware";
 
 export const PutRoutes = new Hono().put(
@@ -11,8 +10,8 @@ export const PutRoutes = new Hono().put(
   async (c) => {
     let response: ApiResponse<GetCartModel>;
 
-    const { user, session } = await requireAuth();
-
+    const user = c.get("user");
+    const session = c.get("session");
     if (!user || !session) {
       response = {
         message: "მომხარებელი არ არის სისტემაში.",
@@ -50,9 +49,9 @@ export const PutRoutes = new Hono().put(
     }
 
     const body = await c.req.json();
-    const { productId, quantity } = body;
+    const { productColorId, quantity } = body;
 
-    if (!productId) {
+    if (!productColorId) {
       response = {
         status: 400,
         message: "პროდუქტის ID სავალდებულოა.",
@@ -81,13 +80,21 @@ export const PutRoutes = new Hono().put(
 
     const productInCart = await prisma.cartItem.findUnique({
       where: {
-        productId_cartId: {
-          productId: productId,
+        productColorId_cartId: {
+          productColorId: productColorId,
           cartId: cart.id,
         },
       },
       include: {
-        product: true,
+        productColor: {
+          include: {
+            product: {
+              include: {
+                discounts: true,
+              },
+            },
+          },
+        },
       },
     });
 
@@ -100,7 +107,7 @@ export const PutRoutes = new Hono().put(
       return c.json(response, response.status);
     }
 
-    if (productInCart.product.stock === 0) {
+    if (productInCart.productColor.product.stock === 0) {
       response = {
         status: 400,
         message: "პროდუქტის მარაგი ამოიწურა.",
@@ -109,10 +116,10 @@ export const PutRoutes = new Hono().put(
       return c.json(response, response.status);
     }
 
-    if (quantity > productInCart.product.stock) {
+    if (quantity > productInCart.productColor.product.stock) {
       response = {
         status: 400,
-        message: `მარაგში მხოლოდ ${productInCart.product.stock} ერთეულია.`,
+        message: `მარაგში მხოლოდ ${productInCart.productColor.product.stock} ერთეულია.`,
         success: false,
       };
       return c.json(response, response.status);
@@ -121,16 +128,19 @@ export const PutRoutes = new Hono().put(
     if (quantity === 0) {
       await prisma.cartItem.delete({
         where: {
-          productId_cartId: {
-            productId,
+          productColorId_cartId: {
+            productColorId,
             cartId: cart.id,
           },
         },
       });
 
       const updatedTotal = cart.cartItems
-        .filter((item) => item.productId !== productId)
-        .reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+        .filter((item) => item.productId !== productColorId)
+        .reduce(
+          (sum, item) => sum + item.productColor.product.price * item.quantity,
+          0,
+        );
 
       await prisma.cart.update({
         where: { id: cart.id },
@@ -145,17 +155,28 @@ export const PutRoutes = new Hono().put(
       return c.json(response, response.status);
     }
 
+    const now = new Date();
+
+    const discount = productInCart.productColor.product.discounts.find(
+      (d) => new Date(d.discountEndDate).getTime() > now.getTime(),
+    );
+
+    const price = discount
+      ? productInCart.productColor.product.price *
+        (1 - discount.discountPercentage / 100)
+      : productInCart.productColor.product.price;
+
     const updatedTotal = cart.cartItems.reduce((sum, item) => {
       const itemQuantity =
-        item.productId === productId ? quantity : item.quantity;
-      return sum + item.product.price * itemQuantity;
+        item.productColorId === productColorId ? quantity : item.quantity;
+      return sum + price * itemQuantity;
     }, 0);
 
     await prisma.$transaction([
       prisma.cartItem.update({
         where: {
-          productId_cartId: {
-            productId,
+          productColorId_cartId: {
+            productColorId,
             cartId: cart.id,
           },
         },
@@ -163,7 +184,7 @@ export const PutRoutes = new Hono().put(
       }),
       prisma.cart.update({
         where: { id: cart.id },
-        data: { total: updatedTotal },
+        data: { total: Number(updatedTotal.toFixed(2)) },
       }),
     ]);
 
