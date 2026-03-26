@@ -70,6 +70,7 @@ export function CartPopUp() {
             </Link>
             <Link
               href={"/cart"}
+              onClick={() => setShowCart(false)}
               className="border-b border-(--primary) font-semibold"
             >
               View Cart
