@@ -10,7 +10,7 @@ async function getData(id: string) {
   return data;
 }
 
-export function useOrders(id: string) {
+export function useOrder(id: string) {
   return useQuery({
     queryKey: ["orders", id],
     queryFn: () => getData(id),

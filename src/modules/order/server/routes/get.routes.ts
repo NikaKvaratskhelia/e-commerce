@@ -40,7 +40,7 @@ export const GetRoutes = new Hono()
     const { id: userId } = c.get("user");
     const id = c.req.param("id");
 
-    if (!id || isNaN(Number(id))) {
+    if (!id) {
       response = {
         message: "ID სავალდებულოა.",
         status: 400,
