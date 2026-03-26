@@ -38,13 +38,17 @@ export async function order(data: CheckoutFormValues) {
   });
 
   cart.cartItems.forEach(async (i) => {
-    await prisma.orderItem.create({
-      data: {
-        productId: i.productColorId,
-        quantity: i.quantity,
-        orderId: order.id,
-      },
-    });
+    await prisma.$transaction([
+      prisma.orderItem.create({
+        data: {
+          productId: i.productColorId,
+          quantity: i.quantity,
+          orderId: order.id,
+        },
+      }),
+
+      prisma.cartItem.delete({ where: { id: i.id } }),
+    ]);
   });
 
   return {
