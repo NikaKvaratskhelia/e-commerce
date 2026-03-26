@@ -8,7 +8,7 @@ type Props = {
 };
 
 export function EditQtyBtn({ id, qty }: Props) {
-  const { mutate, isPending } = useUpdateCartMutation();  
+  const { mutate } = useUpdateCartMutation();
 
   function handleDecrease() {
     if (qty <= 0) return;
@@ -31,7 +31,6 @@ export function EditQtyBtn({ id, qty }: Props) {
       <button
         type="button"
         onClick={handleDecrease}
-        disabled={isPending || qty <= 1}
         className="cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
       >
         -
@@ -42,7 +41,6 @@ export function EditQtyBtn({ id, qty }: Props) {
       <button
         type="button"
         onClick={handleIncrease}
-        disabled={isPending}
         className="cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
       >
         +

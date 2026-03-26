@@ -15,7 +15,11 @@ export const get_product_details_selector = {
       id: true,
       color: true,
       has3D: true,
-      photos: true,
+      photos: {
+        orderBy: {
+          id: "asc",
+        },
+      },
       model3d: true,
       productId: true,
     },
@@ -24,6 +28,10 @@ export const get_product_details_selector = {
   discounts: true,
   productCategory: true,
 } satisfies Prisma.ProductSelect;
+
+export type ProductDetailModel = Prisma.ProductGetPayload<{
+  select: typeof get_product_details_selector;
+}>;
 
 export const get_products_selector = {
   id: true,

@@ -136,15 +136,22 @@ export const PutRoutes = new Hono().put(
       });
 
       const updatedTotal = cart.cartItems
-        .filter((item) => item.productId !== productColorId)
-        .reduce(
-          (sum, item) => sum + item.productColor.product.price * item.quantity,
-          0,
-        );
+        .filter((item) => item.productColorId !== productColorId)
+        .reduce((sum, item) => {
+          const itemDiscount = item.productColor.product.discounts.find(
+            (d) => new Date(d.discountEndDate).getTime() > now.getTime(),
+          );
+          const itemPrice = itemDiscount
+            ? item.productColor.product.price *
+              (1 - itemDiscount.discountPercentage / 100)
+            : item.productColor.product.price;
+
+          return sum + itemPrice * item.quantity;
+        }, 0);
 
       await prisma.cart.update({
         where: { id: cart.id },
-        data: { total: updatedTotal },
+        data: { total: Number(updatedTotal.toFixed(2)) },
       });
 
       response = {
@@ -157,19 +164,20 @@ export const PutRoutes = new Hono().put(
 
     const now = new Date();
 
-    const discount = productInCart.productColor.product.discounts.find(
-      (d) => new Date(d.discountEndDate).getTime() > now.getTime(),
-    );
-
-    const price = discount
-      ? productInCart.productColor.product.price *
-        (1 - discount.discountPercentage / 100)
-      : productInCart.productColor.product.price;
-
     const updatedTotal = cart.cartItems.reduce((sum, item) => {
       const itemQuantity =
         item.productColorId === productColorId ? quantity : item.quantity;
-      return sum + price * itemQuantity;
+
+      const itemDiscount = item.productColor.product.discounts.find(
+        (d) => new Date(d.discountEndDate).getTime() > now.getTime(),
+      );
+
+      const itemPrice = itemDiscount
+        ? item.productColor.product.price *
+          (1 - itemDiscount.discountPercentage / 100)
+        : item.productColor.product.price;
+
+      return sum + itemPrice * itemQuantity;
     }, 0);
 
     await prisma.$transaction([
