@@ -42,7 +42,8 @@ export function TableRow({ cartItem }: Props) {
       </td>
       <td>
         <p className="text-[18px] leading-6 font-semibold">
-          ${cartItem.quantity * cartItem.productColor.product.price}
+          $
+          {(cartItem.quantity * cartItem.productColor.product.price).toFixed(2)}
         </p>
       </td>
     </tr>
