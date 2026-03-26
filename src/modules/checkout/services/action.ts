@@ -34,14 +34,14 @@ export async function order(data: CheckoutFormValues) {
   }
 
   const order = await prisma.order.create({
-    data: { paymentMethod: "Credit Card", total: 0 },
+    data: { paymentMethod: "Credit Card", total: 0, userId: user.id },
   });
 
   cart.cartItems.forEach(async (i) => {
     await prisma.$transaction([
       prisma.orderItem.create({
         data: {
-          productId: i.productColorId,
+          producColortId: i.productColorId,
           quantity: i.quantity,
           orderId: order.id,
         },

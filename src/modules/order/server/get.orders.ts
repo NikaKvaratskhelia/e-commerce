@@ -2,6 +2,7 @@ import { Prisma } from "@/generated/prisma/browser";
 
 export const get_order_selector = {
   id: true,
+  userId: true,
   createdAt: true,
   paymentMethod: true,
   total: true,
@@ -9,15 +10,21 @@ export const get_order_selector = {
     select: {
       id: true,
       quantity: true,
-      productId: true,
-      product: {
+      producColortId: true,
+      productColor: {
         select: {
-          id: true,
-          title: true,
-          price: true,
-          thumbnail: true,
+          photos: true,
+          product: {
+            select: {
+              price: true,
+            },
+          },
         },
       },
     },
   },
 } satisfies Prisma.OrderSelect;
+
+export type OrderType = Prisma.OrderGetPayload<{
+  select: typeof get_order_selector;
+}>;
