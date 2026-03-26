@@ -1,6 +1,6 @@
 import { ApiResponse } from "@/src/types/ApiReturnType";
 import { Hono } from "hono";
-import { get_order_selector, OrderType } from "../get.orders";
+import { get_order_selector, OrderType } from "../selectors/get.orders";
 import { requireAuthMiddleware } from "@/src/auth/middleware";
 import { prisma } from "@/src/library/db";
 
