@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 import { UserProfileLink } from "../components/common/UserProfileLink";
+import { CartItemQty } from "./CartItemQty";
 
 type Props = {
   isAuthenticated: boolean;
@@ -87,12 +88,8 @@ export function BurgerMenu({ isAuthenticated }: Props) {
                 width={24}
                 height={24}
               />
-              <div className="h-5 w-5 p-1 box-border rounded-full bg-black">
-                {/* aq unda daematos cart itemebis raodenoba */}
-                <p className="text-white text-[12px] text-center leading-2.5 font-bold">
-                  0
-                </p>
-              </div>
+
+              <CartItemQty />
             </div>
           </Link>
           <UserProfileLink isAuthenticated={isAuthenticated} />

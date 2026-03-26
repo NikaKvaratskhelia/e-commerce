@@ -36,9 +36,18 @@ export async function registerAction(
   const hashedPass = await bcrypt.hash(password, 10);
 
   const user = await prisma.user.create({
-    data: { name, username, email: email.toLowerCase(), password: hashedPass },
+    data: {
+      name,
+      username,
+      email: email.toLowerCase(),
+      password: hashedPass,
+    },
     select: getUserSelect,
   });
+
+  await prisma.cart.create({data:{
+    userId:user.id
+  }})
 
   const cookieStore = await cookies();
   cookieStore.set("pending_verification_email", user.email, {
