@@ -13,7 +13,6 @@ type GetManyDataType = {
   products: ProductModel[];
   pagination: {
     total: number;
-    page: number;
     limit: number;
     totalPages: number;
   };
@@ -21,7 +20,6 @@ type GetManyDataType = {
 
 export const GetRoutes = new Hono()
   .get("/", async (c) => {
-    const page = Number(c.req.query("page") ?? 1);
     const limit = Number(c.req.query("limit") ?? 10);
     const sortBy = c.req.query("sortBy");
     const sort = c.req.query("sort")?.toLowerCase();
@@ -30,12 +28,7 @@ export const GetRoutes = new Hono()
 
     let response: ApiResponse<GetManyDataType>;
 
-    if (
-      !Number.isInteger(page) ||
-      !Number.isInteger(limit) ||
-      page < 1 ||
-      limit < 1
-    ) {
+    if (!Number.isInteger(limit) || limit < 1) {
       response = {
         success: false,
         message: "პაგინაციის პარამეტრები არასწორია.",
@@ -44,7 +37,6 @@ export const GetRoutes = new Hono()
 
       return c.json(response, response.status);
     }
-
 
     const sortableFields = ["createdAt", "price", "title"] as const;
 
@@ -74,12 +66,9 @@ export const GetRoutes = new Hono()
         : {}),
     };
 
-    const skip = (page - 1) * limit;
-
     const [products, total] = await Promise.all([
       prisma.product.findMany({
         where,
-        skip,
         take: limit,
         select: get_products_selector,
         orderBy,
@@ -95,7 +84,6 @@ export const GetRoutes = new Hono()
         products,
         pagination: {
           total,
-          page,
           limit,
           totalPages: Math.ceil(total / limit),
         },
