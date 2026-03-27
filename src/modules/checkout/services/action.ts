@@ -48,6 +48,7 @@ export async function order(data: CheckoutFormValues) {
       }),
 
       prisma.cartItem.delete({ where: { id: i.id } }),
+      prisma.cart.update({ where: { userId: user.id }, data: { total: 0 } }),
     ]);
   });
 

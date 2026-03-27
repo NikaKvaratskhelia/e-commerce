@@ -18,24 +18,24 @@ export function OrderDetails() {
 
   return (
     <div className="flex flex-col gap-6 max-w-fit w-full mx-auto">
-      <p className="flex w-full justify-between items-center gap-6">
+      <p className="flex w-full flex-col sm:flex-row justify-between items-center gap-6">
         <span>Order Code: </span>
-        <span>{data?.data?.id}</span>
+        <span className="max-w-40">{data?.data?.id}</span>
       </p>
 
-      <p className="flex w-full justify-between items-center gap-6">
+      <p className="flex w-full flex-col sm:flex-row justify-between items-center gap-6">
         <span>Created At: </span>
         <span>
           {formatDate(data?.data?.createdAt ?? new Date().toISOString())}
         </span>
       </p>
 
-      <p className="flex w-full justify-between items-center gap-6">
+      <p className="flex w-full flex-col sm:flex-row justify-between items-center gap-6">
         <span>Order Code: </span>
         <span>{data?.data?.total}</span>
       </p>
 
-      <p className="flex w-full justify-between items-center gap-6">
+      <p className="flex w-full flex-col sm:flex-row justify-between items-center gap-6">
         <span>Order Code: </span>
         <span>{data?.data?.paymentMethod}</span>
       </p>

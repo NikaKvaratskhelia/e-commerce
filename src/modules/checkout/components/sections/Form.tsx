@@ -44,7 +44,7 @@ export function Form() {
 
     try {
       const res = await order(data);
-      router.push(`/cart  /order/${res.orderId}`);
+      router.push(`/cart/order/${res.orderId}`);
       methods.reset();
     } catch (e) {
       if (e instanceof Error) {
