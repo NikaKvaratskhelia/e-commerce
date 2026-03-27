@@ -6,6 +6,7 @@ import { ProductCard } from "../common/ProductCard";
 import { useSearchParams } from "next/navigation";
 import { GridSetter } from "./GridSetter";
 import { FilterSidebar } from "./FilterSidebar";
+import { ProductCardSkeleton } from "../skeleton/ProductsCardSkeleton";
 
 export type GridValues =
   | "grid-cols-3"
@@ -37,13 +38,31 @@ export function ProductsGrid() {
       <div className="flex flex-col gap-10 flex-1 min-w-0">
         <GridSetter gridCols={gridCol} setGridCols={setGridCol} />
         <div className={`grid ${gridCol} w-full gap-6 justify-items-end`}>
-          {data.data?.data?.products.map((p) => (
-            <ProductCard
-              key={p.id}
-              product={p}
-              layout={productIsColumn ? "column" : "row"}
-            />
-          ))}
+          {data.isLoading ? (
+            Array.from({ length: 9 }, (_, i) => (
+              <ProductCardSkeleton
+                key={i}
+                layout={productIsColumn ? "column" : "row"}
+              />
+            ))
+          ) : data.data?.data?.products.length === 0 ? (
+            <div className="col-span-full flex flex-col items-center w-full justify-center py-20 gap-3 text-center">
+              <p className="text-xl font-semibold text-(--primary)">
+                No products found
+              </p>
+              <p className="text-sm text-(--neutral-light-grey)">
+                Try adjusting your filters or browse other categories.
+              </p>
+            </div>
+          ) : (
+            data.data?.data?.products.map((p) => (
+              <ProductCard
+                key={p.id}
+                product={p}
+                layout={productIsColumn ? "column" : "row"}
+              />
+            ))
+          )}
         </div>
       </div>
     </div>
