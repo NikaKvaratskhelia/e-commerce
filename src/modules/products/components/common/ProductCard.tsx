@@ -29,7 +29,7 @@ export function ProductCard({ product, layout = "column" }: Props) {
     <div
       className={`mx-auto flex gap-4 ${layout === "column" ? "flex-col w-65.5" : "flex-row w-full"}`}
     >
-      <div className="relative h-87.5 p-4 group bg-(--neutral-semi-white) flex flex-col justify-between overflow-hidden">
+      <div className="relative h-87.5 min-w-65.5 p-4 group bg-(--neutral-semi-white) flex flex-col justify-between overflow-hidden">
         <div className="flex items-center justify-between">
           {(isNew || discount) && (
             <div className="flex flex-col gap-2 font-bold leading-3.5 text-center self-start z-20">
