@@ -1,13 +1,24 @@
+"use client";
+
 import { forwardRef, InputHTMLAttributes } from "react";
+import { useFormContext } from "react-hook-form";
+import { CheckoutFormValues } from "../../services/validations/checkoutValidation";
 
 type Props = InputHTMLAttributes<HTMLInputElement> & {
-  id: string;
+  id: keyof CheckoutFormValues;
   label: string;
-  error?: string;
 };
 
 export const Input = forwardRef<HTMLInputElement, Props>(
-  ({ label, id, error, ...props }, ref) => {
+  ({ label, id, ...rest }, ref) => {
+    const {
+      register,
+      formState: { errors },
+    } = useFormContext<CheckoutFormValues>();
+
+    const errorMessage = errors[id]?.message;
+    const { ref: registerRef, ...registerRest } = register(id);
+
     return (
       <div className="flex flex-col gap-3 flex-1">
         <label
@@ -18,13 +29,20 @@ export const Input = forwardRef<HTMLInputElement, Props>(
         </label>
         <input
           id={id}
-          ref={ref}
           className={`px-4 py-2 rounded-md border ${
-            error ? "border-red-500" : "border-[#cbcbcb]"
+            errorMessage ? "border-red-500" : "border-[#cbcbcb]"
           }`}
-          {...props}
+          ref={(node) => {
+            registerRef(node);
+            if (typeof ref === "function") ref(node);
+            else if (ref) ref.current = node;
+          }}
+          {...registerRest}
+          {...rest}
         />
-        {error && <p className="text-xs text-red-500">{error}</p>}
+        {errorMessage && (
+          <p className="text-xs text-red-500">{errorMessage as string}</p>
+        )}
       </div>
     );
   },
