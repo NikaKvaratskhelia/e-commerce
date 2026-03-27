@@ -27,7 +27,7 @@ export function ProductCard({ product, layout = "column" }: Props) {
 
   return (
     <div
-      className={`mx-auto flex gap-4 ${layout === "column" ? "flex-col w-65.5" : "flex-row w-full"}`}
+      className={`flex gap-4 ${layout === "column" ? "flex-col w-65.5" : "flex-row w-full"}`}
     >
       <div className="relative h-87.5 min-w-65.5 p-4 group bg-(--neutral-semi-white) flex flex-col justify-between overflow-hidden">
         <div className="flex items-center justify-between">
@@ -100,7 +100,7 @@ export function ProductCard({ product, layout = "column" }: Props) {
       </div>
 
       <div
-        className={`${layout === "column" ? "hidden" : "flex"} flex-col gap-6`}
+        className={`${layout === "column" ? "hidden" : "flex"} flex-col gap-6 px-6`}
       >
         <div className="flex flex-col gap-2">
           <h3 className="text-[16px] leading-6.5">{product.title}</h3>
@@ -121,10 +121,10 @@ export function ProductCard({ product, layout = "column" }: Props) {
             )}
           </p>
         </div>
-        <p className="text-sm leading-5.5 text-(--neutral-light-grey)">
+        <p className="text-sm leading-5.5 text-(--neutral-light-grey) mb-auto">
           {product.description}
         </p>
-        <AddToCartBtn id={product.id} />
+        <AddToCartBtn id={product.id} variant="shown"/>
         {/* aq wishlist btn unda iyos */}
         <p>wishlist btn daamate</p>
       </div>
