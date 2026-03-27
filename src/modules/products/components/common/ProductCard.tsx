@@ -27,7 +27,7 @@ export function ProductCard({ product, layout = "column" }: Props) {
 
   return (
     <div
-      className={`flex gap-4 ${layout === "column" ? "flex-col max-w-65.5" : "flex-row w-full"}`}
+      className={`flex gap-4 ${layout === "column" ? "flex-col max-w-65.5" : "flex-col sm:flex-row w-full"}`}
     >
       <div className="relative h-87.5 min-w-54 sm:min-w-65.5 p-4 group bg-(--neutral-semi-white) flex flex-col justify-between overflow-hidden">
         <div className="flex items-center justify-between">
