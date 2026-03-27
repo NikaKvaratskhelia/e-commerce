@@ -17,10 +17,7 @@ export function ProductSlider() {
   const onlyNewParam = params.get("newProductsOnly");
 
   const queries = {
-    page: params.get("page") ?? "",
     limit: params.get("limit") ?? "",
-    sortBy: params.get("sortBy") ?? "",
-    sort: params.get("sort") ?? "",
     newOnly: onlyNewParam !== null ? onlyNewParam : "true",
     categoryId: params.get("categoryId") ?? "",
   };
@@ -54,7 +51,7 @@ export function ProductSlider() {
             slidesPerView: 1,
             spaceBetween: 24,
           },
-          600:{
+          600: {
             slidesPerView: 1.4,
             spaceBetween: 24,
           },
@@ -77,7 +74,7 @@ export function ProductSlider() {
       >
         {data?.data?.products?.map((item) => (
           <SwiperSlide key={item.id}>
-            <ProductCard product={item} />
+            <ProductCard product={item} layout={"column"} />
           </SwiperSlide>
         ))}
       </Swiper>
