@@ -8,6 +8,8 @@ type Queries = {
   sortBy: string;
   sort: string;
   newOnly: string;
+  minPrice: string;
+  maxPrice: string;
   categoryId: string;
 };
 
