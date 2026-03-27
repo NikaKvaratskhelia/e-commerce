@@ -1,18 +1,25 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { useProducts } from "../../hooks/queries/use-products";
 import { ProductCard } from "../common/ProductCard";
-import { useSearchParams } from "next/navigation";
 import { GridSetter } from "./GridSetter";
 import { FilterSidebar } from "./FilterSidebar";
 import { ProductCardSkeleton } from "../skeleton/ProductsCardSkeleton";
 
 export type GridValues =
-  | "grid-cols-3"
-  | "grid-cols-4"
   | "grid-cols-1"
-  | "grid-cols-2";
+  | "grid-cols-2"
+  | "grid-cols-3"
+  | "grid-cols-4";
+
+const GRID_CLASS_MAP: Record<GridValues, string> = {
+  "grid-cols-1": "w1120:grid-cols-1",
+  "grid-cols-2": "w1120:grid-cols-2",
+  "grid-cols-3": "w1120:grid-cols-3",
+  "grid-cols-4": "w1120:grid-cols-4",
+};
 
 export function ProductsGrid() {
   const [gridCol, setGridCol] = useState<GridValues>("grid-cols-3");
@@ -32,12 +39,19 @@ export function ProductsGrid() {
     gridCol === "grid-cols-3" || gridCol === "grid-cols-4";
 
   return (
-    <div className="max-w-280 mx-auto flex items-start gap-10 py-15">
+    <div className="max-w-280 mx-auto flex items-start gap-10 py-15 px-8 w1120:px-0">
       {gridCol === "grid-cols-3" && <FilterSidebar />}
 
       <div className="flex flex-col gap-10 flex-1 min-w-0">
         <GridSetter gridCols={gridCol} setGridCols={setGridCol} />
-        <div className={`grid ${gridCol} w-full gap-6 justify-items-end`}>
+
+        <div
+          className={`grid grid-cols-1 w-full gap-12 ${
+            productIsColumn
+              ? `grid-cols-[repeat(auto-fit,minmax(216px,1fr))] w1120:${gridCol}`
+              : GRID_CLASS_MAP[gridCol]
+          }`}
+        >
           {data.isLoading ? (
             Array.from({ length: 9 }, (_, i) => (
               <ProductCardSkeleton
@@ -46,7 +60,7 @@ export function ProductsGrid() {
               />
             ))
           ) : data.data?.data?.products.length === 0 ? (
-            <div className="col-span-full flex flex-col items-center w-full justify-center py-20 gap-3 text-center">
+            <div className="col-span-full flex w-full flex-col items-center justify-center gap-3 py-20 text-center">
               <p className="text-xl font-semibold text-(--primary)">
                 No products found
               </p>

@@ -37,8 +37,7 @@ export function FilterSidebar() {
   const { data } = useCategories();
 
   return (
-    <aside className="w-52 shrink-0 flex flex-col gap-8">
-      {/* Categories */}
+    <aside className="w-52 shrink-0 hidden flex-col gap-8 w1120:flex">
       <div className="flex flex-col gap-3">
         <p className="text-xs font-semibold uppercase tracking-widest text-(--neutral-light-grey)">
           Categories

@@ -22,7 +22,7 @@ const GRID_OPTIONS: GridOption[] = [
 
 export function GridSetter({ gridCols, setGridCols }: Props) {
   return (
-    <div className="flex gap-6 ml-auto">
+    <div className="flex gap-6 ml-auto flex-wrap">
       {GRID_OPTIONS.map((option) => {
         const isActive = gridCols === option.value;
 
