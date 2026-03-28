@@ -18,7 +18,7 @@ export function Hero() {
         <h2 className="text-[40px] leading-11 sm:text-[54px] sm:leading-14.5 font-medium">
           Shop Page
         </h2>
-        <p className=" leading-6.5 sm:text-xl sm:leading-8">
+        <p className="text-center leading-6.5 sm:text-xl sm:leading-8">
           Let&apos;s design the place you always imagined.
         </p>
       </div>

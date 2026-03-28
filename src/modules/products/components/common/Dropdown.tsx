@@ -52,7 +52,7 @@ export function Dropdown({
       className="relative flex flex-col gap-2 items-start w-full"
     >
       {label && (
-        <p className="text-xs font-semibold uppercase tracking-widest leading-6 text-(--neutral-light-grey)">
+        <p className="text-xs font-semibold uppercase tracking-widest leading-6 text-(--neutral-light-grey) min-w-37.5">
           {label}
         </p>
       )}

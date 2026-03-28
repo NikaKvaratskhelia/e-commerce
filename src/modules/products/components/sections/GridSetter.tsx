@@ -34,7 +34,7 @@ export function GridSetter({ gridCols, setGridCols }: Props) {
   );
 
   return (
-    <div className="flex justify-between w-full items-end">
+    <div className="flex justify-between w-full items-end flex-wrap gap-4">
       <div className="flex-1">
         <FilterSidebarDropdowns show={gridCols !== "grid-cols-3"} />
       </div>

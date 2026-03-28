@@ -55,7 +55,7 @@ export function FilterSidebarDropdowns({ show }: { show: boolean }) {
 
   return (
     <aside
-      className={`w-52 shrink-0 ${show ? "flex" : "hidden"} flex-col gap-8 sm:flex-row w-full`}
+      className={`w-52 shrink-0 ${show ? "flex" : " flex w1120:hidden"} flex-col gap-8 sm:flex-row w-full`}
     >
       <div className="max-w-65.5 w-full">
         <Dropdown
