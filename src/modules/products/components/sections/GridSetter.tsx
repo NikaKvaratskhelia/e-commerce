@@ -1,54 +1,43 @@
 "use client";
 
+import { FilterSidebarDropdowns } from "./FilterSidebarDropdwons";
 import { GridValues } from "./ProductsGrid";
+import { GRID_OPTIONS } from "../../constants/grid_options";
 
 type Props = {
   gridCols: GridValues;
   setGridCols: (gridCol: GridValues) => void;
 };
 
-type GridOption = {
-  value: GridValues;
-  previewCols: number;
-  cells: number;
-};
-
-const GRID_OPTIONS: GridOption[] = [
-  { value: "grid-cols-3", previewCols: 3, cells: 9 },
-  { value: "grid-cols-4", previewCols: 2, cells: 4 },
-  { value: "grid-cols-2", previewCols: 2, cells: 2 },
-  { value: "grid-cols-1", previewCols: 1, cells: 2 },
-];
-
 export function GridSetter({ gridCols, setGridCols }: Props) {
   return (
-    <div className="flex gap-6 ml-auto flex-wrap">
-      {GRID_OPTIONS.map((option) => {
-        const isActive = gridCols === option.value;
+    <div className="flex justify-between w-full items-end">
+      <div className="flex-1">
+        <FilterSidebarDropdowns show={gridCols !== "grid-cols-3"} />
+      </div>
+      <div className="flex justify-end gap-6 ml-auto flex-wrap flex-1">
+        {GRID_OPTIONS.map((option) => {
+          const isActive = gridCols === option.value;
 
-        return (
-          <div
-            key={option.value}
-            className={`p-2 border border-(--neutral-light-grey) ${
-              isActive ? "bg-(--primary)/10" : "bg-white"
-            }`}
-            onClick={() => setGridCols(option.value)}
-          >
+          return (
             <div
-              className={`grid gap-1 w-8 h-8 cursor-pointer grid-cols-${option.previewCols}`}
+              key={option.value}
+              className={`p-2 border border-(--neutral-light-grey) ${
+                isActive ? "bg-(--primary)/10" : "bg-white"
+              }`}
+              onClick={() => setGridCols(option.value)}
             >
-              {Array.from({ length: option.cells }, (_, i) => (
-                <div
-                  key={i}
-                  className={`rounded-xs h-full w-full ${
-                    isActive ? "bg-(--primary)" : "bg-(--neutral-light-grey)"
-                  }`}
-                />
-              ))}
+              <div
+                className={`flex items-center justify-center w-5.25 h-5.25 ${
+                  isActive ? "text-(--primary)" : "text-(--neutral-light-grey)"
+                } cursor-pointer`}
+              >
+                {option.svg}
+              </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
     </div>
   );
 }
