@@ -7,6 +7,7 @@ import { ProductCard } from "../common/ProductCard";
 import { GridSetter } from "./GridSetter";
 import { FilterSidebar } from "./FilterSidebar";
 import { ProductCardSkeleton } from "../skeleton/ProductsCardSkeleton";
+import LoadMore from "../common/LoadMore";
 
 export type GridValues =
   | "grid-cols-1"
@@ -78,6 +79,7 @@ export function ProductsGrid() {
             ))
           )}
         </div>
+        <LoadMore length={data.data?.data?.products?.length ?? 0} total={data.data?.data?.pagination?.total ?? 0} />
       </div>
     </div>
   );
