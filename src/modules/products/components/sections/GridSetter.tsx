@@ -49,7 +49,7 @@ export function GridSetter({ gridCols, setGridCols }: Props) {
         />
       </div>
 
-      <div className="flex justify-end gap-6 ml-auto flex-wrap max-w-fit pl-5">
+      <div className="justify-end gap-6 ml-auto flex-wrap max-w-fit pl-5 hidden sm:flex">
         {GRID_OPTIONS.map((option) => {
           const isActive = gridCols === option.value;
 
