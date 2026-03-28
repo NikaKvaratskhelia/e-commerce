@@ -29,7 +29,7 @@ export function ProductsGrid() {
     limit: params.get("limit") ?? "",
     newOnly: "false",
     sortBy: params.get("sortBy") ?? "",
-    sort: "",
+    sort: params.get("sort") ?? "",
     categoryId: params.get("categoryId") ?? "",
     minPrice: params.get("minPrice") ?? "",
     maxPrice: params.get("maxPrice") ?? "",
