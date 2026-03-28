@@ -1,5 +1,4 @@
 import {
-  requireAuthMiddleware,
   requireRoleMiddleware,
 } from "@/src/auth/middleware";
 import { Hono } from "hono";
