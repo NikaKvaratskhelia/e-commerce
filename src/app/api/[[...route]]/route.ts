@@ -8,6 +8,7 @@ import verifyRoutes from "@/src/modules/auth/verifyEmail/server";
 import cartRoutes from "@/src/modules/cart/server";
 import commentRoutes from "@/src/modules/comments/server";
 import contactRoutes from "@/src/modules/contact/server";
+import userRoutes from "@/src/modules/user/server";
 
 const app = new Hono().basePath("/api");
 
@@ -42,7 +43,8 @@ const _routes = app
   .route("/blogs", blogRoute)
   .route("/cart", cartRoutes)
   .route("/comments", commentRoutes)
-  .route("/contact", contactRoutes);
+  .route("/contact", contactRoutes)
+  .route("/user", userRoutes);
 
 export const GET = handle(app);
 export const POST = handle(app);
