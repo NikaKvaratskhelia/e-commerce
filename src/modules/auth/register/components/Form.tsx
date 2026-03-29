@@ -76,6 +76,7 @@ export function RegisterForm() {
         onSubmit={handleSubmit(onSubmit)}
       >
         <Input
+          variant={"default"}
           type="text"
           id="name"
           placeholder="Your Name"
@@ -84,6 +85,7 @@ export function RegisterForm() {
         />
 
         <Input
+          variant={"default"}
           type="text"
           id="username"
           placeholder="Username"
@@ -92,6 +94,7 @@ export function RegisterForm() {
         />
 
         <Input
+          variant={"default"}
           type="email"
           id="email"
           placeholder="Email address"

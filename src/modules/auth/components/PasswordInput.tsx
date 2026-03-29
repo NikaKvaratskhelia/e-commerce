@@ -15,6 +15,7 @@ export function PasswordInput({ register, error }: Props) {
 
   return (
     <Input
+      variant={"default"}
       type={showPass ? "text" : "password"}
       id="password"
       placeholder="Password"

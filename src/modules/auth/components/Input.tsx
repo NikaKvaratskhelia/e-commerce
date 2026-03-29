@@ -4,17 +4,18 @@ import { forwardRef, type InputHTMLAttributes, type ReactNode } from "react";
 
 type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   id: string;
+  variant: "default" | "border";
   icon?: ReactNode;
   error?: string;
 };
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ id, icon, error, ...props }, ref) => {
+  ({ id, icon, error, variant, ...props }, ref) => {
     return (
       <div className="w-full">
         <label
           htmlFor={id}
-          className="border-b border-(--neutral-dark-white) pb-2 cursor-pointer flex justify-between items-center w-full"
+          className={`${variant === "default" ? "border-b" : "border p-2 rounded-md"} border-(--neutral-dark-white) pb-2 cursor-pointer flex justify-between items-center w-full`}
         >
           <input
             ref={ref}
@@ -33,7 +34,11 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           )}
         </label>
 
-        {error && <p className="mt-2 text-[12px] text-red-600 font-semibold select-none">{error}</p>}
+        {error && (
+          <p className="mt-2 text-[12px] text-red-600 font-semibold select-none">
+            {error}
+          </p>
+        )}
       </div>
     );
   },
