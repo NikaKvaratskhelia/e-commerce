@@ -16,14 +16,15 @@ async function updateProfile(formData: PutUserSchema) {
   return data;
 }
 
-export function useUpdateProfile(data: PutUserSchema) {
+export function useUpdateProfile() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () => updateProfile(data),
+    mutationFn: async (data: PutUserSchema) => updateProfile(data),
     onError: (err) => toast.error(err.message),
-    onSuccess: (data) => toast.error(data.message),
-    onSettled: () =>
-      queryClient.invalidateQueries({ queryKey: ["currentUser"] }),
+    onSuccess: (data) => toast.success(data.message),
+    onSettled: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["currentUser"] });
+    },
   });
 }
