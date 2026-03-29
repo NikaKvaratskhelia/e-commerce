@@ -10,6 +10,7 @@ import commentRoutes from "@/src/modules/comments/server";
 import contactRoutes from "@/src/modules/contact/server";
 import userRoutes from "@/src/modules/user/server";
 import wishlistRoutes from "@/src/modules/wishlist/server";
+import ordersRoutes from "@/src/modules/orders/server";
 
 const app = new Hono().basePath("/api");
 
@@ -46,7 +47,8 @@ const _routes = app
   .route("/comments", commentRoutes)
   .route("/contact", contactRoutes)
   .route("/user", userRoutes)
-  .route("/wishlist", wishlistRoutes);
+  .route("/wishlist", wishlistRoutes)
+  .route("/orders", ordersRoutes);
 
 export const GET = handle(app);
 export const POST = handle(app);
