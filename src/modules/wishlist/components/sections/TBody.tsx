@@ -18,7 +18,7 @@ export function TBody() {
     );
   }
 
-  if (!data?.data?.wishlistItems?.length) {
+  if (!data?.wishlistItems?.length) {
     return (
       <tbody className="col-span-full flex items-center py-10 text-center w-full">
         <tr className="w-full">
@@ -46,7 +46,7 @@ export function TBody() {
 
   return (
     <tbody className="flex flex-col gap-6 w-full">
-      {data.data.wishlistItems.map((i) => (
+      {data.wishlistItems.map((i) => (
         <WishlistCard key={i.id} item={i} />
       ))}
     </tbody>

@@ -31,15 +31,11 @@ export function useDeleteWishlistItem() {
 
         return {
           ...old,
-          data: {
-            ...old.wishlistItems,
-            items: (old.wishlistItems ?? []).filter(
-              (item) => item.productColorId !== productColorId,
-            ),
-          },
+          wishlistItems: (old.wishlistItems ?? []).filter(
+            (item) => item.productColorId !== productColorId,
+          ),
         };
       });
-
       return { previousWishlist };
     },
     onError: (_err, _productColorId, context) => {

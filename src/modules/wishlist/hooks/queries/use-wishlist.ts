@@ -10,12 +10,13 @@ async function getData() {
     throw new Error(data.message);
   }
 
-  return data;
+  return data.data;
 }
 
 export function useWishlist() {
   return useQuery({
     queryKey: ["wishlist"],
     queryFn: getData,
+    staleTime:0
   });
 }

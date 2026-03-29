@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Heart } from "lucide-react";
 import { ProductDTO } from "../../server/models";
 import { AddToCartBtn } from "@/src/modules/cart/components/common/AddToCartBtn";
+import { AddToWishlist } from "./AddToWishlist";
 
 type Props = {
   product: ProductDTO;
@@ -12,7 +12,7 @@ const SEVEN_DAYS_IN_MS = 7 * 24 * 60 * 60 * 1000;
 
 export function ProductCard({ product }: Props) {
   const now = new Date();
-  
+
   const isNew =
     now.getTime() - new Date(product.createdAt).getTime() <= SEVEN_DAYS_IN_MS;
 
@@ -44,13 +44,7 @@ export function ProductCard({ product }: Props) {
             </div>
           )}
 
-          <div className="bg-white rounded-full p-2 z-10 cursor-pointer">
-            <Heart
-              width={18}
-              height={18}
-              className="text-red-600 hover:fill-current"
-            />
-          </div>
+          <AddToWishlist id={product.colors[0].id} />
         </div>
 
         <Link
