@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -14,7 +14,7 @@ export function NavLink({ text, href }: Props) {
   return (
     <Link
       href={href}
-      className={`text-(--neutral-light-grey) w-full leading-6.5 pt-2 font-semibold border-b border-(--neutral-semi-white) hover:border-(--primary) hover:text-(--primary) transition-all duration-300 cursor-pointer text-left ${isActive ? "text-(--primary) border-b" : ""}`}
+      className={`text-(--neutral-light-grey) w-full leading-6.5 pt-2 font-semibold border-b border-(--neutral-semi-white) hover:border-(--primary) hover:text-(--primary) transition-all duration-300 cursor-pointer text-left ${isActive ? "text-(--primary) border-b border-(--primary)" : ""}`}
     >
       {text}
     </Link>
