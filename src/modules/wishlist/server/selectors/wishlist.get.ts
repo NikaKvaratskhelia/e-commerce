@@ -9,6 +9,7 @@ export const wishlist_select = {
       productColorId: true,
       productColor: {
         select: {
+          color: true,
           photos: true,
           product: {
             select: {
@@ -24,4 +25,25 @@ export const wishlist_select = {
 
 export type WishlistModel = Prisma.WishlistGetPayload<{
   select: typeof wishlist_select;
+}>;
+
+export const wishlistItem = {
+  id: true,
+  productColorId: true,
+  productColor: {
+    select: {
+      color: true,
+      photos: true,
+      product: {
+        select: {
+          price: true,
+          title: true,
+        },
+      },
+    },
+  },
+} satisfies Prisma.WishlistItemSelect;
+
+export type WishlistItemModel = Prisma.WishlistItemGetPayload<{
+  select: typeof wishlistItem;
 }>;
