@@ -7,9 +7,9 @@ export async function UserAside() {
     <div className="flex flex-col items-start gap-10 py-10 px-4 bg-(--neutral-semi-white) max-w-65.5 w-full">
       <Username />
       <div className="flex flex-col gap-4 w-full">
-        <NavLink text={"Account"} href={"/dashboard/account"} />
-        <NavLink text={"Orders"} href={"/dashboard/orders"} />
-        <NavLink text={"Wishlist"} href={"/dashboard/wishlist"} />
+        <NavLink text={"Account"} href={"/account"} />
+        <NavLink text={"Orders"} href={"/orders"} />
+        <NavLink text={"Wishlist"} href={"/wishlist"} />
         <form action={logout} className="w-full">
           <button
             type="submit"
