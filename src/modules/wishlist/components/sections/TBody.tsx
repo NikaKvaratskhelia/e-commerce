@@ -3,13 +3,24 @@
 import Link from "next/link";
 import { useWishlist } from "../../hooks/queries/use-wishlist";
 import { WishlistCard } from "../common/WishlistCard";
+import { WishlistCardSkeleton } from "../skeletons/WishlistCardSkeleton";
 
 export function TBody() {
-  const { data } = useWishlist();
+  const { data, isLoading } = useWishlist();
+
+  if (isLoading) {
+    return (
+      <tbody className="flex flex-col gap-6">
+        <WishlistCardSkeleton />
+        <WishlistCardSkeleton />
+        <WishlistCardSkeleton />
+      </tbody>
+    );
+  }
 
   if (!data?.data?.wishlistItems?.length) {
     return (
-      <tbody className="col-span-full py-20 text-center w-full">
+      <tbody className="col-span-full flex items-center py-10 text-center w-full">
         <tr className="w-full">
           <td className="flex flex-col items-center justify-center w-full">
             <h2 className="text-xl font-semibold text-gray-900">
