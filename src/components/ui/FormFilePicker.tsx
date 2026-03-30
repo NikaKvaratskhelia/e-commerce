@@ -1,14 +1,20 @@
-import { ImageIcon, Upload, X } from "lucide-react";
-import { ForwardedRef, forwardRef, InputHTMLAttributes } from "react";
+"use client";
+
+import { FileIcon, Upload, X } from "lucide-react";
+import {
+  ForwardedRef,
+  forwardRef,
+  InputHTMLAttributes,
+  useId,
+} from "react";
 
 type FormFilePickerProps = {
   label: string;
   error?: string;
   selectedFile?: File;
-  existingFileUrl?: string;
-  onClear: () => void;
+  onClear?: () => void;
   accept?: string;
-} & InputHTMLAttributes<HTMLInputElement>;
+} & Omit<InputHTMLAttributes<HTMLInputElement>, "type">;
 
 export const FormFilePicker = forwardRef(
   (
@@ -16,27 +22,34 @@ export const FormFilePicker = forwardRef(
       label,
       error,
       selectedFile,
-      existingFileUrl,
       onClear,
       className = "",
+      id,
+      accept,
       ...props
     }: FormFilePickerProps,
     ref: ForwardedRef<HTMLInputElement>,
   ) => {
+    const generatedId = useId();
+    const inputId = id ?? generatedId;
+
     return (
       <div className="flex flex-col gap-2">
-        <label className="font-medium text-sm sm:text-base">{label}</label>
+        <label htmlFor={inputId} className="font-medium text-sm sm:text-base">
+          {label}
+        </label>
 
         <input
           ref={ref}
+          id={inputId}
           type="file"
+          accept={accept}
           className="hidden"
-          id={props.id || "file-picker"}
           {...props}
         />
 
         <label
-          htmlFor={props.id || "file-picker"}
+          htmlFor={inputId}
           className={`flex cursor-pointer items-center justify-between rounded-xl border border-dashed border-gray-400 bg-white px-4 py-4 transition hover:border-black hover:bg-gray-50 ${
             error ? "border-red-500" : ""
           } ${className}`}
@@ -47,9 +60,11 @@ export const FormFilePicker = forwardRef(
             </div>
 
             <div className="flex flex-col">
-              <span className="font-medium">Choose file</span>
+              <span className="font-medium">
+                {selectedFile ? "Replace file" : "Choose file"}
+              </span>
               <span className="text-sm text-gray-500">
-                {props.accept?.replace(/image\//g, "").toUpperCase() || "Any file"} — one file only
+                {accept ?? "Any file"}
               </span>
             </div>
           </div>
@@ -59,47 +74,35 @@ export const FormFilePicker = forwardRef(
           </span>
         </label>
 
-        {existingFileUrl && !selectedFile && (
-          <div className="flex items-center gap-3 rounded-xl border bg-white px-4 py-3">
-            <div className="rounded-full bg-gray-100 p-2">
-              <ImageIcon size={18} />
-            </div>
-
-            <div className="flex flex-col overflow-hidden">
-              <span className="text-sm text-gray-500 line-clamp-1">Current file</span>
-              <span className="truncate text-sm font-medium">
-                {existingFileUrl.split("/").pop() || "Existing file"}
-              </span>
-            </div>
-          </div>
-        )}
-
         {selectedFile && (
           <div className="flex items-center justify-between rounded-xl border bg-white px-4 py-3">
-            <div className="flex items-center gap-3 overflow-hidden">
+            <div className="flex min-w-0 items-center gap-3 overflow-hidden">
               <div className="rounded-full bg-gray-100 p-2">
-                <ImageIcon size={18} />
+                <FileIcon size={18} />
               </div>
 
               <div className="flex min-w-0 flex-col">
-                <span className="text-sm text-gray-500">Selected file</span>
                 <span className="truncate text-sm font-medium">
                   {selectedFile.name}
+                </span>
+                <span className="text-xs text-gray-500">
+                  {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
                 </span>
               </div>
             </div>
 
-            <button
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                onClear();
-              }}
-              className="ml-4 rounded-lg p-2 transition hover:bg-gray-100 shrink-0"
-              aria-label="Remove selected file"
-            >
-              <X size={16} />
-            </button>
+            {onClear && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onClear();
+                }}
+                className="ml-4 shrink-0 rounded-lg p-2 transition hover:bg-gray-100"
+              >
+                <X size={16} />
+              </button>
+            )}
           </div>
         )}
 

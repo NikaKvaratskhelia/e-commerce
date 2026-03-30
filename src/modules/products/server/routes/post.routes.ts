@@ -3,32 +3,51 @@ import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { postProductSchema } from "../validators";
 import { ApiResponse } from "@/src/types/ApiReturnType";
-import { Product } from "@/generated/prisma/client";
 import { prisma } from "@/src/library/db";
+import { Prisma } from "@/generated/prisma/client";
 
 export const PostRoutes = new Hono().post(
   "/",
   requireRoleMiddleware(["admin"]),
   zValidator("json", postProductSchema),
   async (c) => {
-    let response: ApiResponse<Product>;
+    type CreatedProduct = Prisma.ProductGetPayload<{
+      include: {
+        colors: {
+          include: {
+            photos: true;
+            model3d: true;
+          };
+        };
+        productCategory: true;
+      };
+    }>;
+
+    let response: ApiResponse<CreatedProduct>;
 
     const body = c.req.valid("json");
 
-    const { title, description, price, thumbnail, stock, productCategoryId } =
-      body;
+    const {
+      title,
+      description,
+      price,
+      thumbnail,
+      stock,
+      productCategoryId,
+      colors,
+    } = body;
 
     if (
-      !title ||
-      !description ||
-      !price ||
-      !thumbnail ||
-      !stock ||
-      !productCategoryId
+      !title?.trim() ||
+      !description?.trim() ||
+      !thumbnail?.trim() ||
+      productCategoryId == null ||
+      price == null ||
+      stock == null
     ) {
       response = {
         message: "საჭირო ველები აკლია!",
-        status: 403,
+        status: 400,
         success: false,
       };
 
@@ -36,7 +55,7 @@ export const PostRoutes = new Hono().post(
     }
 
     const existingCategory = await prisma.productCategory.findUnique({
-      where: { id: productCategoryId },
+      where: { id: Number(productCategoryId) },
     });
 
     if (!existingCategory) {
@@ -50,7 +69,48 @@ export const PostRoutes = new Hono().post(
     }
 
     const createdProduct = await prisma.product.create({
-      data: body,
+      data: {
+        title: title.trim(),
+        description: description.trim(),
+        price: Number(price),
+        thumbnail: thumbnail.trim(),
+        stock: Number(stock),
+        productCategoryId: Number(productCategoryId),
+
+        colors: {
+          create:
+            colors?.map((item) => ({
+              color: item.color.trim(),
+              has3D: Boolean(item.has3D),
+
+              photos: {
+                create:
+                  item.photos?.map((photoUrl: string) => ({
+                    url: photoUrl,
+                  })) ?? [],
+              },
+
+              ...(item.has3D && item.model3d && item.model3d.trim().length > 0
+                ? {
+                    model3d: {
+                      create: {
+                        url: item.model3d.trim(),
+                      },
+                    },
+                  }
+                : {}),
+            })) ?? [],
+        },
+      },
+      include: {
+        colors: {
+          include: {
+            photos: true,
+            model3d: true,
+          },
+        },
+        productCategory: true,
+      },
     });
 
     response = {

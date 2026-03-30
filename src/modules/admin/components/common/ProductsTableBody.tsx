@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useAdminProducts } from "../../hooks/queries/use-admin-products";
-import { Pencil } from "lucide-react";
 
 export function ProductsTableBody() {
   const { data } = useAdminProducts();
@@ -33,10 +32,6 @@ export function ProductsTableBody() {
 
           <td className="py-5 px-4">
             {product.discounts[0]?.discountPercentage || 0}%
-          </td>
-
-          <td className="py-5 px-4">
-            <Pencil />
           </td>
         </tr>
       ))}
