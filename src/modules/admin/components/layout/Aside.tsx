@@ -34,7 +34,6 @@ const NAV_SECTIONS = [
 
 export function Aside() {
   const [collapsed, setCollapsed] = useState(false);
-  const [active, setActive] = useState("/dashboard");
 
   return (
     <aside

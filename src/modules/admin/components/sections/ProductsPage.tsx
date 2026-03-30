@@ -1,5 +1,5 @@
 import { AddItemBtn } from "../common/AddItemBtn";
-import ProductsTable from "../common/ProductsTable";
+import { ProductsTable } from "../common/ProductsTable";
 
 export default function ProductsPage() {
   return (

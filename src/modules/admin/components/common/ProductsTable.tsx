@@ -1,6 +1,6 @@
 import { ProductsTableBody } from "./ProductsTableBody";
 
-export default function ProductsTable() {
+export function ProductsTable() {
   return (
     <div className="w-full bg-(--neutral-semi-white) border border-(--neutral-light-gray) rounded-lg p-5">
       <table className="w-full ">
