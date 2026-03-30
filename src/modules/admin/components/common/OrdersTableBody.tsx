@@ -23,7 +23,7 @@ export function OrdersTableBody() {
             <p className="font-medium px-2 py-1 text-sm bg-white rounded-full border text-center w-fit">{o.paymentMethod}</p>
           </td>
           <td className="py-5 pr-4 font-semibold">{o._count.orderItems}</td>
-          <td className="py-5 pr-4 font-bold">${o.total.toFixed(2)}</td>{" "}
+          <td className="py-5 pr-4 font-bold">${o.total.toFixed(2)}</td>
         </tr>
       ))}
     </tbody>

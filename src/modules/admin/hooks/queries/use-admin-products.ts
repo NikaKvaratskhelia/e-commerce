@@ -5,11 +5,11 @@ import { useQuery } from "@tanstack/react-query";
 
 async function getData() {
   const res = await client.api["admin-stats"].products.$get();
-
-  if (!res.ok) {
-    throw new Error("Server Error");
-  }
   const data = await res.json();
+
+  if (!res.ok || !data.success) {
+    throw new Error(data.message);
+  }
 
   return data;
 }
