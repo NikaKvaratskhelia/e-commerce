@@ -3,7 +3,7 @@ import { prisma } from "@/src/library/db";
 import { Hono } from "hono";
 
 export const GetRoutes = new Hono()
-  .get("/", requireRoleMiddleware(["admin"]), async (c) => {
+  .get("/stats", requireRoleMiddleware(["admin"]), async (c) => {
     const now = new Date();
 
     const currentMonthStart = new Date(now.getFullYear(), now.getMonth(), 1);
@@ -89,7 +89,7 @@ export const GetRoutes = new Hono()
       },
     });
   })
-  .get("/", requireRoleMiddleware(["admin"]), async (c) => {
+  .get("/revenue", requireRoleMiddleware(["admin"]), async (c) => {
     const now = new Date();
     const currentYear = now.getFullYear();
 
