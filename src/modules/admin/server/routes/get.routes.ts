@@ -189,4 +189,33 @@ export const GetRoutes = new Hono()
     };
 
     return c.json(response, response.status);
+  })
+  .get("/orders-all", async (c) => {
+    const orders = await prisma.order.findMany({
+      select: {
+        id: true,
+        user: {
+          select: {
+            name: true,
+          },
+        },
+        createdAt: true,
+        _count: {
+          select: {
+            orderItems: true,
+          },
+        },
+        paymentMethod: true,
+        total: true,
+      },
+    });
+
+    const response: ApiResponse<typeof orders> = {
+      success: true,
+      status: 200,
+      message: "Products fetched successfully",
+      data: orders,
+    };
+
+    return c.json(response, response.status);
   });
