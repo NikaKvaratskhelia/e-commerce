@@ -1,7 +1,6 @@
 "use client";
 import { client } from "@/src/library/hono-client";
 import { useQuery } from "@tanstack/react-query";
-import { toast } from "sonner";
 
 async function getData() {
   const res = await client.api.categories.$get();
@@ -15,21 +14,6 @@ async function getData() {
 export function useCategories() {
   return useQuery({
     queryKey: ["categories"],
-    queryFn: async () => {
-      try {
-        const res = await getData();
-
-        if (!res.success) {
-          toast.error(res.message);
-          return;
-        }
-
-        return res.data;
-      } catch (error) {
-        if (error instanceof Error) {
-          toast.error(error.message);
-        }
-      }
-    },
+    queryFn: () => getData(),
   });
 }
