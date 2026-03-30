@@ -1,5 +1,6 @@
 import { requireRoleMiddleware } from "@/src/auth/middleware";
 import { prisma } from "@/src/library/db";
+import { ApiResponse } from "@/src/types/ApiReturnType";
 import { Hono } from "hono";
 
 export const GetRoutes = new Hono()
@@ -149,4 +150,43 @@ export const GetRoutes = new Hono()
     });
 
     return c.json({ data: orders });
+  })
+  .get("/products", async (c) => {
+    const products = await prisma.product.findMany({
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        thumbnail: true,
+        price: true,
+        stock: true,
+        productCategory: {
+          select: {
+            id: true,
+            title: true,
+          },
+        },
+        _count: {
+          select: {
+            colors: true,
+          },
+        },
+        discounts: {
+          where: {
+            discountEndDate: {
+              gt: new Date(),
+            },
+          },
+        },
+      },
+    });
+
+    const response: ApiResponse<typeof products> = {
+      success: true,
+      status: 200,
+      message: "Products fetched successfully",
+      data: products,
+    };
+
+    return c.json(response, response.status);
   });
