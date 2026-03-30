@@ -39,6 +39,8 @@ model User {
   // auth sessions
   sessions Session[]
   replies  Reply[]
+  orders   Order[]
+  wishlist Wishlist?
 }
 
 model Session {
@@ -71,8 +73,6 @@ model Product {
   productCategoryId Int
   cartItems         CartItem[]
   comments          Comment[]
-
-  orderItems OrderItem[]
 }
 
 model ProductCategory {
@@ -93,6 +93,9 @@ model ProductColor {
   photos    ProductPhoto[]
   model3d   Product3D?
   cartItems CartItem[]
+
+  orderItems    OrderItem[]
+  wishlistItems WishlistItem[]
 }
 
 model ProductPhoto {
@@ -200,13 +203,16 @@ model Reply {
   updatedAt DateTime @updatedAt
 }
 
-
 model Order {
-  id            String      @id @default(uuid())
-  createdAt     DateTime    @default(now())
+  id            String   @id @default(uuid())
+  createdAt     DateTime @default(now())
   paymentMethod String
   total         Float
-  orderItems    OrderItem[]
+  // relations
+
+  userId     String
+  user       User        @relation(references: [id], fields: [userId], onDelete: Cascade)
+  orderItems OrderItem[]
 }
 
 model OrderItem {
@@ -217,6 +223,27 @@ model OrderItem {
   orderId String
   order   Order  @relation(references: [id], fields: [orderId], onDelete: Cascade)
 
-  productId Int
-  product   Product @relation(fields: [productId], references: [id])
+  producColortId Int
+  productColor   ProductColor @relation(fields: [producColortId], references: [id])
+}
+
+model Wishlist {
+  id Int @id @default(autoincrement())
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  wishlistItems WishlistItem[]
+}
+
+model WishlistItem {
+  id Int @id @default(autoincrement())
+
+  wishlistId Int
+  wishlist   Wishlist @relation(fields: [wishlistId], references: [id], onDelete: Cascade)
+
+  productColorId Int
+  productColor   ProductColor @relation(references: [id], fields: [productColorId], onDelete: Cascade)
+
+  @@unique([wishlistId, productColorId])
 }

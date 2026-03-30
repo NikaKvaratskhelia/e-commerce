@@ -6,11 +6,12 @@ import { AddToWishlist } from "./AddToWishlist";
 
 type Props = {
   product: ProductDTO;
+  layout: "row" | "column";
 };
 
 const SEVEN_DAYS_IN_MS = 7 * 24 * 60 * 60 * 1000;
 
-export function ProductCard({ product }: Props) {
+export function ProductCard({ product, layout = "column" }: Props) {
   const now = new Date();
 
   const isNew =
@@ -25,8 +26,10 @@ export function ProductCard({ product }: Props) {
     : null;
 
   return (
-    <div className="w-65.5 mx-auto">
-      <div className="relative h-87.5 p-4 group bg-(--neutral-semi-white) flex flex-col justify-between overflow-hidden">
+    <div
+      className={`flex gap-4 ${layout === "column" ? "flex-col max-w-65.5" : "flex-col sm:flex-row w-full"}`}
+    >
+      <div className="relative h-87.5 min-w-54 sm:min-w-65.5 p-4 group bg-(--neutral-semi-white) flex flex-col justify-between overflow-hidden">
         <div className="flex items-center justify-between">
           {(isNew || discount) && (
             <div className="flex flex-col gap-2 font-bold leading-3.5 text-center self-start z-20">
@@ -60,10 +63,14 @@ export function ProductCard({ product }: Props) {
           />
         </Link>
 
-        <AddToCartBtn id={product.colors[0]?.id} />
+        <div className={`${layout === "column" ? "" : "hidden"}`}>
+          <AddToCartBtn id={product.colors[0]?.id} />
+        </div>
       </div>
 
-      <div className="flex flex-col gap-1 mt-4">
+      <div
+        className={`flex-col gap-1 mt-4 ${layout === "column" ? "flex" : "hidden"}`}
+      >
         <p className="font-semibold leading-6.5">{product.title}</p>
 
         <p className="text-sm leading-5.5">
@@ -82,6 +89,36 @@ export function ProductCard({ product }: Props) {
             </span>
           )}
         </p>
+      </div>
+
+      <div
+        className={`${layout === "column" ? "hidden" : "flex"} flex-col gap-6 px-6`}
+      >
+        <div className="flex flex-col gap-2">
+          <h3 className="text-[16px] leading-6.5">{product.title}</h3>
+          <p className="text-sm leading-5.5">
+            {newPrice !== null ? (
+              <>
+                <span className="text-(--primary) font-semibold">
+                  ${newPrice.toFixed(2)}
+                </span>{" "}
+                <span className="line-through text-(--neutral-light-grey)">
+                  ${product.price.toFixed(2)}
+                </span>
+              </>
+            ) : (
+              <span className="text-(--primary) font-semibold text-sm">
+                ${product.price.toFixed(2)}
+              </span>
+            )}
+          </p>
+        </div>
+        <p className="text-sm leading-5.5 text-(--neutral-light-grey) mb-auto">
+          {product.description}
+        </p>
+        <AddToCartBtn id={product.id} variant="shown"/>
+        {/* aq wishlist btn unda iyos */}
+        <p>wishlist btn daamate</p>
       </div>
     </div>
   );
