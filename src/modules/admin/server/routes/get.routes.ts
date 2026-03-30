@@ -132,4 +132,21 @@ export const GetRoutes = new Hono()
     }));
 
     return c.json({ data });
+  })
+  .get("/latestOrders", requireRoleMiddleware(["admin"]), async (c) => {
+    const orders = await prisma.order.findMany({
+      take: 10,
+      orderBy: { createdAt: "desc" },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+      },
+    });
+
+    return c.json({ data: orders });
   });
