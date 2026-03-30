@@ -6,16 +6,16 @@ export function UsersTable() {
       <table className="w-full ">
         <thead className="w-full">
           <tr className="w-full">
-            <th className="w-[30%] text-left">User</th>
-            <th className="w-[14%] text-left">Username</th>
-            <th className="w-[14%] text-left">Email</th>
-            <th className="w-[14%] text-left">Role</th>
-            <th className="w-[14%] text-left">Verified</th>
-            <th className="w-[14%] text-left">Orders</th>
+            <th className="text-left">User</th>
+            <th className="text-left">Username</th>
+            <th className="text-left">Email</th>
+            <th className="text-left">Role</th>
+            <th className="text-left">Verified</th>
+            <th className="text-left">Orders</th>
           </tr>
         </thead>
+        <UsersTableBody />
       </table>
-      <UsersTableBody />
     </div>
   );
 }

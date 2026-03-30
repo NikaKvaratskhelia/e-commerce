@@ -1,4 +1,4 @@
-import { User } from "@/generated/prisma/browser";
+import { Prisma, User } from "@/generated/prisma/browser";
 import {
   requireAuthMiddleware,
   requireRoleMiddleware,
@@ -6,6 +6,18 @@ import {
 import { prisma } from "@/src/library/db";
 import { ApiResponse } from "@/src/types/ApiReturnType";
 import { Hono } from "hono";
+
+const getAllUsersInclude = {
+  _count: {
+    select: {
+      orders: true,
+    },
+  },
+} satisfies Prisma.UserSelect;
+
+export type UsersListType = Prisma.UserGetPayload<{
+  include: typeof getAllUsersInclude;
+}>;
 
 export const GetRoutes = new Hono()
   .get("/", requireAuthMiddleware(), async (c) => {
@@ -34,9 +46,11 @@ export const GetRoutes = new Hono()
     return c.json(ApiResponse, ApiResponse.status);
   })
   .get("/getAll", requireRoleMiddleware(["admin"]), async (c) => {
-    let ApiResponse: ApiResponse<User[]>;
+    let ApiResponse: ApiResponse<typeof usersInDb>;
 
-    const usersInDb = await prisma.user.findMany();
+    const usersInDb = await prisma.user.findMany({
+      include: getAllUsersInclude,
+    });
 
     if (!usersInDb) {
       ApiResponse = {
