@@ -1,0 +1,16 @@
+import { TBody } from "./TBody";
+
+export function Table() {
+  return (
+    <table className="w-full flex flex-col gap-5 max-w-176.75">
+      <thead>
+        <tr className="grid grid-cols-1 lg:grid-cols-3 justify-items-start border-b border-(--neutral-light-grey) py-2">
+          <th>Product</th>
+          <th className="hidden lg:flex">Price</th>
+          <th className="hidden lg:flex">Action</th>
+        </tr>
+      </thead>
+      <TBody />
+    </table>
+  );
+}

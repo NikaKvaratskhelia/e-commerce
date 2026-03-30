@@ -45,9 +45,13 @@ export async function registerAction(
     select: getUserSelect,
   });
 
-  await prisma.cart.create({data:{
-    userId:user.id
-  }})
+  await prisma.cart.create({
+    data: {
+      userId: user.id,
+    },
+  });
+
+  await prisma.wishlist.create({ data: { userId: user.id } });
 
   const cookieStore = await cookies();
   cookieStore.set("pending_verification_email", user.email, {

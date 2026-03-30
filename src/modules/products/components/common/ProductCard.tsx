@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Heart } from "lucide-react";
 import { ProductDTO } from "../../server/models";
 import { AddToCartBtn } from "@/src/modules/cart/components/common/AddToCartBtn";
+import { AddToWishlist } from "./AddToWishlist";
 
 type Props = {
   product: ProductDTO;
@@ -47,15 +47,7 @@ export function ProductCard({ product, layout = "column" }: Props) {
             </div>
           )}
 
-          <div
-            className={`bg-white rounded-full p-2 z-10 cursor-pointer ${layout === "column" ? "block" : "hidden"}`}
-          >
-            <Heart
-              width={18}
-              height={18}
-              className="text-red-600 hover:fill-current"
-            />
-          </div>
+          <AddToWishlist id={product.colors[0].id} />
         </div>
 
         <Link
