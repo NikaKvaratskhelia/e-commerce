@@ -74,10 +74,12 @@ export function useAddToCartMutation(id: number) {
       return { previousCart };
     },
 
-    onSuccess: (data) => toast.success(data.message),
+    onSuccess: (data) => {
+      toast.success(data.message);
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
+    },
 
     onError: (error) => {
-
       queryClient.invalidateQueries({ queryKey: ["cart"] });
 
       const message =

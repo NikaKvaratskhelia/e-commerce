@@ -12,7 +12,7 @@ export function TotalSection() {
       <h3 className="font-semibold text-[20px] leading-8 w-full flex items-center justify-between">
         Total:<span> ${data?.data?.total}</span>
       </h3>
-      <Link href={"/checkout"} className="w-full">
+      <Link href={"/cart/checkout"} className="w-full">
         <Button
           text={"Checkout"}
           mode={"solid"}
