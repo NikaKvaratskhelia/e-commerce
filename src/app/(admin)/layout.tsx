@@ -1,4 +1,5 @@
 import { validateRequest } from "@/src/auth/validate";
+import { Aside } from "@/src/modules/admin/components/layout/Aside";
 import { redirect } from "next/navigation";
 
 export default async function AdminLayout({
@@ -11,8 +12,9 @@ export default async function AdminLayout({
   }
 
   return (
-    <div className="min-h-screen flex flex-col justify-between">
-      <main className="px-8 py-20">{children}</main>
+    <div className="min-h-screen flex gap-6">
+      <Aside />
+      <main className="px-8 py-20 w-full">{children}</main>
     </div>
   );
 }
