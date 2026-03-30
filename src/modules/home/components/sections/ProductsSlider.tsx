@@ -9,17 +9,16 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useProducts } from "@/src/modules/products/hooks/queries/use-products";
 import { ProductCard } from "@/src/modules/products/components/common/ProductCard";
-import { useSearchParams } from "next/navigation";
 
 export function ProductSlider() {
-  const params = useSearchParams();
-
-  const onlyNewParam = params.get("newProductsOnly");
-
   const queries = {
-    limit: params.get("limit") ?? "",
-    newOnly: onlyNewParam !== null ? onlyNewParam : "true",
-    categoryId: params.get("categoryId") ?? "",
+    limit: "",
+    sortBy: "",
+    sort: "",
+    maxPrice: "",
+    minPrice: "",
+    newOnly: "true",
+    categoryId: "",
   };
 
   const { data } = useProducts(queries);
