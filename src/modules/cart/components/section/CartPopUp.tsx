@@ -60,7 +60,11 @@ export function CartPopUp() {
             <span>${query.isLoading ? 0 : (query.data?.data?.total ?? 0)}</span>
           </div>
           <div className="flex flex-col gap-4 items-center justify-center">
-            <Link href={"/checkout"} className="w-full">
+            <Link
+              href={"/cart/checkout"}
+              onClick={() => setShowCart(false)}
+              className="w-full"
+            >
               <Button
                 text={"Checkout"}
                 mode={"solid"}

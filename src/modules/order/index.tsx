@@ -13,7 +13,7 @@ export default function OrderPage() {
         <OrderHeader />
         <OrderItemsLayout />
         <OrderDetails />
-        <Link href={"/profile/orders"}>
+        <Link href={"/orders"}>
           <Button
             text={"Purchase History"}
             mode={"solid"}
