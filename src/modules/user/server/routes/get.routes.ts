@@ -50,6 +50,9 @@ export const GetRoutes = new Hono()
 
     const usersInDb = await prisma.user.findMany({
       include: getAllUsersInclude,
+      orderBy: {
+        id: "asc",
+      },
     });
 
     if (!usersInDb) {
