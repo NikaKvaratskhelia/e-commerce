@@ -1,37 +1,36 @@
 "use client";
 
 import { FileIcon, Upload, X } from "lucide-react";
-import {
-  ForwardedRef,
-  forwardRef,
-  InputHTMLAttributes,
-  useId,
-} from "react";
+import { forwardRef, InputHTMLAttributes, useId } from "react";
 
 type FormFilePickerProps = {
   label: string;
   error?: string;
   selectedFile?: File;
+  existingFileUrl?: string;
   onClear?: () => void;
   accept?: string;
 } & Omit<InputHTMLAttributes<HTMLInputElement>, "type">;
 
-export const FormFilePicker = forwardRef(
+export const FormFilePicker = forwardRef<HTMLInputElement, FormFilePickerProps>(
   (
     {
       label,
       error,
       selectedFile,
+      existingFileUrl,
       onClear,
       className = "",
       id,
       accept,
       ...props
-    }: FormFilePickerProps,
-    ref: ForwardedRef<HTMLInputElement>,
+    },
+    ref,
   ) => {
     const generatedId = useId();
     const inputId = id ?? generatedId;
+
+    const existingFileName = existingFileUrl?.split("/").pop();
 
     return (
       <div className="flex flex-col gap-2">
@@ -61,7 +60,7 @@ export const FormFilePicker = forwardRef(
 
             <div className="flex flex-col">
               <span className="font-medium">
-                {selectedFile ? "Replace file" : "Choose file"}
+                {selectedFile || existingFileUrl ? "Replace file" : "Choose file"}
               </span>
               <span className="text-sm text-gray-500">
                 {accept ?? "Any file"}
@@ -88,6 +87,41 @@ export const FormFilePicker = forwardRef(
                 <span className="text-xs text-gray-500">
                   {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
                 </span>
+              </div>
+            </div>
+
+            {onClear && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onClear();
+                }}
+                className="ml-4 shrink-0 rounded-lg p-2 transition hover:bg-gray-100"
+              >
+                <X size={16} />
+              </button>
+            )}
+          </div>
+        )}
+
+        {!selectedFile && existingFileUrl && (
+          <div className="flex items-center justify-between rounded-xl border bg-white px-4 py-3">
+            <div className="flex min-w-0 items-center gap-3 overflow-hidden">
+              <div className="rounded-full bg-gray-100 p-2">
+                <FileIcon size={18} />
+              </div>
+
+              <div className="flex min-w-0 flex-col">
+                <a
+                  href={existingFileUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="truncate text-sm font-medium underline"
+                >
+                  {existingFileName ?? "Current file"}
+                </a>
+                <span className="text-xs text-gray-500">Existing file</span>
               </div>
             </div>
 
