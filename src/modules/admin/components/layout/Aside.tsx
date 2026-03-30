@@ -77,8 +77,6 @@ export function Aside() {
                   label={item.label}
                   icon={item.icon}
                   collapsed={collapsed}
-                  isActive={active === item.href}
-                  onClick={setActive}
                 />
               ))}
             </div>

@@ -1,29 +1,22 @@
+"use client";
+
 import { LucideIcon } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 type Props = {
   href: string;
   label: string;
   icon: LucideIcon;
   collapsed: boolean;
-  isActive: boolean;
-  onClick: (href: string) => void;
 };
 
-export function NavLink({
-  href,
-  label,
-  icon: Icon,
-  collapsed,
-  isActive,
-  onClick,
-}: Props) {
+export function NavLink({ href, label, icon: Icon, collapsed }: Props) {
+  const path = usePathname()
+  const isActive = path.includes(href);
   return (
-    <a
+    <Link
       href={href}
-      onClick={(e) => {
-        e.preventDefault();
-        onClick(href);
-      }}
       className={`
         group relative flex items-center gap-3 px-3 py-2.5 rounded-xl
         transition-all duration-200 ease-in-out cursor-pointer no-underline
@@ -61,6 +54,6 @@ export function NavLink({
           {label}
         </span>
       )}
-    </a>
+    </Link>
   );
 }
