@@ -172,7 +172,7 @@ export function BlogForm({ mode, currentBlog, onClose }: BlogFormProps) {
         <button
           type="submit"
           disabled={isLoading}
-          className="rounded-xl bg-black px-4 py-3 text-white transition disabled:opacity-50"
+          className="mt-2 rounded-xl bg-black px-6 py-3.5 font-bold text-white shadow-lg transition-all hover:bg-black/80 hover:shadow-xl active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
         >
           {isLoading
             ? mode === "edit"

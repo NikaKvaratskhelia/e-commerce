@@ -1,29 +1,19 @@
-"use client";
-
-import { useState } from "react";
+import { Plus } from "lucide-react";
 
 type AddItemBtnProps = {
   text: string;
-  form: (onClose: () => void) => React.ReactNode;
+  onClick: () => void;
 };
 
-export function AddItemBtn({ text, form }: AddItemBtnProps) {
-  const [showForm, setShowForm] = useState(false);
-
-  const handleOpen = () => setShowForm(true);
-  const handleClose = () => setShowForm(false);
-
+export function AddItemBtn({ text, onClick }: AddItemBtnProps) {
   return (
-    <div>
-      <button
-        type="button"
-        className="cursor-pointer rounded-lg bg-(--green) px-4 py-2 font-bold text-white hover:bg-(--green)/80"
-        onClick={handleOpen}
-      >
-        + Add {text}
-      </button>
-
-      {showForm && form(handleClose)}
-    </div>
+    <button
+      type="button"
+      className="flex cursor-pointer items-center gap-2 rounded-xl bg-black px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-black/10 transition-all hover:bg-black/80 active:scale-95"
+      onClick={onClick}
+    >
+      <Plus size={18} />
+      Add {text}
+    </button>
   );
 }
