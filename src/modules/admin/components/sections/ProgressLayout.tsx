@@ -8,7 +8,7 @@ export function ProgressLayout() {
   const { data } = useStats();
 
   return (
-    <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))]">
+    <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-5">
       <ProgressCard
         text={"Total Revenue"}
         current={`$${(data?.revenue.current || 0).toFixed(2)}`}
