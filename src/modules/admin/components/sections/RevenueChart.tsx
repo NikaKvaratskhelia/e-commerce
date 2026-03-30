@@ -38,12 +38,11 @@ const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
   return null;
 };
 
-export default function RevenueOverview() {
+export function RevenueOverview() {
   const { data } = useRevenue();
-  console.log(data);
 
   return (
-    <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+    <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex-1">
       <h2 className="text-xl font-bold text-gray-900 mb-6">Revenue Overview</h2>
 
       <ResponsiveContainer width="100%" height={320}>
