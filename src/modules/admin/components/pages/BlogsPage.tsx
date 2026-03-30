@@ -1,5 +1,5 @@
 import { AddItemBtn } from "../common/AddItemBtn";
-import { BlogsLayout } from "./BlogsLayout";
+import { BlogsLayout } from "../sections/BlogsLayout";
 
 export function BlogsPage() {
   return (

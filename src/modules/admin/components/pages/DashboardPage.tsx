@@ -1,6 +1,6 @@
-import { ProgressLayout } from "./ProgressLayout";
-import { RecentOrders } from "./RecentOrders";
-import { RevenueOverview } from "./RevenueChart";
+import { ProgressLayout } from "../sections/ProgressLayout";
+import { RecentOrders } from "../sections/RecentOrders";
+import { RevenueOverview } from "../sections/RevenueChart";
 
 export default function DashboardPage() {
   return (
