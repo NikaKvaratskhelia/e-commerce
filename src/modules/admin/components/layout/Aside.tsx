@@ -20,7 +20,7 @@ const NAV_SECTIONS = [
       { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
       { label: "Products", href: "/admin-products", icon: Package },
       { label: "Categories", href: "/categories", icon: FolderOpen },
-      { label: "Orders", href: "/orders", icon: ClipboardList },
+      { label: "Orders", href: "/admin-orders", icon: ClipboardList },
     ],
   },
   {
