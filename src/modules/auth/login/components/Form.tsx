@@ -79,6 +79,7 @@ export function LoginForm() {
         onSubmit={handleSubmit(onSubmit)}
       >
         <Input
+          variant={"default"}
           type="text"
           id="userSearchValue"
           placeholder="Your username or email address"

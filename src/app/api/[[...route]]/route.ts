@@ -8,6 +8,7 @@ import verifyRoutes from "@/src/modules/auth/verifyEmail/server";
 import cartRoutes from "@/src/modules/cart/server";
 import commentRoutes from "@/src/modules/comments/server";
 import contactRoutes from "@/src/modules/contact/server";
+import userRoutes from "@/src/modules/user/server";
 import orderRoutes from "@/src/modules/order/server"
 import adminStatsRoutes from "@/src/modules/admin/server";
 
@@ -45,6 +46,7 @@ const _routes = app
   .route("/cart", cartRoutes)
   .route("/comments", commentRoutes)
   .route("/contact", contactRoutes)
+  .route("/user", userRoutes)
   .route("/orders", orderRoutes)
   .route("/admin-stats", adminStatsRoutes);
 

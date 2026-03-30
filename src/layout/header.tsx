@@ -46,7 +46,7 @@ export async function Header() {
               height={24}
             />
           </Link>
-          <Link href={"/dashboard"} className="hidden sm:block">
+          <Link href={"/account"} className="hidden sm:block">
             <Image
               src={"/user-circle.svg"}
               alt="user icon"
