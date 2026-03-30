@@ -1,5 +1,9 @@
+"use client";
+
 import { Pencil } from "lucide-react";
 import Image from "next/image";
+import { useState } from "react";
+import { BlogForm } from "../forms/BlogForm";
 
 export function BlogCard({
   blog,
@@ -12,6 +16,7 @@ export function BlogCard({
     content: string;
   };
 }) {
+  const [showForm, setShowForm] = useState(false);
   return (
     <div className="rounded-lg border bg-card text-card-foreground shadow-sm overflow-hidden">
       <Image
@@ -35,11 +40,16 @@ export function BlogCard({
               {new Date(blog.createdAt)?.toLocaleDateString()}
             </p>
           </div>
-          <button className="cursor-pointer">
+          <button
+            className="cursor-pointer"
+            onClick={() => setShowForm(!showForm)}
+          >
             <Pencil />
           </button>
         </div>
       </div>
+
+      {showForm && <BlogForm mode="edit" currentBlog={blog} onClose={()=>setShowForm(false)}/>}
     </div>
   );
 }

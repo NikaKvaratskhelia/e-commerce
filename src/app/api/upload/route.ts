@@ -19,13 +19,23 @@ export async function POST(request: Request) {
   try {
     const { fileName, fileType }: UploadRequest = await request.json();
 
-    const allowedTypes = ["image/jpeg", "image/png", "application/pdf"];
+    const allowedTypes = [
+      "image/jpeg",
+      "image/png",
+      "image/webp",
+      "application/pdf",
+
+      "model/gltf+json",
+      "model/gltf-binary",
+    ];
+
     if (!allowedTypes.includes(fileType)) {
       return NextResponse.json(
         { message: "File type not allowed" },
         { status: 400 },
       );
     }
+
     if (!fileName || fileName.length > 100) {
       return NextResponse.json(
         { message: "Invalid file name" },
@@ -34,21 +44,33 @@ export async function POST(request: Request) {
     }
 
     const sanitizedFileName = fileName.replace(/[^a-zA-Z0-9.-]/g, "_");
+    const key = `uploads/${Date.now()}-${sanitizedFileName}`;
 
-    const params = {
-      Bucket: process.env.AWS_S3_BUCKET_NAME,
-      Key: `uploads/${Date.now()}-${sanitizedFileName}`,
+    const command = new PutObjectCommand({
+      Bucket: process.env.AWS_S3_BUCKET_NAME!,
+      Key: key,
       ContentType: fileType,
-    };
+    });
 
-    const command = new PutObjectCommand(params);
-    const signedUrl = await getSignedUrl(s3Client, command, { expiresIn: 60 });
+    const signedUrl = await getSignedUrl(s3Client, command, {
+      expiresIn: 60,
+    });
 
-    return NextResponse.json({ url: signedUrl });
+    const fileUrl = `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`;
+
+    return NextResponse.json({
+      url: signedUrl,
+      key,
+      fileUrl,
+    });
   } catch (error) {
     console.error(error);
+
     return NextResponse.json(
-      { message: "Server error", error: (error as Error).message },
+      {
+        message: "Server error",
+        error: error instanceof Error ? error.message : "Unknown error",
+      },
       { status: 500 },
     );
   }
