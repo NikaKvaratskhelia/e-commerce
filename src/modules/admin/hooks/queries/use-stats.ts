@@ -4,7 +4,7 @@ import { client } from "@/src/library/hono-client";
 import { useQuery } from "@tanstack/react-query";
 
 async function getStats() {
-  const res = await client.api["admin-stats"].stats.$get()
+  const res = await client.api["admin-stats"].stats.$get();
 
   if (!res.ok) {
     throw new Error("Server Error");
@@ -14,7 +14,7 @@ async function getStats() {
   return data;
 }
 
-export function useRevenue() {
+export function useStats() {
   return useQuery({
     queryKey: ["stats"],
     queryFn: getStats,
