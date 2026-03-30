@@ -34,7 +34,7 @@ export function useCreateProduct() {
       toast.success("პროდუქტი წარმატებით დაემატა.");
 
       queryClient.invalidateQueries({
-        queryKey: ["products"],
+        queryKey: ["adminProducts"],
       });
     },
     onError: (error) => {
