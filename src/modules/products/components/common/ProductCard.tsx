@@ -3,6 +3,8 @@ import Link from "next/link";
 import { ProductDTO } from "../../server/models";
 import { AddToCartBtn } from "@/src/modules/cart/components/common/AddToCartBtn";
 import { AddToWishlist } from "./AddToWishlist";
+import { Button } from "@/src/components/ui/Button";
+import AddToWishlistBtn from "./AddToWishlistBtn";
 
 type Props = {
   product: ProductDTO;
@@ -116,9 +118,8 @@ export function ProductCard({ product, layout = "column" }: Props) {
         <p className="text-sm leading-5.5 text-(--neutral-light-grey) mb-auto">
           {product.description}
         </p>
-        <AddToCartBtn id={product.id} variant="shown"/>
-        {/* aq wishlist btn unda iyos */}
-        <p>wishlist btn daamate</p>
+        <AddToCartBtn id={product.id} variant="shown" />
+        <AddToWishlistBtn id={product.colors[0].id} />
       </div>
     </div>
   );
