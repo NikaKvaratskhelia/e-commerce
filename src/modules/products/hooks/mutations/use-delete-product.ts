@@ -25,7 +25,7 @@ export function useDeleteProduct() {
       toast.success("პროდუქტი წარმატებით წაიშალა.");
 
       await queryClient.invalidateQueries({
-        queryKey: ["products"],
+        queryKey: ["adminProducts"],
       });
     },
     onError: (error) => {

@@ -40,7 +40,7 @@ export function useUpdateProduct() {
       toast.success("პროდუქტი წარმატებით განახლდა.");
 
       queryClient.invalidateQueries({
-        queryKey: ["products"],
+        queryKey: ["adminProducts"],
       });
     },
     onError: (error) => {

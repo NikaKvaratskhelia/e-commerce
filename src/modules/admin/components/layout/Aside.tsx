@@ -20,7 +20,7 @@ const NAV_SECTIONS = [
       { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
       { label: "Products", href: "/admin-products", icon: Package },
       { label: "Categories", href: "/categories", icon: FolderOpen },
-      { label: "Orders", href: "/orders", icon: ClipboardList },
+      { label: "Orders", href: "/admin-orders", icon: ClipboardList },
     ],
   },
   {
@@ -34,7 +34,6 @@ const NAV_SECTIONS = [
 
 export function Aside() {
   const [collapsed, setCollapsed] = useState(false);
-  const [active, setActive] = useState("/dashboard");
 
   return (
     <aside
@@ -77,8 +76,6 @@ export function Aside() {
                   label={item.label}
                   icon={item.icon}
                   collapsed={collapsed}
-                  isActive={active === item.href}
-                  onClick={setActive}
                 />
               ))}
             </div>

@@ -1,8 +1,11 @@
 import { NavLink } from "../common/NavLink";
 import { logout } from "../../services/action";
 import Username from "../common/Username";
+import { validateRequest } from "@/src/auth/validate";
 
 export async function UserAside() {
+  const { user } = await validateRequest();
+
   return (
     <div className="flex flex-col items-start gap-10 py-10 px-4 bg-(--neutral-semi-white) max-w-65.5 w-full">
       <Username />
@@ -10,6 +13,9 @@ export async function UserAside() {
         <NavLink text={"Account"} href={"/account"} />
         <NavLink text={"Orders"} href={"/orders"} />
         <NavLink text={"Wishlist"} href={"/wishlist"} />
+        {user && user.role === "admin" && (
+          <NavLink text="Admin Dashboard" href="/dashboard" />
+        )}
         <form action={logout} className="w-full">
           <button
             type="submit"

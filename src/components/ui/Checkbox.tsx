@@ -1,39 +1,77 @@
+"use client";
+
 import { Check } from "lucide-react";
-import { ReactNode, forwardRef } from "react";
+import {
+  ChangeEvent,
+  InputHTMLAttributes,
+  ReactNode,
+  forwardRef,
+  useId,
+} from "react";
 
-type Props = {
-  id: string;
-  checked?: boolean;
+type CheckboxProps = {
+  label?: ReactNode;
   textHtmlFormat?: ReactNode;
-  onChange?: React.ChangeEventHandler<HTMLInputElement>;
-  name?: string;
-};
+  onCheckedChange?: (checked: boolean) => void;
+} & Omit<InputHTMLAttributes<HTMLInputElement>, "type">;
 
-export const Checkbox = forwardRef<HTMLInputElement, Props>(
-  ({ id, checked, textHtmlFormat, onChange, name }, ref) => {
+export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
+  (
+    {
+      id,
+      checked,
+      defaultChecked,
+      disabled,
+      label,
+      textHtmlFormat,
+      onChange,
+      onCheckedChange,
+      name,
+      className,
+      ...props
+    },
+    ref,
+  ) => {
+    const generatedId = useId();
+    const inputId = id ?? generatedId;
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+      onChange?.(e);
+      onCheckedChange?.(e.target.checked);
+    };
+
     return (
-      <label className="cursor-pointer inline-flex">
+      <label
+        htmlFor={inputId}
+        className={`inline-flex cursor-pointer items-center gap-3 ${
+          disabled ? "cursor-not-allowed opacity-60" : ""
+        } ${className ?? ""}`}
+      >
         <input
           ref={ref}
-          type="checkbox"
-          id={id}
+          id={inputId}
           name={name}
+          type="checkbox"
           checked={checked}
-          onChange={onChange}
-          hidden
+          defaultChecked={defaultChecked}
+          disabled={disabled}
+          onChange={handleChange}
+          className="sr-only"
+          {...props}
         />
 
-        <div className="flex gap-3 items-center">
-          <div
-            className={`w-6 h-6 flex items-center justify-center rounded-sm border border-(--neutral-light-grey)
-            ${checked ? "bg-(--primary)" : "bg-(--neutral-white)"}`}
-          >
-            {checked && <Check width={24} height={16} className="text-white" />}
-          </div>
+        <div
+          aria-hidden="true"
+          className={`flex h-6 w-6 items-center justify-center rounded-sm border border-(--neutral-light-grey) transition
+          ${checked ? "bg-(--primary)" : "bg-(--neutral-white)"}`}
+        >
+          {checked ? (
+            <Check width={18} height={18} className="text-white" />
+          ) : null}
+        </div>
 
-          <div className="text-(--neutral-light-grey) select-none">
-            {textHtmlFormat}
-          </div>
+        <div className="select-none text-(--neutral-light-grey)">
+          {label ?? textHtmlFormat}
         </div>
       </label>
     );

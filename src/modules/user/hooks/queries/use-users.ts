@@ -3,7 +3,7 @@
 import { client } from "@/src/library/hono-client";
 import { useQuery } from "@tanstack/react-query";
 
-async function getCurrentUser() {
+async function getUsers() {
   const res = await client.api.user.getAll.$get();
   const data = await res.json();
 
@@ -14,9 +14,9 @@ async function getCurrentUser() {
   return data;
 }
 
-export function useCurrentUser() {
+export function useAdminUsers() {
   return useQuery({
     queryKey: ["users"],
-    queryFn: getCurrentUser,
+    queryFn: getUsers,
   });
 }

@@ -1,11 +1,12 @@
 import { Blog } from "@/generated/prisma/browser";
+import { validateRequest } from "@/src/auth/validate";
 import { prisma } from "@/src/library/db";
 import { ApiResponse } from "@/src/types/ApiReturnType";
 import { Hono } from "hono";
 
 type PaginatedResp = {
   blogs: Blog[];
-  pagination: {
+  pagination?: {
     total: number;
     limit: number;
   };
@@ -14,6 +15,23 @@ type PaginatedResp = {
 export const GetRoutes = new Hono()
   .get("/", async (c) => {
     let response: ApiResponse<PaginatedResp>;
+    const { user } = await validateRequest();
+    if (user?.role === "admin") {
+      const blogs = await prisma.blog.findMany({
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+
+      response = {
+        data: { blogs },
+        status: 200,
+        success: true,
+        message: "Blogs fetched",
+      };
+
+      return c.json(response, response.status)
+    }
 
     const limit = Number(c.req.query("limit") ?? "10");
 
