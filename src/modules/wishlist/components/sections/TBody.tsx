@@ -33,7 +33,7 @@ export function TBody() {
             </p>
 
             <Link
-              href="/shop"
+              href="/products"
               className="mt-6 px-6 py-3 bg-black text-white text-sm font-medium rounded-md hover:opacity-90 transition"
             >
               Browse products
