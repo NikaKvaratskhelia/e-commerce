@@ -12,6 +12,7 @@ import {
   Zap,
 } from "lucide-react";
 import { NavLink } from "../common/NavLink";
+import Link from "next/link";
 
 const NAV_SECTIONS = [
   {
@@ -57,7 +58,7 @@ export function Aside() {
         </span>
       </div>
 
-      <nav className="flex-1 overflow-y-auto overflow-x-hidden px-2.5 py-3 space-y-5 scrollbar-none">
+      <nav className="flex-1 overflow-y-auto overflow-x-hidden px-2.5 py-3 space-y-5 scrollbar-none h-full flex flex-col">
         {NAV_SECTIONS.map((section) => (
           <div key={section.title}>
             <p
@@ -81,6 +82,28 @@ export function Aside() {
             </div>
           </div>
         ))}
+        <Link
+          href="/"
+          className="
+        inline-flex items-center justify-center
+        px-4 py-2
+        text-sm font-medium
+        text-white
+        bg-(--primary)
+        rounded-xl
+        transition-all duration-200
+
+        hover:opacity-90
+        active:scale-[0.98]
+
+        focus:outline-none
+        focus:ring-2
+        focus:ring-(--primary)
+        focus:ring-offset-2
+      "
+        >
+          Back to Shop
+        </Link>
       </nav>
 
       <div className="px-2.5 pb-5 pt-2 border-t border-white/6">

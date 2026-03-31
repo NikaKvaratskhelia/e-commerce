@@ -15,8 +15,8 @@ export function AddButtons() {
   const { selectedColorIndex } = useColorStore();
   const colorId = query.data?.data?.colors[selectedColorIndex].id;
 
-  const { mutate } = useAddToCartMutation(Number(colorId));
-  const { mutate: addToWishlist } = useAddWishlistItem();
+  const { mutate, isPending } = useAddToCartMutation(Number(colorId));
+  const { mutate: addToWishlist, isPending: isAddingToWishlist } = useAddWishlistItem();
 
   return (
     <div className="flex gap-4 items-center flex-col w-full mt-14">
@@ -25,19 +25,19 @@ export function AddButtons() {
         onClick={() => addToWishlist(Number(colorId))}
       >
         <Button
-          text={"Add to Wishlist"}
+          text={isAddingToWishlist ? "Adding to Wishlist..." : "Add to Wishlist"}
           mode={"outline"}
           rounded={"square"}
-          disabled={false}
+          disabled={isAddingToWishlist}
         />
       </div>
 
       <div className="flex-1 w-full" onClick={() => mutate()}>
         <Button
-          text={"Add to Cart"}
+          text={isPending ? "Adding to Cart..." : "Add to Cart"}
           mode={"solid"}
           rounded={"square"}
-          disabled={false}
+          disabled={isPending}
         />
       </div>
     </div>

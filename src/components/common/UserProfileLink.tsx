@@ -9,7 +9,7 @@ export function UserProfileLink({ isAuthenticated }: Props) {
   if (!isAuthenticated) {
     return (
       <Link
-        href="/auth/login"
+        href="/login"
         className="py-2.5 px-6.5 bg-(--primary) text-white text-[18px] leading-8 font-medium text-center rounded-lg"
       >
         Sign In
@@ -19,7 +19,7 @@ export function UserProfileLink({ isAuthenticated }: Props) {
 
   return (
     <Link
-      href="/shop/dashboard"
+      href="/account"
       className="flex justify-between items-center text-[18px] leading-8 pb-2 border-b border-(--neutral-dark-white)"
     >
       User

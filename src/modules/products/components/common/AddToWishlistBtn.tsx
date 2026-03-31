@@ -4,17 +4,14 @@ import { Button } from "@/src/components/ui/Button";
 import { useAddWishlistItem } from "@/src/modules/wishlist/hooks/mutations/use-add-wishlist";
 
 export default function AddToWishlistBtn({ id }: { id: number }) {
-  const { mutate } = useAddWishlistItem();
+  const { mutate, isPending } = useAddWishlistItem();
   return (
-    <div
-      className="flex-1 w-full"
-      onClick={() => mutate(Number(id))}
-    >
+    <div className="flex-1 w-full" onClick={() => mutate(Number(id))}>
       <Button
-        text={"Add to Wishlist"}
+        text={isPending ? "Adding..." : "Add to Wishlist"}
         mode={"outline"}
         rounded={"square"}
-        disabled={false}
+        disabled={isPending}
       />
     </div>
   );

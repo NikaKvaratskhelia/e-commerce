@@ -3,7 +3,6 @@ import Link from "next/link";
 import { ProductDTO } from "../../server/models";
 import { AddToCartBtn } from "@/src/modules/cart/components/common/AddToCartBtn";
 import { AddToWishlist } from "./AddToWishlist";
-import { Button } from "@/src/components/ui/Button";
 import AddToWishlistBtn from "./AddToWishlistBtn";
 
 type Props = {

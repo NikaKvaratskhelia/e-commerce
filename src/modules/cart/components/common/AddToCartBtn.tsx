@@ -22,7 +22,7 @@ export function AddToCartBtn({ id, variant = "hidden" }: Props) {
       className={`relative z-10 w-full transition-all duration-500 ${visibilityClass}`}
     >
       <Button
-        text="Add To Cart"
+        text={isPending ? "Adding..." : "Add To Cart"}
         mode="solid"
         rounded="square"
         disabled={isPending}

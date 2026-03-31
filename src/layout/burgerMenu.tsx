@@ -61,7 +61,7 @@ export function BurgerMenu({ isAuthenticated }: Props) {
             Home
           </Link>
           <Link
-            href={"/shop"}
+            href={"/products"}
             className="border-b border-(--neutral-dark-white) pb-2"
             onClick={() => setBurgerOpen(false)}
           >
