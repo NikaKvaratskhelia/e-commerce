@@ -93,7 +93,7 @@ export function ProductCard({ product, layout = "column" }: Props) {
       </div>
 
       <div
-        className={`${layout === "column" ? "hidden" : "flex"} flex-col gap-6 px-6`}
+        className={`${layout === "column" ? "hidden" : "flex"} flex-col gap-6 px-6 w-full`}
       >
         <div className="flex flex-col gap-2">
           <h3 className="text-[16px] leading-6.5">{product.title}</h3>
@@ -117,8 +117,10 @@ export function ProductCard({ product, layout = "column" }: Props) {
         <p className="text-sm leading-5.5 text-(--neutral-light-grey) mb-auto">
           {product.description}
         </p>
-        <AddToCartBtn id={product.id} variant="shown" />
-        <AddToWishlistBtn id={product.colors[0].id} />
+        <div className="mt-auto w-full flex gap-4 flex-col">
+          <AddToCartBtn id={product.id} variant="shown" />
+          <AddToWishlistBtn id={product.colors[0].id} />
+        </div>
       </div>
     </div>
   );
