@@ -1,1 +1,70 @@
 @import "tailwindcss";
+
+@theme {
+  --breakpoint-8h: 55.625rem;
+  --breakpoint-w1120: 70rem;
+
+  --animate-fade-in: fade-in 0.2s ease-out;
+  --animate-slide-up: slide-up 0.3s ease-out;
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(10px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+}
+
+:root {
+  --primary: #000000;
+  --blue: #377dff;
+  --green: #38cb89;
+  --orange: #ffab00;
+  --red: #ff5630;
+
+  --neutral-black: #141718;
+  --neutral-dark-grey: #232627;
+  --neutral-semi-grey: #343839;
+  --neutral-light-grey: #6c7275;
+
+  --neutral-dark-white: #e8ecef;
+  --neutral-semi-white: #f3f5f7;
+  --neutral-white: #fefefe;
+}
+
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+
+.swiper-pagination {
+  bottom: 20px !important;
+}
+
+.swiper-pagination-bullet {
+  width: 8px !important;
+  height: 8px !important;
+  background: #fefefe !important;
+  opacity: 1 !important;
+  border-radius: 10px !important;
+  margin: 0 6px !important;
+}
+
+.swiper-pagination-bullet-active {
+  background: #ffffff !important;
+  width: 30px !important;
+  transition: all 0.3s linear;
+}
+
+.product-swiper .swiper-scrollbar {
+  bottom: 0;
+}
