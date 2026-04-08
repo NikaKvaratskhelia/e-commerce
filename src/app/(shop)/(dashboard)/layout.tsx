@@ -1,4 +1,4 @@
-import { requireAuth } from "@/src/auth/helpers";
+import { validateRequest } from "@/src/auth/validate";
 import { UserAside } from "@/src/modules/user-dashboard/components/sections/UserAside";
 import { redirect } from "next/navigation";
 import { ReactNode } from "react";
@@ -6,7 +6,7 @@ import { ReactNode } from "react";
 export default async function dashboardLayout({
   children,
 }: Readonly<{ children: ReactNode }>) {
-  const { user, session } = await requireAuth();
+  const { user, session } = await validateRequest();
 
   if (!user || !session) redirect("/login");
   return (
